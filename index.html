@@ -1,0 +1,1946 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pH Explorer - Interactive Acid-Base Chemistry Studio</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    /* Custom scrollbars */
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.6);
+      border-radius: 8px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: rgba(71, 85, 105, 0.6);
+      border-radius: 8px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: rgba(99, 102, 241, 0.8);
+    }
+    /* Range input styling */
+    input[type="range"]::-webkit-slider-thumb {
+      appearance: none;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #6366f1;
+      cursor: pointer;
+      border: 2px solid #ffffff;
+      box-shadow: 0 0 6px rgba(99, 102, 241, 0.5);
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-slate-950 text-slate-100 font-sans flex flex-col selection:bg-indigo-500 selection:text-white">
+
+  <!-- ==================== HEADER ==================== -->
+  <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur-md sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-wrap items-center justify-between gap-4">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center shadow-lg shadow-indigo-500/20">
+          <i data-lucide="flask-conical" class="w-5 h-5 text-white animate-pulse"></i>
+        </div>
+        <div>
+          <h1 class="text-xl font-bold bg-gradient-to-r from-indigo-400 via-purple-300 to-pink-400 bg-clip-text text-transparent">
+            pH Explorer
+          </h1>
+          <p class="text-xs text-slate-400">Interactive Acid-Base Chemistry Studio</p>
+        </div>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <nav id="nav-tabs" class="flex items-center space-x-1 bg-slate-900 p-1.5 rounded-xl border border-slate-800/80 overflow-x-auto max-w-full">
+        <button onclick="switchTab('lab')" id="tab-btn-lab" class="tab-btn flex items-center space-x-2 px-3.5 py-2 rounded-lg text-xs font-semibold transition-all whitespace-nowrap bg-indigo-600 text-white shadow-md shadow-indigo-600/30">
+          <i data-lucide="flask-conical" class="w-4 h-4"></i>
+          <span>Virtual Lab</span>
+        </button>
+        <button onclick="switchTab('scale')" id="tab-btn-scale" class="tab-btn flex items-center space-x-2 px-3.5 py-2 rounded-lg text-xs font-semibold transition-all whitespace-nowrap text-slate-400 hover:text-slate-200 hover:bg-slate-800/60">
+          <i data-lucide="sliders" class="w-4 h-4"></i>
+          <span>pH Spectrum</span>
+        </button>
+        <button onclick="switchTab('titration')" id="tab-btn-titration" class="tab-btn flex items-center space-x-2 px-3.5 py-2 rounded-lg text-xs font-semibold transition-all whitespace-nowrap text-slate-400 hover:text-slate-200 hover:bg-slate-800/60">
+          <i data-lucide="activity" class="w-4 h-4"></i>
+          <span>Titration Curve</span>
+        </button>
+        <button onclick="switchTab('calculator')" id="tab-btn-calculator" class="tab-btn flex items-center space-x-2 px-3.5 py-2 rounded-lg text-xs font-semibold transition-all whitespace-nowrap text-slate-400 hover:text-slate-200 hover:bg-slate-800/60">
+          <i data-lucide="percent" class="w-4 h-4"></i>
+          <span>pH Math Lab</span>
+        </button>
+        <button onclick="switchTab('quiz')" id="tab-btn-quiz" class="tab-btn flex items-center space-x-2 px-3.5 py-2 rounded-lg text-xs font-semibold transition-all whitespace-nowrap text-slate-400 hover:text-slate-200 hover:bg-slate-800/60">
+          <i data-lucide="award" class="w-4 h-4"></i>
+          <span>Quiz Arena</span>
+        </button>
+        <button onclick="switchTab('guide')" id="tab-btn-guide" class="tab-btn flex items-center space-x-2 px-3.5 py-2 rounded-lg text-xs font-semibold transition-all whitespace-nowrap text-slate-400 hover:text-slate-200 hover:bg-slate-800/60">
+          <i data-lucide="book-open" class="w-4 h-4"></i>
+          <span>Theory Guide</span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ==================== MAIN CONTENT ==================== -->
+  <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8">
+
+    <!-- --------------------------------------------------------------------- -->
+    <!-- TAB 1: VIRTUAL LAB                                                    -->
+    <!-- --------------------------------------------------------------------- -->
+    <section id="tab-lab" class="tab-content space-y-6">
+      <div class="bg-gradient-to-r from-indigo-950/60 via-slate-900 to-purple-950/60 border border-slate-800 rounded-2xl p-5 shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+        <div>
+          <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 mb-2">
+            <i data-lucide="sparkles" class="w-3 h-3 mr-1"></i> Interactive Wet Lab
+          </span>
+          <h2 class="text-xl font-bold text-white">Virtual Beaker & Indicator Experiment</h2>
+          <p class="text-sm text-slate-400 mt-1 max-w-2xl">
+            Mix solutions, add strong acids or bases drop-by-drop, dilute with pure water, and test with chemical indicators like Phenolphthalein, Litmus, and Universal Indicator.
+          </p>
+        </div>
+        <button onclick="resetLabMix()" class="flex items-center space-x-1.5 px-3 py-2 bg-slate-800 hover:bg-slate-750 text-slate-300 text-xs font-medium rounded-lg border border-slate-700 transition-colors">
+          <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+          <span>Reset Mix</span>
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <!-- Left: Setup Controls -->
+        <div class="lg:col-span-4 space-y-6">
+          <!-- Substance Picker -->
+          <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 space-y-4">
+            <div class="flex items-center justify-between">
+              <h3 class="text-sm font-bold text-slate-200 flex items-center gap-2">
+                <i data-lucide="droplet" class="w-4 h-4 text-indigo-400"></i>
+                1. Select Base Substance
+              </h3>
+              <span id="lab-substances-count" class="text-xs text-slate-500">17 reagents</span>
+            </div>
+            <div id="substances-list" class="space-y-2 max-h-64 overflow-y-auto pr-1 custom-scrollbar"></div>
+          </div>
+
+          <!-- Reagents & Dilution -->
+          <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 space-y-4">
+            <h3 class="text-sm font-bold text-slate-200 flex items-center gap-2">
+              <i data-lucide="zap" class="w-4 h-4 text-amber-400"></i>
+              2. Add Reagents / Dilute
+            </h3>
+
+            <!-- Acid Drops -->
+            <div class="p-3 bg-slate-800/40 border border-slate-800 rounded-xl space-y-2">
+              <div class="flex justify-between items-center text-xs">
+                <span class="font-semibold text-red-400 flex items-center gap-1.5">
+                  <i data-lucide="flame" class="w-3.5 h-3.5"></i> 1M HCl Acid Drops
+                </span>
+                <span id="acid-drops-count" class="font-mono text-slate-300">0 drops</span>
+              </div>
+              <div class="flex items-center space-x-2">
+                <button onclick="changeAcidDrops(-5)" class="px-2.5 py-1 bg-slate-800 text-slate-300 hover:bg-slate-700 rounded-lg text-xs">-5</button>
+                <button onclick="changeAcidDrops(-1)" class="px-2.5 py-1 bg-slate-800 text-slate-300 hover:bg-slate-700 rounded-lg text-xs">-1</button>
+                <button onclick="changeAcidDrops(1)" class="flex-1 py-1 bg-red-600/30 hover:bg-red-600/50 border border-red-500/40 text-red-200 font-semibold rounded-lg text-xs transition-colors">+1 Drop (+H⁺)</button>
+                <button onclick="changeAcidDrops(5)" class="px-2.5 py-1 bg-red-600/30 hover:bg-red-600/50 border border-red-500/40 text-red-200 font-semibold rounded-lg text-xs transition-colors">+5</button>
+              </div>
+            </div>
+
+            <!-- Base Drops -->
+            <div class="p-3 bg-slate-800/40 border border-slate-800 rounded-xl space-y-2">
+              <div class="flex justify-between items-center text-xs">
+                <span class="font-semibold text-blue-400 flex items-center gap-1.5">
+                  <i data-lucide="droplet" class="w-3.5 h-3.5"></i> 1M NaOH Base Drops
+                </span>
+                <span id="base-drops-count" class="font-mono text-slate-300">0 drops</span>
+              </div>
+              <div class="flex items-center space-x-2">
+                <button onclick="changeBaseDrops(-5)" class="px-2.5 py-1 bg-slate-800 text-slate-300 hover:bg-slate-700 rounded-lg text-xs">-5</button>
+                <button onclick="changeBaseDrops(-1)" class="px-2.5 py-1 bg-slate-800 text-slate-300 hover:bg-slate-700 rounded-lg text-xs">-1</button>
+                <button onclick="changeBaseDrops(1)" class="flex-1 py-1 bg-blue-600/30 hover:bg-blue-600/50 border border-blue-500/40 text-blue-200 font-semibold rounded-lg text-xs transition-colors">+1 Drop (+OH⁻)</button>
+                <button onclick="changeBaseDrops(5)" class="px-2.5 py-1 bg-blue-600/30 hover:bg-blue-600/50 border border-blue-500/40 text-blue-200 font-semibold rounded-lg text-xs transition-colors">+5</button>
+              </div>
+            </div>
+
+            <!-- Dilution Slider -->
+            <div class="p-3 bg-slate-800/40 border border-slate-800 rounded-xl space-y-2">
+              <div class="flex justify-between items-center text-xs">
+                <span class="font-semibold text-emerald-400">Pure Water Dilution</span>
+                <span id="water-vol-label" class="font-mono text-slate-300">+0 mL</span>
+              </div>
+              <input
+                id="water-slider"
+                type="range"
+                min="0"
+                max="1000"
+                step="50"
+                value="0"
+                oninput="setDilutionWater(Number(this.value))"
+                class="w-full h-1.5 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-emerald-500"
+              />
+              <div class="flex justify-between text-[10px] text-slate-400">
+                <span>0 mL</span>
+                <span>500 mL</span>
+                <span>1000 mL</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Indicator Selector -->
+          <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 space-y-3">
+            <h3 class="text-sm font-bold text-slate-200 flex items-center gap-2">
+              <i data-lucide="filter" class="w-4 h-4 text-purple-400"></i>
+              3. Chemical Indicator
+            </h3>
+            <div id="indicators-list" class="space-y-1.5"></div>
+          </div>
+        </div>
+
+        <!-- Center/Right: Beaker & Diagnostics -->
+        <div class="lg:col-span-8 space-y-6">
+          <div class="bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950 border border-slate-800 rounded-2xl p-6 relative overflow-hidden flex flex-col items-center justify-center min-h-[420px]">
+            <!-- Digital Probe Bar -->
+            <div class="w-full flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-slate-800/80 mb-6">
+              <div class="flex items-center space-x-3">
+                <div class="px-4 py-2 rounded-xl bg-slate-950 border border-slate-700/80 shadow-inner flex items-center space-x-3">
+                  <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Digital Probe</span>
+                  <span id="probe-ph-display" class="text-2xl font-black font-mono tracking-tight text-emerald-400">pH 7.00</span>
+                </div>
+                <div class="text-xs">
+                  <span id="solution-classification" class="px-2.5 py-1 rounded-full font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Neutral Solution</span>
+                </div>
+              </div>
+
+              <div class="flex items-center space-x-2">
+                <button
+                  id="strip-toggle-btn"
+                  onclick="toggleDipStrip()"
+                  class="px-3 py-1.5 rounded-lg text-xs font-semibold border border-slate-700 bg-slate-800 text-slate-300 hover:bg-slate-750 transition-all flex items-center space-x-1.5"
+                >
+                  <span id="strip-btn-text">Dip Indicator Paper</span>
+                </button>
+                <button
+                  id="particles-toggle-btn"
+                  onclick="toggleMolecularView()"
+                  class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-xs font-medium border border-slate-700 transition-colors"
+                >
+                  Hide Particles
+                </button>
+              </div>
+            </div>
+
+            <!-- Visual Stage Area -->
+            <div class="w-full flex flex-col md:flex-row items-center justify-around gap-8 my-auto">
+              <!-- Glass Beaker Graphic -->
+              <div class="relative flex flex-col items-center">
+                <!-- Indicator Paper Strip -->
+                <div
+                  id="indicator-strip"
+                  class="absolute -top-12 z-20 w-8 rounded-b-md transition-all duration-500 border-x-2 border-b-2 border-white/30 flex flex-col items-center shadow-xl opacity-80"
+                  style="height: 90px; background-color: #fef08a;"
+                >
+                  <div id="strip-indicator-label" class="text-[8px] font-bold text-slate-900 mt-1 uppercase rotate-90 origin-left translate-x-3">
+                    UNIVERS
+                  </div>
+                </div>
+
+                <!-- Graduated Beaker Vessel -->
+                <div class="relative w-56 h-64 border-4 border-t-0 border-slate-500/40 rounded-b-3xl bg-slate-900/40 backdrop-blur-sm overflow-hidden shadow-2xl flex flex-col justify-end p-2">
+                  <div class="absolute left-2 top-8 bottom-8 flex flex-col justify-between text-[10px] font-mono text-slate-400 select-none pointer-events-none z-10 border-l border-slate-600 pl-1">
+                    <span>- 1000 mL</span>
+                    <span>- 750 mL</span>
+                    <span>- 500 mL</span>
+                    <span>- 250 mL</span>
+                  </div>
+
+                  <!-- Liquid Body -->
+                  <div
+                    id="beaker-liquid"
+                    class="w-full rounded-b-2xl transition-all duration-700 relative overflow-hidden shadow-inner flex items-center justify-center"
+                    style="height: 25%; background-color: rgb(34, 197, 94);"
+                  >
+                    <div class="absolute top-0 left-0 right-0 h-3 bg-white/20 blur-[1px] rounded-full transform -translate-y-1"></div>
+                    <div class="absolute inset-0 opacity-30 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-white/40 via-transparent to-transparent animate-pulse"></div>
+                    <div id="beaker-vol-label" class="text-center z-10 px-2 py-1 rounded bg-slate-950/60 backdrop-blur-sm border border-white/10 text-white font-mono text-xs">
+                      250 mL Total
+                    </div>
+                  </div>
+                </div>
+                <span id="beaker-substance-name" class="text-xs font-semibold text-slate-400 mt-2">
+                  Pure Water (25°C) (H₂O)
+                </span>
+              </div>
+
+              <!-- Particle Simulation -->
+              <div id="molecular-box" class="bg-slate-950/90 border border-slate-800 rounded-2xl p-4 shadow-xl flex flex-col items-center space-y-3">
+                <div class="w-full flex items-center justify-between text-xs border-b border-slate-800 pb-2">
+                  <span class="font-bold text-slate-300 flex items-center gap-1.5">
+                    <i data-lucide="activity" class="w-3.5 h-3.5 text-indigo-400"></i>
+                    Ion Balance Micro-View
+                  </span>
+                  <span class="text-[10px] text-slate-400 font-mono">Real-time Simulation</span>
+                </div>
+                <div class="rounded-xl overflow-hidden border border-slate-800 relative">
+                  <canvas id="particle-canvas" width="300" height="180" class="block"></canvas>
+                </div>
+                <div class="w-full flex items-center justify-around text-xs pt-1">
+                  <div class="flex items-center space-x-1.5">
+                    <span class="w-3 h-3 rounded-full bg-red-500 shadow-sm shadow-red-500/50"></span>
+                    <span class="text-slate-300 font-mono text-[11px]">Hydronium (H₃O⁺)</span>
+                  </div>
+                  <div class="flex items-center space-x-1.5">
+                    <span class="w-3 h-3 rounded-full bg-blue-500 shadow-sm shadow-blue-500/50"></span>
+                    <span class="text-slate-300 font-mono text-[11px]">Hydroxide (OH⁻)</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Indicator Scale Reference -->
+            <div class="w-full mt-6 pt-4 border-t border-slate-800 text-xs flex flex-col sm:flex-row items-center justify-between gap-3 text-slate-400">
+              <div>
+                <span id="active-ind-name" class="font-semibold text-slate-300">Universal Indicator:</span>
+                <span id="active-ind-desc" class="text-slate-200">Green (Neutral)</span>
+              </div>
+              <div class="flex items-center space-x-1">
+                <span class="text-[10px] text-slate-400">pH 0</span>
+                <div class="w-36 h-2.5 rounded-full bg-gradient-to-r from-red-500 via-yellow-400 via-green-500 via-blue-500 to-purple-600 shadow-inner"></div>
+                <span class="text-[10px] text-slate-400">pH 14</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quantitative Metrics -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 space-y-1">
+              <span class="text-xs text-slate-400 font-medium">Hydronium Concentration</span>
+              <div id="metric-h-conc" class="text-lg font-bold font-mono text-red-400">[1.00 × 10⁻⁷] M</div>
+              <p id="metric-h-formula" class="text-[11px] text-slate-400 font-mono">[H₃O⁺] = 10⁻⁷·⁰⁰</p>
+            </div>
+            <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 space-y-1">
+              <span class="text-xs text-slate-400 font-medium">Hydroxide Concentration</span>
+              <div id="metric-oh-conc" class="text-lg font-bold font-mono text-blue-400">[1.00 × 10⁻⁷] M</div>
+              <p id="metric-oh-formula" class="text-[11px] text-slate-400 font-mono">[OH⁻] = 10⁻⁷·⁰⁰</p>
+            </div>
+            <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 space-y-1">
+              <span class="text-xs text-slate-400 font-medium">pOH Value</span>
+              <div id="metric-poh" class="text-lg font-bold font-mono text-purple-400">7.00</div>
+              <p class="text-[11px] text-slate-400 font-mono">pH + pOH = 14.00</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- --------------------------------------------------------------------- -->
+    <!-- TAB 2: CONTINUOUS pH SPECTRUM                                         -->
+    <!-- --------------------------------------------------------------------- -->
+    <section id="tab-scale" class="tab-content hidden space-y-6">
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-6">
+        <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          <div>
+            <h2 class="text-xl font-bold text-white flex items-center gap-2">
+              <i data-lucide="sliders" class="w-5 h-5 text-indigo-400"></i>
+              Continuous pH Scale & Household Substances
+            </h2>
+            <p class="text-sm text-slate-400 mt-1">
+              Drag the slider to explore the logarithmic changes in hydrogen ion [H⁺] concentration and observe where common everyday materials fall.
+            </p>
+          </div>
+          <div class="px-5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 shadow-inner flex items-center space-x-3">
+            <span class="text-xs font-bold uppercase text-slate-400">Active pH</span>
+            <span id="spectrum-ph-badge" class="text-3xl font-black font-mono text-emerald-400">7.0</span>
+          </div>
+        </div>
+
+        <!-- Continuous Spectrum Slider -->
+        <div class="space-y-3 pt-4">
+          <div class="relative py-2">
+            <div class="h-6 w-full rounded-xl bg-gradient-to-r from-red-600 via-orange-500 via-yellow-400 via-green-500 via-cyan-500 via-blue-600 to-purple-700 shadow-inner"></div>
+            <input
+              id="spectrum-slider"
+              type="range"
+              min="0"
+              max="14"
+              step="0.1"
+              value="7.0"
+              oninput="updateSpectrumView(Number(this.value))"
+              class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+            />
+            <div
+              id="spectrum-thumb"
+              class="absolute top-1/2 -translate-y-1/2 w-6 h-8 bg-white border-2 border-slate-950 rounded-lg shadow-2xl pointer-events-none transform -translate-x-1/2 flex items-center justify-center"
+              style="left: 50%;"
+            >
+              <div class="w-1 h-3 bg-slate-900 rounded"></div>
+            </div>
+          </div>
+
+          <!-- Ticks -->
+          <div id="spectrum-ticks" class="flex justify-between text-xs font-mono font-bold text-slate-400 px-1"></div>
+        </div>
+
+        <!-- Scale comparison cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
+          <div class="bg-slate-950/70 border border-slate-800 rounded-xl p-4 space-y-2">
+            <div class="text-xs font-semibold text-slate-400">Hydrogen Ion Acidity Ratio</div>
+            <div id="spectrum-ratio" class="text-xl font-bold font-mono text-red-400">1× Neutral Reference</div>
+            <p class="text-[11px] text-slate-400">Compared to neutral pure water (pH = 7.0).</p>
+          </div>
+          <div class="bg-slate-950/70 border border-slate-800 rounded-xl p-4 space-y-2">
+            <div class="text-xs font-semibold text-slate-400">Molar Concentration [H₃O⁺]</div>
+            <div id="spectrum-h-conc" class="text-xl font-bold font-mono text-amber-300">1.00 × 10⁻⁷ M</div>
+            <p class="text-[11px] text-slate-400">Mol of hydronium ions per liter of solution.</p>
+          </div>
+          <div class="bg-slate-950/70 border border-slate-800 rounded-xl p-4 space-y-2">
+            <div class="text-xs font-semibold text-slate-400">Ion Product [OH⁻]</div>
+            <div id="spectrum-oh-conc" class="text-xl font-bold font-mono text-cyan-300">1.00 × 10⁻⁷ M</div>
+            <p class="text-[11px] text-slate-400">Mol of hydroxide ions per liter of solution.</p>
+          </div>
+        </div>
+
+        <!-- Nearest Substances -->
+        <div class="space-y-3 pt-4 border-t border-slate-800">
+          <h3 id="spectrum-nearest-title" class="text-sm font-bold text-slate-200">Substances Closest to pH 7.0</h3>
+          <div id="spectrum-substances-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- --------------------------------------------------------------------- -->
+    <!-- TAB 3: TITRATION SANDBOX & LIVE CURVE PLOTTER                         -->
+    <!-- --------------------------------------------------------------------- -->
+    <section id="tab-titration" class="tab-content hidden space-y-6">
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+        <div>
+          <h2 class="text-xl font-bold text-white flex items-center gap-2">
+            <i data-lucide="activity" class="w-5 h-5 text-indigo-400"></i>
+            Acid-Base Titration Simulator & Real-Time Curve
+          </h2>
+          <p class="text-sm text-slate-400 mt-1 max-w-2xl">
+            Titrate strong acids and strong bases. Watch the rapid pH surge near the equivalence point (Veq) and analyze the mathematical sigmoidal curve.
+          </p>
+        </div>
+        <div class="flex items-center space-x-2">
+          <button
+            id="titration-play-btn"
+            onclick="toggleAutoTitration()"
+            class="px-4 py-2 rounded-xl text-xs font-bold flex items-center space-x-2 transition-all shadow-md bg-indigo-600 hover:bg-indigo-500 text-white shadow-indigo-600/30"
+          >
+            <i id="titration-play-icon" data-lucide="play" class="w-4 h-4"></i>
+            <span id="titration-play-text">Start Auto-Titration</span>
+          </button>
+          <button
+            onclick="resetTitration()"
+            class="p-2.5 bg-slate-800 hover:bg-slate-750 text-slate-300 rounded-xl border border-slate-700 transition-colors"
+            title="Reset Burette"
+          >
+            <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <!-- Controls -->
+        <div class="lg:col-span-4 space-y-6">
+          <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 space-y-4">
+            <h3 class="text-sm font-bold text-slate-200">Experiment Setup</h3>
+
+            <!-- Analyte Choice -->
+            <div class="space-y-1.5">
+              <label class="text-xs text-slate-400 font-medium">Analyte (In Flask)</label>
+              <div class="grid grid-cols-2 gap-2">
+                <button
+                  id="btn-analyte-acid"
+                  onclick="setAnalyte('acid')"
+                  class="py-2 px-3 rounded-xl text-xs font-semibold border transition-all bg-red-500/20 border-red-500 text-red-200"
+                >
+                  Strong Acid (HCl)
+                </button>
+                <button
+                  id="btn-analyte-base"
+                  onclick="setAnalyte('base')"
+                  class="py-2 px-3 rounded-xl text-xs font-semibold border transition-all bg-slate-800/40 border-slate-800 text-slate-400"
+                >
+                  Strong Base (NaOH)
+                </button>
+              </div>
+            </div>
+
+            <!-- Volume Slider -->
+            <div class="space-y-1.5">
+              <div class="flex justify-between text-xs">
+                <span class="text-slate-400">Analyte Initial Volume</span>
+                <span id="titration-vol-label" class="font-mono text-slate-200 font-bold">50 mL</span>
+              </div>
+              <input
+                id="analyte-vol-slider"
+                type="range"
+                min="20"
+                max="100"
+                step="5"
+                value="50"
+                oninput="setAnalyteVolume(Number(this.value))"
+                class="w-full h-1.5 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-indigo-500"
+              />
+            </div>
+
+            <!-- Titrant Addition -->
+            <div class="space-y-2 pt-2 border-t border-slate-800">
+              <div class="flex justify-between text-xs">
+                <span class="font-semibold text-slate-300">Titrant Added from Burette</span>
+                <span id="titrant-added-label" class="font-mono text-indigo-400 font-bold">0.0 / 100 mL</span>
+              </div>
+              <input
+                id="titrant-slider"
+                type="range"
+                min="0"
+                max="100"
+                step="0.5"
+                value="0"
+                oninput="setTitrantAdded(Number(this.value))"
+                class="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-indigo-500"
+              />
+              <div class="flex items-center space-x-1 text-xs">
+                <button onclick="addTitrantStep(1)" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 rounded-lg text-[11px] font-semibold">+1 mL</button>
+                <button onclick="addTitrantStep(5)" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 rounded-lg text-[11px] font-semibold">+5 mL</button>
+                <button onclick="addTitrantStep(10)" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 rounded-lg text-[11px] font-semibold">+10 mL</button>
+              </div>
+            </div>
+
+            <!-- Speed Control -->
+            <div class="space-y-1.5 pt-2 border-t border-slate-800">
+              <div class="flex justify-between text-xs">
+                <span class="text-slate-400">Animation Dispense Speed</span>
+                <span id="titration-speed-label" class="font-mono text-slate-200">1x</span>
+              </div>
+              <div class="grid grid-cols-3 gap-2">
+                <button onclick="setTitrationSpeed(1)" id="btn-speed-1" class="py-1 rounded-lg text-xs font-semibold border bg-indigo-600 text-white border-indigo-500">1x</button>
+                <button onclick="setTitrationSpeed(2)" id="btn-speed-2" class="py-1 rounded-lg text-xs font-semibold border bg-slate-800 text-slate-400 border-slate-700">2x</button>
+                <button onclick="setTitrationSpeed(4)" id="btn-speed-4" class="py-1 rounded-lg text-xs font-semibold border bg-slate-800 text-slate-400 border-slate-700">4x</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Dynamic Status -->
+          <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 space-y-3">
+            <div class="flex justify-between items-center text-xs">
+              <span class="text-slate-400">Theoretical Equivalence Volume</span>
+              <span id="titration-eq-vol" class="font-mono font-bold text-amber-400">50.0 mL</span>
+            </div>
+            <div class="flex justify-between items-center text-xs">
+              <span class="text-slate-400">Current pH in Flask</span>
+              <span id="titration-current-ph" class="font-mono text-xl font-bold text-red-400">1.00</span>
+            </div>
+            <div id="titration-region-badge" class="p-2.5 rounded-xl bg-slate-950 text-[11px] text-slate-400 border border-slate-800">
+              Buffering region: 50.0 mL remaining to neutralization.
+            </div>
+          </div>
+        </div>
+
+        <!-- Real-Time SVG Curve Graph -->
+        <div class="lg:col-span-8 bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4 flex flex-col justify-between">
+          <div class="flex items-center justify-between">
+            <div>
+              <h3 class="text-base font-bold text-white">Titration Curve Graph</h3>
+              <p class="text-xs text-slate-400">Plot of pH vs Volume of Titrant Added (V_titrant)</p>
+            </div>
+            <div class="flex items-center space-x-3 text-xs">
+              <div class="flex items-center space-x-1.5">
+                <span class="w-2.5 h-2.5 rounded-full bg-indigo-500"></span>
+                <span class="text-slate-300">Curve</span>
+              </div>
+              <div class="flex items-center space-x-1.5">
+                <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
+                <span class="text-slate-300">Equivalence Pt</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- SVG Plot -->
+          <div class="relative w-full h-80 bg-slate-950 rounded-xl border border-slate-800/80 p-4">
+            <svg id="titration-svg" class="w-full h-full overflow-visible" viewBox="0 0 500 260">
+              <!-- Will be rendered dynamically -->
+            </svg>
+          </div>
+
+          <div class="flex justify-between items-center text-xs text-slate-400">
+            <span>Equivalence pH = 7.00 for strong acid / strong base pair.</span>
+            <span id="titration-total-vol-label" class="font-mono">Total Liquid Volume = 50 mL</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- --------------------------------------------------------------------- -->
+    <!-- TAB 4: pH MATH LAB & STEP-BY-STEP CALCULATOR                          -->
+    <!-- --------------------------------------------------------------------- -->
+    <section id="tab-calculator" class="tab-content hidden space-y-6">
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-6">
+        <div>
+          <h2 class="text-xl font-bold text-white flex items-center gap-2">
+            <i data-lucide="percent" class="w-5 h-5 text-indigo-400"></i>
+            pH & Ion Concentration Step-by-Step Solver
+          </h2>
+          <p class="text-sm text-slate-400 mt-1">
+            Enter any known chemical variable (pH, pOH, [H₃O⁺], or [OH⁻]) to instantly calculate all companion values with complete mathematical derivation steps.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+          <!-- Input settings -->
+          <div class="md:col-span-5 space-y-4">
+            <div class="space-y-2">
+              <label class="text-xs font-semibold text-slate-300">Choose Known Input Variable</label>
+              <div class="grid grid-cols-2 gap-2">
+                <button onclick="setCalcMode('ph')" id="calc-btn-ph" class="calc-mode-btn p-2.5 rounded-xl text-xs font-semibold border transition-all text-left bg-indigo-600/20 border-indigo-500 text-white">pH Value</button>
+                <button onclick="setCalcMode('poh')" id="calc-btn-poh" class="calc-mode-btn p-2.5 rounded-xl text-xs font-semibold border transition-all text-left bg-slate-950 border-slate-800 text-slate-400 hover:bg-slate-800">pOH Value</button>
+                <button onclick="setCalcMode('h_conc')" id="calc-btn-h_conc" class="calc-mode-btn p-2.5 rounded-xl text-xs font-semibold border transition-all text-left bg-slate-950 border-slate-800 text-slate-400 hover:bg-slate-800">[H₃O⁺] Concentration (M)</button>
+                <button onclick="setCalcMode('oh_conc')" id="calc-btn-oh_conc" class="calc-mode-btn p-2.5 rounded-xl text-xs font-semibold border transition-all text-left bg-slate-950 border-slate-800 text-slate-400 hover:bg-slate-800">[OH⁻] Concentration (M)</button>
+              </div>
+            </div>
+
+            <div class="space-y-2">
+              <label class="text-xs font-semibold text-slate-300">Enter Value</label>
+              <input
+                id="calc-input"
+                type="text"
+                value="7.0"
+                oninput="solveCalculator()"
+                placeholder="e.g. 7.0 or 1e-4"
+                class="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl font-mono text-white text-sm focus:outline-none focus:border-indigo-500 transition-colors"
+              />
+              <div id="calc-presets" class="flex flex-wrap gap-2 pt-1">
+                <!-- Preset buttons generated dynamically -->
+              </div>
+            </div>
+
+            <!-- Formulas Box -->
+            <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-2 text-xs">
+              <span class="font-bold text-indigo-400">Fundamental Formulas (at 25°C)</span>
+              <ul class="space-y-1 font-mono text-[11px] text-slate-300">
+                <li>• pH = -log₁₀[H₃O⁺]</li>
+                <li>• pOH = -log₁₀[OH⁻]</li>
+                <li>• pH + pOH = 14.00</li>
+                <li>• Kw = [H₃O⁺][OH⁻] = 1.0 × 10⁻¹⁴</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Calculated Derivation & Results -->
+          <div id="calc-output-container" class="md:col-span-7 bg-slate-950 rounded-2xl border border-slate-800 p-5 space-y-5">
+            <!-- Rendered in JS -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- --------------------------------------------------------------------- -->
+    <!-- TAB 5: QUIZ ARENA                                                     -->
+    <!-- --------------------------------------------------------------------- -->
+    <section id="tab-quiz" class="tab-content hidden max-w-3xl mx-auto space-y-6">
+      <div id="quiz-question-card" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-xl space-y-6">
+        <!-- Progress Bar -->
+        <div class="space-y-2">
+          <div class="flex justify-between items-center text-xs">
+            <span id="quiz-progress-text" class="font-semibold text-indigo-400">Question 1 of 6</span>
+            <span id="quiz-percentage-text" class="text-slate-400 font-mono">17% Completed</span>
+          </div>
+          <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+            <div id="quiz-progress-bar" class="h-full bg-gradient-to-r from-indigo-500 to-pink-500 transition-all duration-300" style="width: 17%;"></div>
+          </div>
+        </div>
+
+        <!-- Question Text -->
+        <div class="space-y-3">
+          <h3 id="quiz-question-title" class="text-lg font-bold text-white leading-relaxed"></h3>
+        </div>
+
+        <!-- Options list -->
+        <div id="quiz-options-container" class="space-y-3"></div>
+
+        <!-- Navigation Buttons -->
+        <div class="flex justify-between items-center pt-4 border-t border-slate-800">
+          <button
+            id="quiz-prev-btn"
+            onclick="prevQuizQuestion()"
+            class="px-4 py-2 rounded-xl text-xs font-semibold bg-slate-800 text-slate-300 disabled:opacity-40 hover:bg-slate-750 transition-colors"
+          >
+            Previous
+          </button>
+          <button
+            id="quiz-next-btn"
+            onclick="nextQuizQuestion()"
+            class="px-5 py-2 rounded-xl text-xs font-bold bg-indigo-600 hover:bg-indigo-500 text-white disabled:opacity-40 shadow-lg shadow-indigo-600/30 transition-all"
+          >
+            Next Question
+          </button>
+        </div>
+      </div>
+
+      <!-- Result Card (Hidden until submitted) -->
+      <div id="quiz-results-card" class="hidden bg-slate-900 border border-slate-800 rounded-2xl p-8 shadow-xl text-center space-y-6">
+        <div class="w-16 h-16 rounded-2xl bg-indigo-600/20 border border-indigo-500/40 flex items-center justify-center mx-auto text-indigo-400 shadow-xl">
+          <i data-lucide="award" class="w-8 h-8"></i>
+        </div>
+        <div>
+          <h2 class="text-2xl font-black text-white">Quiz Evaluation Completed!</h2>
+          <p class="text-slate-400 text-sm mt-1">Here is how you scored on the Acid-Base Assessment</p>
+        </div>
+        <div class="py-4 px-6 rounded-2xl bg-slate-950 border border-slate-800 max-w-sm mx-auto">
+          <div id="quiz-final-score" class="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-pink-400 font-mono">
+            0 / 6
+          </div>
+          <div id="quiz-mastery-score" class="text-xs text-slate-400 mt-1">0% Mastery Score</div>
+        </div>
+
+        <div class="space-y-4 text-left pt-4 border-t border-slate-800">
+          <h3 class="text-sm font-bold text-slate-200">Review & Explanations</h3>
+          <div id="quiz-reviews-list" class="space-y-3"></div>
+        </div>
+
+        <button onclick="resetQuiz()" class="px-6 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shadow-lg shadow-indigo-600/30 transition-all">
+          Try Again
+        </button>
+      </div>
+    </section>
+
+    <!-- --------------------------------------------------------------------- -->
+    <!-- TAB 6: THEORY & REFERENCE GUIDE                                       -->
+    <!-- --------------------------------------------------------------------- -->
+    <section id="tab-guide" class="tab-content hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-3">
+        <div class="w-10 h-10 rounded-xl bg-red-500/20 text-red-400 flex items-center justify-center">
+          <i data-lucide="flame" class="w-5 h-5"></i>
+        </div>
+        <h3 class="text-base font-bold text-white">What is pH?</h3>
+        <p class="text-xs text-slate-400 leading-relaxed">
+          The term <strong>pH</strong> stands for <em>"potential of Hydrogen"</em> (or power of hydrogen). It provides a compact logarithmic scale representing the chemical activity of solvated hydrogen ions in aqueous solution:
+        </p>
+        <div class="p-2.5 bg-slate-950 rounded-xl font-mono text-xs text-indigo-300 border border-slate-800">
+          pH = -log₁₀[H₃O⁺]
+        </div>
+      </div>
+
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-3">
+        <div class="w-10 h-10 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center">
+          <i data-lucide="droplet" class="w-5 h-5"></i>
+        </div>
+        <h3 class="text-base font-bold text-white">Autoionization of Water</h3>
+        <p class="text-xs text-slate-400 leading-relaxed">
+          Even pure water spontaneously dissociates to a tiny extent into hydronium and hydroxide ions:
+        </p>
+        <div class="p-2.5 bg-slate-950 rounded-xl font-mono text-xs text-cyan-300 border border-slate-800">
+          2H₂O ⇌ H₃O⁺ + OH⁻<br />
+          Kw = [H₃O⁺][OH⁻] = 1.0 × 10⁻¹⁴
+        </div>
+        <p class="text-[11px] text-slate-400">At 25°C, [H₃O⁺] = [OH⁻] = 1.0 × 10⁻⁷ M, producing a neutral pH of 7.00.</p>
+      </div>
+
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-3">
+        <div class="w-10 h-10 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center">
+          <i data-lucide="activity" class="w-5 h-5"></i>
+        </div>
+        <h3 class="text-base font-bold text-white">The Logarithmic Principle</h3>
+        <p class="text-xs text-slate-400 leading-relaxed">
+          Because pH is a base-10 logarithmic scale, a change of <strong>1 pH unit</strong> corresponds to a <strong>10-fold change</strong> in acidity:
+        </p>
+        <ul class="text-xs text-slate-300 space-y-1 font-mono">
+          <li>• pH 4 is 10× more acidic than pH 5</li>
+          <li>• pH 3 is 100× more acidic than pH 5</li>
+          <li>• pH 2 is 1,000× more acidic than pH 5</li>
+        </ul>
+      </div>
+
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-3">
+        <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center">
+          <i data-lucide="sparkles" class="w-5 h-5"></i>
+        </div>
+        <h3 class="text-base font-bold text-white">Buffer Solutions</h3>
+        <p class="text-xs text-slate-400 leading-relaxed">
+          Buffers are solutions that resist changes in pH upon the addition of small amounts of strong acid or base. They typically consist of a weak conjugate acid-base pair, described by the <em>Henderson-Hasselbalch equation</em>:
+        </p>
+        <div class="p-2.5 bg-slate-950 rounded-xl font-mono text-xs text-amber-300 border border-slate-800">
+          pH = pKa + log₁₀([A⁻] / [HA])
+        </div>
+      </div>
+
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-3">
+        <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
+          <i data-lucide="flask-conical" class="w-5 h-5"></i>
+        </div>
+        <h3 class="text-base font-bold text-white">Strong vs Weak Acids</h3>
+        <p class="text-xs text-slate-400 leading-relaxed">
+          <strong>Strong Acids</strong> (e.g., HCl, HNO₃, H₂SO₄) dissociate completely in water (100% ionization).
+          <br /><br />
+          <strong>Weak Acids</strong> (e.g., CH₃COOH, HF) only partially ionize, establishing dynamic equilibrium governed by their acid dissociation constant (Ka).
+        </p>
+      </div>
+
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-3">
+        <div class="w-10 h-10 rounded-xl bg-pink-500/20 text-pink-400 flex items-center justify-center">
+          <i data-lucide="filter" class="w-5 h-5"></i>
+        </div>
+        <h3 class="text-base font-bold text-white">Chemical Indicators</h3>
+        <p class="text-xs text-slate-400 leading-relaxed">
+          Acid-base indicators are weak organic dyes (HIn) whose protonated and deprotonated forms absorb different wavelengths of visible light:
+        </p>
+        <div class="p-2.5 bg-slate-950 rounded-xl font-mono text-xs text-pink-300 border border-slate-800">
+          HIn ⇌ H⁺ + In⁻
+        </div>
+        <p class="text-[11px] text-slate-400">Color transitions typically occur across an interval of pH = pKIn ± 1.</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="border-t border-slate-900 bg-slate-950/80 py-4 px-6 text-center text-xs text-slate-400">
+    <p>pH Explorer • Interactive Chemistry Learning Suite • Master Acid-Base Equilibrium</p>
+  </footer>
+
+  <!-- ==================== COMPLETE JAVASCRIPT ==================== -->
+  <script>
+    // --- DATABASE ---
+    const SUBSTANCES = [
+      { id: 'batt_acid', name: 'Battery Acid', category: 'Acid', ph: 0.5, formula: 'H₂SO₄', desc: 'Concentrated sulfuric acid used in lead-acid batteries.', color: '#ef4444' },
+      { id: 'stomach_acid', name: 'Stomach Acid', category: 'Acid', ph: 1.5, formula: 'HCl', desc: 'Hydrochloric acid secreted by parietal cells to break down food proteins.', color: '#f87171' },
+      { id: 'lemon_juice', name: 'Lemon Juice', category: 'Acid', ph: 2.2, formula: 'C₆H₈O₇', desc: 'High concentration of citric acid and ascorbic acid (Vitamin C).', color: '#fb923c' },
+      { id: 'vinegar', name: 'Vinegar', category: 'Acid', ph: 2.8, formula: 'CH₃COOH', desc: 'Dilute 5% acetic acid solution commonly used in cooking and pickling.', color: '#f97316' },
+      { id: 'soda', name: 'Carbonated Cola', category: 'Acid', ph: 3.0, formula: 'H₃PO₄ / H₂CO₃', desc: 'Contains dissolved carbonic and phosphoric acids for tangy flavor.', color: '#fbbf24' },
+      { id: 'orange_juice', name: 'Orange Juice', category: 'Acid', ph: 3.5, formula: 'C₆H₈O₇', desc: 'Contains citric acid and high potassium electrolytes.', color: '#facc15' },
+      { id: 'black_coffee', name: 'Black Coffee', category: 'Acid', ph: 5.0, formula: 'Chlorogenic Acids', desc: 'Mildly acidic brewed beverage containing caffeic and chlorogenic acids.', color: '#a3e635' },
+      { id: 'rainwater', name: 'Unpolluted Rain', category: 'Acid', ph: 5.6, formula: 'H₂CO₃', desc: 'Naturally acidic due to dissolved atmospheric carbon dioxide (CO₂).', color: '#84cc16' },
+      { id: 'milk', name: 'Cow Milk', category: 'Acid', ph: 6.6, formula: 'Lactic Acid / Proteins', desc: 'Near neutral; contains lactic acid, casein proteins, and calcium.', color: '#4ade80' },
+      { id: 'pure_water', name: 'Pure Water (25°C)', category: 'Neutral', ph: 7.0, formula: 'H₂O', desc: 'Exact neutral reference point with equal [H⁺] and [OH⁻] concentrations (10⁻⁷ M).', color: '#10b981' },
+      { id: 'human_blood', name: 'Human Blood', category: 'Base', ph: 7.4, formula: 'HCO₃⁻ / H₂CO₃', desc: 'Strictly buffered by the bicarbonate system (7.35 - 7.45) for cellular survival.', color: '#06b6d4' },
+      { id: 'sea_water', name: 'Sea Water', category: 'Base', ph: 8.1, formula: 'Salts / Carbonates', desc: 'Slightly alkaline due to dissolved carbonate, borate, and mineral salts.', color: '#0ea5e9' },
+      { id: 'baking_soda', name: 'Baking Soda Sol.', category: 'Base', ph: 8.4, formula: 'NaHCO₃', desc: 'Sodium bicarbonate solution; versatile leavening and antacid agent.', color: '#3b82f6' },
+      { id: 'milk_magnesia', name: 'Milk of Magnesia', category: 'Base', ph: 10.5, formula: 'Mg(OH)₂', desc: 'Suspension of magnesium hydroxide used as an antacid and laxative.', color: '#6366f1' },
+      { id: 'ammonia', name: 'Household Ammonia', category: 'Base', ph: 11.6, formula: 'NH₃', desc: 'Aqueous ammonium hydroxide solution used in heavy glass and tile cleaners.', color: '#8b5cf6' },
+      { id: 'bleach', name: 'Chlorine Bleach', category: 'Base', ph: 12.5, formula: 'NaClO', desc: 'Strong alkaline disinfectant and stain oxidizer (sodium hypochlorite).', color: '#a855f7' },
+      { id: 'drain_cleaner', name: 'Lye / Drain Cleaner', category: 'Base', ph: 13.8, formula: 'NaOH / KOH', desc: 'Concentrated sodium hydroxide that saponifies fats and dissolves hair clogs.', color: '#d946ef' }
+    ];
+
+    const INDICATORS = [
+      {
+        id: 'universal',
+        name: 'Universal Indicator',
+        type: 'Broad Spectrum',
+        getColor: (ph) => getUniversalColor(ph),
+        getColorName: (ph) => {
+          if (ph < 3) return 'Red (Strong Acid)';
+          if (ph < 6) return 'Orange / Yellow (Weak Acid)';
+          if (ph <= 7.5) return 'Green (Neutral)';
+          if (ph < 11) return 'Cyan / Blue (Weak Base)';
+          return 'Violet / Purple (Strong Base)';
+        }
+      },
+      {
+        id: 'litmus',
+        name: 'Litmus Paper',
+        type: 'Acid/Base Switch',
+        getColor: (ph) => (ph < 5.0 ? '#ef4444' : ph > 8.0 ? '#3b82f6' : '#a855f7'),
+        getColorName: (ph) => (ph < 5.0 ? 'Red (Acidic)' : ph > 8.0 ? 'Blue (Basic)' : 'Purple (Intermediate)')
+      },
+      {
+        id: 'phenolphthalein',
+        name: 'Phenolphthalein',
+        type: 'Alkaline Indicator',
+        getColor: (ph) => {
+          if (ph < 8.2) return 'rgba(255, 255, 255, 0.4)';
+          if (ph > 10.0) return '#ec4899';
+          const ratio = (ph - 8.2) / (10.0 - 8.2);
+          return `rgba(236, 72, 153, ${0.2 + ratio * 0.75})`;
+        },
+        getColorName: (ph) => (ph < 8.2 ? 'Colorless (pH < 8.2)' : ph > 10.0 ? 'Vibrant Magenta' : 'Pale Pink (8.2 - 10.0)')
+      },
+      {
+        id: 'bromothymol',
+        name: 'Bromothymol Blue',
+        type: 'Neutral Range Indicator',
+        getColor: (ph) => (ph < 6.0 ? '#eab308' : ph > 7.6 ? '#2563eb' : '#22c55e'),
+        getColorName: (ph) => (ph < 6.0 ? 'Yellow (pH < 6.0)' : ph > 7.6 ? 'Deep Blue (pH > 7.6)' : 'Green (6.0 - 7.6)')
+      },
+      {
+        id: 'methyl_orange',
+        name: 'Methyl Orange',
+        type: 'Strong Acid Indicator',
+        getColor: (ph) => (ph < 3.1 ? '#dc2626' : ph > 4.4 ? '#facc15' : '#f97316'),
+        getColorName: (ph) => (ph < 3.1 ? 'Red (pH < 3.1)' : ph > 4.4 ? 'Yellow (pH > 4.4)' : 'Orange (3.1 - 4.4)')
+      }
+    ];
+
+    const QUIZ_QUESTIONS = [
+      {
+        id: 1,
+        question: "What is the mathematical definition of pH?",
+        options: [
+          "pH = log₁₀[H⁺]",
+          "pH = -log₁₀[H₃O⁺]",
+          "pH = [OH⁻] / [H⁺]",
+          "pH = -ln[OH⁻]"
+        ],
+        answer: 1,
+        explanation: "pH is defined as the negative base-10 logarithm of the hydronium ion concentration: pH = -log₁₀[H₃O⁺]."
+      },
+      {
+        id: 2,
+        question: "A solution has a pH of 3. Another solution has a pH of 6. How many times more acidic is the first solution?",
+        options: [
+          "3 times",
+          "30 times",
+          "1,000 times",
+          "10,000 times"
+        ],
+        answer: 2,
+        explanation: "Because pH is logarithmic (base 10), each unit represents a 10-fold change. A difference of 6 - 3 = 3 units means 10³ = 1,000 times more H⁺ ions."
+      },
+      {
+        id: 3,
+        question: "At 25°C, pure water has a pH of 7.0. What is the value of the ion-product constant of water (Kw)?",
+        options: [
+          "1.0 × 10⁻⁷",
+          "1.0 × 10⁻¹⁴",
+          "1.4 × 10⁻¹⁴",
+          "7.0 × 10⁻⁷"
+        ],
+        answer: 1,
+        explanation: "At 25°C, Kw = [H₃O⁺][OH⁻] = (1.0 × 10⁻⁷)(1.0 × 10⁻⁷) = 1.0 × 10⁻¹⁴."
+      },
+      {
+        id: 4,
+        question: "If you add 900 mL of pure water (pH 7.0) to 100 mL of an acid solution at pH 2.0, what will happen to the pH?",
+        options: [
+          "The pH decreases below 2.0",
+          "The pH increases to approximately 3.0",
+          "The pH becomes exactly neutral at 7.0",
+          "The pH becomes alkaline (> 7.0)"
+        ],
+        answer: 1,
+        explanation: "Diluting the acid 10-fold (from 100 mL to 1000 mL) decreases [H⁺] from 10⁻² M to 10⁻³ M, raising the pH by exactly 1 unit to pH = 3.0."
+      },
+      {
+        id: 5,
+        question: "Which indicator turns bright pink/magenta in strongly alkaline solutions (pH > 10) and remains colorless in acidic solutions?",
+        options: [
+          "Bromothymol Blue",
+          "Methyl Orange",
+          "Phenolphthalein",
+          "Litmus Paper"
+        ],
+        answer: 2,
+        explanation: "Phenolphthalein remains colorless in acidic and neutral environments (pH < 8.2) and turns magenta/pink in basic solutions."
+      },
+      {
+        id: 6,
+        question: "Human blood has a strictly maintained normal pH range of 7.35 to 7.45. Which buffer system is primarily responsible for this?",
+        options: [
+          "Phosphate buffer system",
+          "Carbonic acid / Bicarbonate buffer system (H₂CO₃ / HCO₃⁻)",
+          "Hydrochloric acid / Sodium chloride",
+          "Acetic acid / Acetate buffer"
+        ],
+        answer: 1,
+        explanation: "The bicarbonate buffering system (CO₂ + H₂O ⇌ H₂CO₃ ⇌ HCO₃⁻ + H⁺) controls blood pH through respiratory and renal regulation."
+      }
+    ];
+
+    // Helper: Convert pH 0-14 into smooth Universal Indicator RGB
+    function getUniversalColor(ph) {
+      const clamped = Math.max(0, Math.min(14, ph));
+      const stops = [
+        { ph: 0, r: 239, g: 68, b: 68 },
+        { ph: 3, r: 249, g: 115, b: 22 },
+        { ph: 5, r: 234, g: 179, b: 8 },
+        { ph: 7, r: 34, g: 197, b: 94 },
+        { ph: 9, r: 6, g: 182, b: 212 },
+        { ph: 11, r: 59, g: 130, b: 246 },
+        { ph: 13, r: 168, g: 85, b: 247 },
+        { ph: 14, r: 126, g: 34, b: 206 }
+      ];
+      let lower = stops[0];
+      let upper = stops[stops.length - 1];
+      for (let i = 0; i < stops.length - 1; i++) {
+        if (clamped >= stops[i].ph && clamped <= stops[i + 1].ph) {
+          lower = stops[i];
+          upper = stops[i + 1];
+          break;
+        }
+      }
+      const range = upper.ph - lower.ph;
+      const t = range === 0 ? 0 : (clamped - lower.ph) / range;
+      const r = Math.round(lower.r + t * (upper.r - lower.r));
+      const g = Math.round(lower.g + t * (upper.g - lower.g));
+      const b = Math.round(lower.b + t * (upper.b - lower.b));
+      return `rgb(${r}, ${g}, ${b})`;
+    }
+
+    function formatScientific(num) {
+      if (num === 0 || isNaN(num)) return '0';
+      const exponent = Math.floor(Math.log10(num));
+      const mantissa = (num / Math.pow(10, exponent)).toFixed(2);
+      const superscripts = {
+        '-': '⁻', '0': '⁰', '1': '¹', '2': '²', '3': '³',
+        '4': '⁴', '5': '⁵', '6': '⁶', '7': '⁷', '8': '⁸', '9': '⁹'
+      };
+      const expStr = String(exponent).split('').map(c => superscripts[c] || c).join('');
+      return `${mantissa} × 10${expStr}`;
+    }
+
+    // --- APPLICATION STATE ---
+    let activeTab = 'lab';
+
+    // Virtual Lab State
+    let selectedSubstance = SUBSTANCES[9]; // Pure water
+    let beakerVolume = 250;
+    let addedWaterVolume = 0;
+    let addedAcidDrops = 0;
+    let addedBaseDrops = 0;
+    let activeIndicator = INDICATORS[0];
+    let isStripDipped = false;
+    let showMolecularView = true;
+
+    // Scale State
+    let scalePh = 7.0;
+
+    // Titration State
+    let analyteType = 'acid';
+    let analyteConc = 0.1;
+    let analyteVol = 50;
+    let titrantAdded = 0;
+    let isTitrating = false;
+    let titrationSpeed = 1;
+    let titrationInterval = null;
+
+    // Calculator State
+    let calcInputType = 'ph';
+    let calcInputValue = '7.0';
+
+    // Quiz State
+    let currentQuestionIdx = 0;
+    let selectedAnswers = {};
+    let isQuizSubmitted = false;
+
+    // --- TAB SWITCHING ---
+    function switchTab(tabId) {
+      activeTab = tabId;
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+      const activeEl = document.getElementById(`tab-${tabId}`);
+      if (activeEl) {
+        if (tabId === 'guide') activeEl.classList.remove('hidden');
+        else activeEl.classList.remove('hidden');
+      }
+
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.className = 'tab-btn flex items-center space-x-2 px-3.5 py-2 rounded-lg text-xs font-semibold transition-all whitespace-nowrap text-slate-400 hover:text-slate-200 hover:bg-slate-800/60';
+      });
+      const activeBtn = document.getElementById(`tab-btn-${tabId}`);
+      if (activeBtn) {
+        activeBtn.className = 'tab-btn flex items-center space-x-2 px-3.5 py-2 rounded-lg text-xs font-semibold transition-all whitespace-nowrap bg-indigo-600 text-white shadow-md shadow-indigo-600/30';
+      }
+
+      if (tabId === 'scale') updateSpectrumView(scalePh);
+      if (tabId === 'titration') updateTitration();
+      if (tabId === 'calculator') solveCalculator();
+      if (tabId === 'quiz') renderQuizQuestion();
+      lucide.createIcons();
+    }
+
+    // =========================================================================
+    // VIRTUAL LAB LOGIC
+    // =========================================================================
+    function computeLabState() {
+      const baseMolesH = (Math.pow(10, -selectedSubstance.ph)) * (beakerVolume / 1000);
+      const addedMolesH = addedAcidDrops * 0.05 * 0.001 * 1.0;
+      const addedMolesOH = addedBaseDrops * 0.05 * 0.001 * 1.0;
+      const netMolesH = baseMolesH + addedMolesH - addedMolesOH;
+      const totalVolumeL = (beakerVolume + addedWaterVolume + (addedAcidDrops + addedBaseDrops) * 0.05) / 1000;
+
+      let computedPh = 7.0;
+      let hConc = 1e-7;
+      let ohConc = 1e-7;
+
+      if (totalVolumeL > 0) {
+        if (netMolesH > 0) {
+          hConc = netMolesH / totalVolumeL;
+          if (hConc < 1e-7) hConc = 1e-7;
+          computedPh = -Math.log10(Math.max(1e-14, Math.min(1.0, hConc)));
+        } else {
+          const netMolesExcessOH = Math.abs(netMolesH);
+          ohConc = netMolesExcessOH / totalVolumeL;
+          if (ohConc < 1e-7) ohConc = 1e-7;
+          const computedPoh = -Math.log10(Math.max(1e-14, Math.min(1.0, ohConc)));
+          computedPh = 14.0 - computedPoh;
+          hConc = 1e-14 / ohConc;
+        }
+      }
+
+      computedPh = Math.max(0.0, Math.min(14.0, Number(computedPh.toFixed(2))));
+      hConc = Math.pow(10, -computedPh);
+      ohConc = Math.pow(10, -(14.0 - computedPh));
+
+      return {
+        ph: computedPh,
+        poh: Number((14.0 - computedPh).toFixed(2)),
+        hConc,
+        ohConc,
+        totalVolumeMl: Math.round(totalVolumeL * 1000),
+        liquidColor: activeIndicator.getColor(computedPh)
+      };
+    }
+
+    function renderLabUI() {
+      const state = computeLabState();
+
+      // Digital Probe
+      const probePh = document.getElementById('probe-ph-display');
+      probePh.textContent = `pH ${state.ph.toFixed(2)}`;
+      probePh.style.color = getUniversalColor(state.ph);
+
+      // Classification
+      const classBadge = document.getElementById('solution-classification');
+      if (state.ph < 6.8) {
+        classBadge.className = 'px-2.5 py-1 rounded-full font-semibold bg-red-500/20 text-red-300 border border-red-500/30';
+        classBadge.textContent = 'Acidic Solution';
+      } else if (state.ph > 7.2) {
+        classBadge.className = 'px-2.5 py-1 rounded-full font-semibold bg-blue-500/20 text-blue-300 border border-blue-500/30';
+        classBadge.textContent = 'Alkaline Solution';
+      } else {
+        classBadge.className = 'px-2.5 py-1 rounded-full font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30';
+        classBadge.textContent = 'Neutral Solution';
+      }
+
+      // Reagents counters
+      document.getElementById('acid-drops-count').textContent = `${addedAcidDrops} drops`;
+      document.getElementById('base-drops-count').textContent = `${addedBaseDrops} drops`;
+      document.getElementById('water-vol-label').textContent = `+${addedWaterVolume} mL`;
+
+      // Liquid Vessel
+      const beakerLiquid = document.getElementById('beaker-liquid');
+      const heightPercent = Math.min(94, Math.max(25, (state.totalVolumeMl / 1200) * 100));
+      beakerLiquid.style.height = `${heightPercent}%`;
+      beakerLiquid.style.backgroundColor = state.liquidColor;
+      beakerLiquid.style.boxShadow = `0 0 40px ${state.liquidColor}44 inset`;
+
+      document.getElementById('beaker-vol-label').textContent = `${state.totalVolumeMl} mL Total`;
+      document.getElementById('beaker-substance-name').textContent = `${selectedSubstance.name} (${selectedSubstance.formula})`;
+
+      // Strip Color
+      const strip = document.getElementById('indicator-strip');
+      strip.style.backgroundColor = isStripDipped ? activeIndicator.getColor(state.ph) : '#fef08a';
+      document.getElementById('strip-indicator-label').textContent = activeIndicator.name.slice(0, 7);
+
+      // Indicator Footer
+      document.getElementById('active-ind-name').textContent = `${activeIndicator.name}:`;
+      document.getElementById('active-ind-desc').textContent = activeIndicator.getColorName(state.ph);
+
+      // Metrics
+      document.getElementById('metric-h-conc').textContent = `[${formatScientific(state.hConc)}] M`;
+      document.getElementById('metric-h-formula').textContent = `[H₃O⁺] = 10⁻${state.ph.toFixed(2)}`;
+      document.getElementById('metric-oh-conc').textContent = `[${formatScientific(state.ohConc)}] M`;
+      document.getElementById('metric-oh-formula').textContent = `[OH⁻] = 10⁻${state.poh.toFixed(2)}`;
+      document.getElementById('metric-poh').textContent = state.poh.toFixed(2);
+
+      // Re-render particle canvas
+      initParticles(state.ph);
+    }
+
+    function renderSubstancesList() {
+      const container = document.getElementById('substances-list');
+      container.innerHTML = SUBSTANCES.map(sub => {
+        const isSelected = selectedSubstance.id === sub.id;
+        return `
+          <button
+            onclick="selectSubstance('${sub.id}')"
+            class="w-full text-left p-2.5 rounded-xl text-xs font-medium transition-all flex items-center justify-between border ${
+              isSelected
+                ? 'bg-indigo-600/20 border-indigo-500 text-white shadow-sm'
+                : 'bg-slate-800/50 border-slate-800/80 text-slate-300 hover:bg-slate-800 hover:border-slate-700'
+            }"
+          >
+            <div class="flex items-center space-x-2.5">
+              <span class="w-3 h-3 rounded-full shrink-0 shadow-sm" style="background-color: ${getUniversalColor(sub.ph)}"></span>
+              <div>
+                <div class="font-semibold text-slate-100">${sub.name}</div>
+                <div class="text-[10px] text-slate-400 font-mono">${sub.formula}</div>
+              </div>
+            </div>
+            <span class="px-2 py-0.5 rounded-md bg-slate-950 font-mono text-[11px] font-bold text-slate-300 border border-slate-800">
+              pH ${sub.ph}
+            </span>
+          </button>
+        `;
+      }).join('');
+    }
+
+    function renderIndicatorsList() {
+      const container = document.getElementById('indicators-list');
+      const state = computeLabState();
+      container.innerHTML = INDICATORS.map(ind => {
+        const isSelected = activeIndicator.id === ind.id;
+        return `
+          <button
+            onclick="selectIndicator('${ind.id}')"
+            class="w-full text-left px-3 py-2 rounded-xl text-xs font-medium flex items-center justify-between border transition-all ${
+              isSelected
+                ? 'bg-purple-600/20 border-purple-500 text-white'
+                : 'bg-slate-800/40 border-slate-800 text-slate-400 hover:bg-slate-800 hover:text-slate-200'
+            }"
+          >
+            <div>
+              <div class="font-semibold">${ind.name}</div>
+              <div class="text-[10px] text-slate-400">${ind.type}</div>
+            </div>
+            <span class="w-4 h-4 rounded-full border border-white/20 shadow-inner" style="background-color: ${ind.getColor(state.ph)}"></span>
+          </button>
+        `;
+      }).join('');
+    }
+
+    function selectSubstance(id) {
+      selectedSubstance = SUBSTANCES.find(s => s.id === id) || SUBSTANCES[9];
+      resetLabMix();
+    }
+
+    function selectIndicator(id) {
+      activeIndicator = INDICATORS.find(i => i.id === id) || INDICATORS[0];
+      renderIndicatorsList();
+      renderLabUI();
+    }
+
+    function changeAcidDrops(delta) {
+      addedAcidDrops = Math.max(0, addedAcidDrops + delta);
+      renderLabUI();
+      renderIndicatorsList();
+    }
+
+    function changeBaseDrops(delta) {
+      addedBaseDrops = Math.max(0, addedBaseDrops + delta);
+      renderLabUI();
+      renderIndicatorsList();
+    }
+
+    function setDilutionWater(val) {
+      addedWaterVolume = val;
+      renderLabUI();
+      renderIndicatorsList();
+    }
+
+    function resetLabMix() {
+      addedAcidDrops = 0;
+      addedBaseDrops = 0;
+      addedWaterVolume = 0;
+      isStripDipped = false;
+      document.getElementById('water-slider').value = 0;
+      const strip = document.getElementById('indicator-strip');
+      strip.classList.remove('translate-y-24');
+      document.getElementById('strip-btn-text').textContent = 'Dip Indicator Paper';
+      renderSubstancesList();
+      renderIndicatorsList();
+      renderLabUI();
+    }
+
+    function toggleDipStrip() {
+      isStripDipped = !isStripDipped;
+      const strip = document.getElementById('indicator-strip');
+      const btnText = document.getElementById('strip-btn-text');
+      const btn = document.getElementById('strip-toggle-btn');
+      if (isStripDipped) {
+        strip.classList.add('translate-y-24');
+        btnText.textContent = 'Remove Indicator Strip';
+        btn.className = 'px-3 py-1.5 rounded-lg text-xs font-semibold border bg-amber-500 text-slate-950 border-amber-400 shadow-md shadow-amber-500/20 flex items-center space-x-1.5';
+      } else {
+        strip.classList.remove('translate-y-24');
+        btnText.textContent = 'Dip Indicator Paper';
+        btn.className = 'px-3 py-1.5 rounded-lg text-xs font-semibold border border-slate-700 bg-slate-800 text-slate-300 hover:bg-slate-750 flex items-center space-x-1.5';
+      }
+      renderLabUI();
+    }
+
+    function toggleMolecularView() {
+      showMolecularView = !showMolecularView;
+      const box = document.getElementById('molecular-box');
+      const btn = document.getElementById('particles-toggle-btn');
+      if (showMolecularView) {
+        box.classList.remove('hidden');
+        btn.textContent = 'Hide Particles';
+      } else {
+        box.classList.add('hidden');
+        btn.textContent = 'Show Particles';
+      }
+    }
+
+    // --- MOLECULAR PARTICLE SIMULATION CANVAS ---
+    let particles = [];
+    let particleAnimationId = null;
+
+    function initParticles(ph) {
+      const canvas = document.getElementById('particle-canvas');
+      if (!canvas) return;
+      const width = canvas.width;
+      const height = canvas.height;
+
+      const hFrac = Math.pow(10, -ph) / (Math.pow(10, -ph) + Math.pow(10, -(14 - ph)));
+      const totalParticles = 32;
+      const numH = Math.round(totalParticles * Math.min(0.96, Math.max(0.04, hFrac)));
+      const numOH = totalParticles - numH;
+
+      particles = [];
+      for (let i = 0; i < numH; i++) {
+        particles.push({
+          type: 'H',
+          x: Math.random() * (width - 20) + 10,
+          y: Math.random() * (height - 30) + 15,
+          vx: (Math.random() - 0.5) * 1.5,
+          vy: (Math.random() - 0.5) * 1.5,
+          radius: 6,
+          color: '#ef4444'
+        });
+      }
+      for (let i = 0; i < numOH; i++) {
+        particles.push({
+          type: 'OH',
+          x: Math.random() * (width - 20) + 10,
+          y: Math.random() * (height - 30) + 15,
+          vx: (Math.random() - 0.5) * 1.5,
+          vy: (Math.random() - 0.5) * 1.5,
+          radius: 8,
+          color: '#3b82f6'
+        });
+      }
+    }
+
+    function runParticleLoop() {
+      const canvas = document.getElementById('particle-canvas');
+      if (canvas && showMolecularView && activeTab === 'lab') {
+        const ctx = canvas.getContext('2d');
+        const width = canvas.width;
+        const height = canvas.height;
+
+        ctx.clearRect(0, 0, width, height);
+        ctx.fillStyle = 'rgba(15, 23, 42, 0.6)';
+        ctx.fillRect(0, 0, width, height);
+
+        particles.forEach(p => {
+          p.x += p.vx;
+          p.y += p.vy;
+          if (p.x - p.radius < 5 || p.x + p.radius > width - 5) p.vx *= -1;
+          if (p.y - p.radius < 5 || p.y + p.radius > height - 5) p.vy *= -1;
+
+          // Glow
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.radius + 2, 0, Math.PI * 2);
+          ctx.fillStyle = p.type === 'H' ? 'rgba(239, 68, 68, 0.3)' : 'rgba(59, 130, 246, 0.3)';
+          ctx.fill();
+
+          // Core
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+          ctx.fillStyle = p.color;
+          ctx.fill();
+
+          // Text
+          ctx.font = 'bold 8px system-ui, sans-serif';
+          ctx.fillStyle = '#ffffff';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText(p.type === 'H' ? 'H⁺' : 'OH⁻', p.x, p.y);
+        });
+      }
+      particleAnimationId = requestAnimationFrame(runParticleLoop);
+    }
+
+    // =========================================================================
+    // SPECTRUM SCALE LOGIC
+    // =========================================================================
+    function updateSpectrumView(val) {
+      scalePh = Number(val);
+      document.getElementById('spectrum-ph-badge').textContent = scalePh.toFixed(1);
+      document.getElementById('spectrum-ph-badge').style.color = getUniversalColor(scalePh);
+      document.getElementById('spectrum-thumb').style.left = `${(scalePh / 14) * 100}%`;
+
+      // Ratio
+      const ratioEl = document.getElementById('spectrum-ratio');
+      if (scalePh <= 7) {
+        const fold = Math.round(Math.pow(10, 7 - scalePh)).toLocaleString();
+        ratioEl.textContent = `${fold}× More Acidic`;
+      } else {
+        const fold = Math.round(Math.pow(10, scalePh - 7)).toLocaleString();
+        ratioEl.textContent = `${fold}× More Alkaline`;
+      }
+
+      document.getElementById('spectrum-h-conc').textContent = `${formatScientific(Math.pow(10, -scalePh))} M`;
+      document.getElementById('spectrum-oh-conc').textContent = `${formatScientific(Math.pow(10, -(14 - scalePh)))} M`;
+      document.getElementById('spectrum-nearest-title').textContent = `Substances Closest to pH ${scalePh.toFixed(1)}`;
+
+      // Nearest grid
+      const grid = document.getElementById('spectrum-substances-grid');
+      grid.innerHTML = SUBSTANCES.map(sub => {
+        const diff = Math.abs(sub.ph - scalePh);
+        const isVeryClose = diff <= 1.0;
+        return `
+          <div
+            onclick="setSpectrumPh(${sub.ph})"
+            class="p-3 rounded-xl border cursor-pointer transition-all ${
+              isVeryClose
+                ? 'bg-indigo-950/40 border-indigo-500 shadow-md ring-1 ring-indigo-500/50'
+                : 'bg-slate-950/40 border-slate-800/80 hover:bg-slate-800/40'
+            }"
+          >
+            <div class="flex items-center justify-between mb-1">
+              <span class="font-bold text-xs text-white">${sub.name}</span>
+              <span
+                class="font-mono text-xs font-bold px-2 py-0.5 rounded"
+                style="background-color: ${getUniversalColor(sub.ph)}22; color: ${getUniversalColor(sub.ph)}"
+              >
+                pH ${sub.ph}
+              </span>
+            </div>
+            <p class="text-[11px] text-slate-400 line-clamp-2">${sub.desc}</p>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function setSpectrumPh(ph) {
+      document.getElementById('spectrum-slider').value = ph;
+      updateSpectrumView(ph);
+    }
+
+    function initSpectrumTicks() {
+      const ticks = document.getElementById('spectrum-ticks');
+      ticks.innerHTML = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14].map(num => `
+        <button onclick="setSpectrumPh(${num})" class="hover:text-white transition-colors">
+          ${num}
+        </button>
+      `).join('');
+    }
+
+    // =========================================================================
+    // TITRATION SIMULATION LOGIC
+    // =========================================================================
+    function getTitrationData() {
+      const titrantConc = 0.1;
+      const eqVolume = (analyteConc * analyteVol) / titrantConc;
+      const points = [];
+
+      for (let v = 0; v <= 100; v += 0.5) {
+        let ph = 7;
+        const totalV = (analyteVol + v) / 1000;
+        if (analyteType === 'acid') {
+          const molAcidInitial = (analyteConc * analyteVol) / 1000;
+          const molBaseAdded = (titrantConc * v) / 1000;
+          if (v < eqVolume) {
+            const excessH = (molAcidInitial - molBaseAdded) / totalV;
+            ph = -Math.log10(Math.max(1e-14, excessH));
+          } else if (Math.abs(v - eqVolume) < 0.01) {
+            ph = 7.0;
+          } else {
+            const excessOH = (molBaseAdded - molAcidInitial) / totalV;
+            ph = 14 - (-Math.log10(Math.max(1e-14, excessOH)));
+          }
+        } else {
+          const molBaseInitial = (analyteConc * analyteVol) / 1000;
+          const molAcidAdded = (titrantConc * v) / 1000;
+          if (v < eqVolume) {
+            const excessOH = (molBaseInitial - molAcidAdded) / totalV;
+            ph = 14 - (-Math.log10(Math.max(1e-14, excessOH)));
+          } else if (Math.abs(v - eqVolume) < 0.01) {
+            ph = 7.0;
+          } else {
+            const excessH = (molAcidAdded - molBaseInitial) / totalV;
+            ph = -Math.log10(Math.max(1e-14, excessH));
+          }
+        }
+        points.push({ v, ph: Math.max(0, Math.min(14, ph)) });
+      }
+
+      // Current pH
+      let currentPh = 7;
+      const totalVNow = (analyteVol + titrantAdded) / 1000;
+      if (analyteType === 'acid') {
+        const molA = (analyteConc * analyteVol) / 1000;
+        const molB = (titrantConc * titrantAdded) / 1000;
+        if (titrantAdded < eqVolume) {
+          const excessH = (molA - molB) / totalVNow;
+          currentPh = -Math.log10(Math.max(1e-14, excessH));
+        } else if (Math.abs(titrantAdded - eqVolume) < 0.1) {
+          currentPh = 7.0;
+        } else {
+          const excessOH = (molB - molA) / totalVNow;
+          currentPh = 14 - (-Math.log10(Math.max(1e-14, excessOH)));
+        }
+      } else {
+        const molB = (analyteConc * analyteVol) / 1000;
+        const molA = (titrantConc * titrantAdded) / 1000;
+        if (titrantAdded < eqVolume) {
+          const excessOH = (molB - molA) / totalVNow;
+          currentPh = 14 - (-Math.log10(Math.max(1e-14, excessOH)));
+        } else if (Math.abs(titrantAdded - eqVolume) < 0.1) {
+          currentPh = 7.0;
+        } else {
+          const excessH = (molA - molB) / totalVNow;
+          currentPh = -Math.log10(Math.max(1e-14, excessH));
+        }
+      }
+
+      return {
+        points,
+        eqVolume,
+        currentPh: Number(Math.max(0, Math.min(14, currentPh)).toFixed(2))
+      };
+    }
+
+    function updateTitration() {
+      const data = getTitrationData();
+
+      document.getElementById('titration-vol-label').textContent = `${analyteVol} mL`;
+      document.getElementById('titrant-added-label').textContent = `${titrantAdded.toFixed(1)} / 100 mL`;
+      document.getElementById('titration-eq-vol').textContent = `${data.eqVolume.toFixed(1)} mL`;
+      
+      const curPhEl = document.getElementById('titration-current-ph');
+      curPhEl.textContent = data.currentPh.toFixed(2);
+      curPhEl.style.color = getUniversalColor(data.currentPh);
+
+      const regionBadge = document.getElementById('titration-region-badge');
+      if (Math.abs(titrantAdded - data.eqVolume) < 1.0) {
+        regionBadge.innerHTML = '<span class="text-emerald-400 font-semibold">Equivalence reached! Neutralization complete.</span>';
+      } else if (titrantAdded < data.eqVolume) {
+        regionBadge.textContent = `Buffering region: ${(data.eqVolume - titrantAdded).toFixed(1)} mL remaining to neutralization.`;
+      } else {
+        regionBadge.textContent = 'Post-equivalence: Excess titrant dominates solution pH.';
+      }
+
+      document.getElementById('titration-total-vol-label').textContent = `Total Liquid Volume = ${analyteVol + Math.round(titrantAdded)} mL`;
+
+      // Render SVG
+      renderTitrationSVG(data);
+    }
+
+    function renderTitrationSVG(data) {
+      const svg = document.getElementById('titration-svg');
+      if (!svg) return;
+
+      let markup = '';
+
+      // Grid lines (pH 0-14)
+      [0, 2, 4, 6, 8, 10, 12, 14].forEach(phVal => {
+        const y = 240 - (phVal / 14) * 220;
+        markup += `
+          <line x1="40" y1="${y}" x2="480" y2="${y}" stroke="#334155" stroke-dasharray="3 3" stroke-width="0.8" />
+          <text x="25" y="${y + 3}" fill="#94a3b8" font-size="9" font-family="monospace" text-anchor="end">${phVal}</text>
+        `;
+      });
+
+      // X-axis ticks (0-100 mL)
+      [0, 20, 40, 60, 80, 100].forEach(vVal => {
+        const x = 40 + (vVal / 100) * 440;
+        markup += `
+          <line x1="${x}" y1="20" x2="${x}" y2="240" stroke="#334155" stroke-dasharray="3 3" stroke-width="0.8" />
+          <text x="${x}" y="255" fill="#94a3b8" font-size="9" font-family="monospace" text-anchor="middle">${vVal} mL</text>
+        `;
+      });
+
+      // Equivalence vertical guideline
+      const eqX = 40 + (data.eqVolume / 100) * 440;
+      markup += `
+        <line x1="${eqX}" y1="20" x2="${eqX}" y2="240" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="4 2" />
+      `;
+
+      // Curve polyline path
+      const pathData = data.points.map((pt, idx) => {
+        const x = 40 + (pt.v / 100) * 440;
+        const y = 240 - (pt.ph / 14) * 220;
+        return `${idx === 0 ? 'M' : 'L'} ${x} ${y}`;
+      }).join(' ');
+
+      markup += `<path d="${pathData}" fill="none" stroke="#6366f1" stroke-width="3" stroke-linecap="round" />`;
+
+      // Current point circle
+      const curX = 40 + (titrantAdded / 100) * 440;
+      const curY = 240 - (data.currentPh / 14) * 220;
+      const color = getUniversalColor(data.currentPh);
+      markup += `
+        <circle cx="${curX}" cy="${curY}" r="7" fill="${color}" opacity="0.6" />
+        <circle cx="${curX}" cy="${curY}" r="5" fill="#ffffff" stroke="${color}" stroke-width="2" />
+      `;
+
+      svg.innerHTML = markup;
+    }
+
+    function setAnalyte(type) {
+      analyteType = type;
+      titrantAdded = 0;
+      document.getElementById('titrant-slider').value = 0;
+
+      const btnAcid = document.getElementById('btn-analyte-acid');
+      const btnBase = document.getElementById('btn-analyte-base');
+      if (type === 'acid') {
+        btnAcid.className = 'py-2 px-3 rounded-xl text-xs font-semibold border transition-all bg-red-500/20 border-red-500 text-red-200';
+        btnBase.className = 'py-2 px-3 rounded-xl text-xs font-semibold border transition-all bg-slate-800/40 border-slate-800 text-slate-400';
+      } else {
+        btnBase.className = 'py-2 px-3 rounded-xl text-xs font-semibold border transition-all bg-blue-500/20 border-blue-500 text-blue-200';
+        btnAcid.className = 'py-2 px-3 rounded-xl text-xs font-semibold border transition-all bg-slate-800/40 border-slate-800 text-slate-400';
+      }
+      updateTitration();
+    }
+
+    function setAnalyteVolume(v) {
+      analyteVol = v;
+      titrantAdded = 0;
+      document.getElementById('titrant-slider').value = 0;
+      updateTitration();
+    }
+
+    function setTitrantAdded(v) {
+      titrantAdded = v;
+      updateTitration();
+    }
+
+    function addTitrantStep(delta) {
+      titrantAdded = Math.min(100, titrantAdded + delta);
+      document.getElementById('titrant-slider').value = titrantAdded;
+      updateTitration();
+    }
+
+    function toggleAutoTitration() {
+      isTitrating = !isTitrating;
+      const playBtn = document.getElementById('titration-play-btn');
+      const playText = document.getElementById('titration-play-text');
+
+      if (isTitrating) {
+        playBtn.className = 'px-4 py-2 rounded-xl text-xs font-bold flex items-center space-x-2 transition-all shadow-md bg-amber-500 hover:bg-amber-400 text-slate-950 shadow-amber-500/20';
+        playText.textContent = 'Pause Burette';
+        titrationInterval = setInterval(() => {
+          if (titrantAdded >= 100) {
+            toggleAutoTitration();
+            return;
+          }
+          titrantAdded = Math.min(100, Number((titrantAdded + 0.2 * titrationSpeed).toFixed(1)));
+          document.getElementById('titrant-slider').value = titrantAdded;
+          updateTitration();
+        }, 50);
+      } else {
+        playBtn.className = 'px-4 py-2 rounded-xl text-xs font-bold flex items-center space-x-2 transition-all shadow-md bg-indigo-600 hover:bg-indigo-500 text-white shadow-indigo-600/30';
+        playText.textContent = 'Start Auto-Titration';
+        clearInterval(titrationInterval);
+      }
+      lucide.createIcons();
+    }
+
+    function resetTitration() {
+      if (isTitrating) toggleAutoTitration();
+      titrantAdded = 0;
+      document.getElementById('titrant-slider').value = 0;
+      updateTitration();
+    }
+
+    function setTitrationSpeed(s) {
+      titrationSpeed = s;
+      document.getElementById('titration-speed-label').textContent = `${s}x`;
+      [1, 2, 4].forEach(val => {
+        const btn = document.getElementById(`btn-speed-${val}`);
+        if (val === s) {
+          btn.className = 'py-1 rounded-lg text-xs font-semibold border bg-indigo-600 text-white border-indigo-500';
+        } else {
+          btn.className = 'py-1 rounded-lg text-xs font-semibold border bg-slate-800 text-slate-400 border-slate-700';
+        }
+      });
+    }
+
+    // =========================================================================
+    // CALCULATOR LOGIC
+    // =========================================================================
+    function setCalcMode(mode) {
+      calcInputType = mode;
+      document.querySelectorAll('.calc-mode-btn').forEach(btn => {
+        btn.className = 'calc-mode-btn p-2.5 rounded-xl text-xs font-semibold border transition-all text-left bg-slate-950 border-slate-800 text-slate-400 hover:bg-slate-800';
+      });
+      document.getElementById(`calc-btn-${mode}`).className = 'calc-mode-btn p-2.5 rounded-xl text-xs font-semibold border transition-all text-left bg-indigo-600/20 border-indigo-500 text-white';
+
+      const input = document.getElementById('calc-input');
+      if (mode === 'ph' || mode === 'poh') input.value = '7.0';
+      else input.value = '0.0001';
+
+      renderCalcPresets();
+      solveCalculator();
+    }
+
+    function renderCalcPresets() {
+      const container = document.getElementById('calc-presets');
+      if (calcInputType.includes('conc')) {
+        container.innerHTML = `
+          <button onclick="setCalcValue('0.1')" class="px-2 py-1 bg-slate-800 text-[11px] rounded text-slate-300">0.1 M</button>
+          <button onclick="setCalcValue('0.001')" class="px-2 py-1 bg-slate-800 text-[11px] rounded text-slate-300">10⁻³ M</button>
+          <button onclick="setCalcValue('1e-7')" class="px-2 py-1 bg-slate-800 text-[11px] rounded text-slate-300">10⁻⁷ M</button>
+          <button onclick="setCalcValue('1e-12')" class="px-2 py-1 bg-slate-800 text-[11px] rounded text-slate-300">10⁻¹² M</button>
+        `;
+      } else {
+        container.innerHTML = `
+          <button onclick="setCalcValue('2.5')" class="px-2 py-1 bg-slate-800 text-[11px] rounded text-slate-300">pH 2.5</button>
+          <button onclick="setCalcValue('7.0')" class="px-2 py-1 bg-slate-800 text-[11px] rounded text-slate-300">pH 7.0</button>
+          <button onclick="setCalcValue('8.4')" class="px-2 py-1 bg-slate-800 text-[11px] rounded text-slate-300">pH 8.4</button>
+          <button onclick="setCalcValue('13.0')" class="px-2 py-1 bg-slate-800 text-[11px] rounded text-slate-300">pH 13.0</button>
+        `;
+      }
+    }
+
+    function setCalcValue(v) {
+      document.getElementById('calc-input').value = v;
+      solveCalculator();
+    }
+
+    function solveCalculator() {
+      const val = parseFloat(document.getElementById('calc-input').value);
+      const out = document.getElementById('calc-output-container');
+
+      if (isNaN(val) || val < 0) {
+        out.innerHTML = `
+          <div class="flex flex-col items-center justify-center h-64 text-center text-slate-400 space-y-2">
+            <i data-lucide="x-circle" class="w-8 h-8 text-red-400"></i>
+            <p class="text-sm font-semibold text-red-300">Please enter a valid positive numerical value.</p>
+          </div>
+        `;
+        lucide.createIcons();
+        return;
+      }
+
+      let ph = 7, poh = 7, hConc = 1e-7, ohConc = 1e-7;
+      let steps = [];
+
+      try {
+        if (calcInputType === 'ph') {
+          if (val > 14 || val < 0) throw new Error('pH must typically be between 0.0 and 14.0.');
+          ph = val;
+          poh = 14 - ph;
+          hConc = Math.pow(10, -ph);
+          ohConc = Math.pow(10, -poh);
+          steps = [
+            `Given: pH = ${ph}`,
+            `1. Calculate [H₃O⁺] = 10⁻ᵖᴴ = 10⁻${ph} = ${formatScientific(hConc)} M`,
+            `2. Calculate pOH = 14.00 - pH = 14.00 - ${ph} = ${poh.toFixed(2)}`,
+            `3. Calculate [OH⁻] = 10⁻ᵖᴼᴴ = 10⁻${poh.toFixed(2)} = ${formatScientific(ohConc)} M`
+          ];
+        } else if (calcInputType === 'poh') {
+          if (val > 14 || val < 0) throw new Error('pOH must be between 0.0 and 14.0.');
+          poh = val;
+          ph = 14 - poh;
+          hConc = Math.pow(10, -ph);
+          ohConc = Math.pow(10, -poh);
+          steps = [
+            `Given: pOH = ${poh}`,
+            `1. Calculate pH = 14.00 - pOH = 14.00 - ${poh} = ${ph.toFixed(2)}`,
+            `2. Calculate [H₃O⁺] = 10⁻ᵖᴴ = 10⁻${ph.toFixed(2)} = ${formatScientific(hConc)} M`,
+            `3. Calculate [OH⁻] = 10⁻ᵖᴼᴴ = 10⁻${poh} = ${formatScientific(ohConc)} M`
+          ];
+        } else if (calcInputType === 'h_conc') {
+          if (val === 0) throw new Error('Concentration must be greater than 0.');
+          hConc = val;
+          ph = -Math.log10(hConc);
+          poh = 14 - ph;
+          ohConc = 1e-14 / hConc;
+          steps = [
+            `Given: [H₃O⁺] = ${val} M`,
+            `1. Calculate pH = -log₁₀[H₃O⁺] = -log₁₀(${val}) = ${ph.toFixed(3)}`,
+            `2. Calculate pOH = 14.00 - pH = 14.00 - (${ph.toFixed(3)}) = ${poh.toFixed(3)}`,
+            `3. Calculate [OH⁻] = Kw / [H₃O⁺] = (1.0 × 10⁻¹⁴) / (${val}) = ${formatScientific(ohConc)} M`
+          ];
+        } else if (calcInputType === 'oh_conc') {
+          if (val === 0) throw new Error('Concentration must be greater than 0.');
+          ohConc = val;
+          poh = -Math.log10(ohConc);
+          ph = 14 - poh;
+          hConc = 1e-14 / ohConc;
+          steps = [
+            `Given: [OH⁻] = ${val} M`,
+            `1. Calculate pOH = -log₁₀[OH⁻] = -log₁₀(${val}) = ${poh.toFixed(3)}`,
+            `2. Calculate pH = 14.00 - pOH = 14.00 - (${poh.toFixed(3)}) = ${ph.toFixed(3)}`,
+            `3. Calculate [H₃O⁺] = Kw / [OH⁻] = (1.0 × 10⁻¹⁴) / (${val}) = ${formatScientific(hConc)} M`
+          ];
+        }
+
+        const nature = ph < 6.9 ? 'Acidic' : ph > 7.1 ? 'Basic (Alkaline)' : 'Neutral';
+
+        out.innerHTML = `
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div class="p-3 rounded-xl bg-slate-900 border border-slate-800 text-center">
+              <span class="text-[10px] uppercase font-bold text-slate-400">pH</span>
+              <div class="text-xl font-bold font-mono text-red-400">${ph.toFixed(2)}</div>
+            </div>
+            <div class="p-3 rounded-xl bg-slate-900 border border-slate-800 text-center">
+              <span class="text-[10px] uppercase font-bold text-slate-400">pOH</span>
+              <div class="text-xl font-bold font-mono text-blue-400">${poh.toFixed(2)}</div>
+            </div>
+            <div class="p-3 rounded-xl bg-slate-900 border border-slate-800 text-center">
+              <span class="text-[10px] uppercase font-bold text-slate-400">[H₃O⁺]</span>
+              <div class="text-xs font-bold font-mono text-amber-300 mt-1">${formatScientific(hConc)} M</div>
+            </div>
+            <div class="p-3 rounded-xl bg-slate-900 border border-slate-800 text-center">
+              <span class="text-[10px] uppercase font-bold text-slate-400">[OH⁻]</span>
+              <div class="text-xs font-bold font-mono text-cyan-300 mt-1">${formatScientific(ohConc)} M</div>
+            </div>
+          </div>
+
+          <div class="space-y-3">
+            <h4 class="text-xs font-bold text-slate-300 uppercase tracking-wider">Mathematical Derivation Steps</h4>
+            <div class="space-y-2">
+              ${steps.map(s => `
+                <div class="p-3 rounded-xl bg-slate-900/60 border border-slate-800/80 font-mono text-xs text-slate-200">
+                  ${s}
+                </div>
+              `).join('')}
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between p-3 rounded-xl bg-slate-900 border border-slate-800 text-xs">
+            <span class="text-slate-400">Classification:</span>
+            <span class="font-bold px-3 py-1 rounded-full text-xs" style="background-color: ${getUniversalColor(ph)}22; color: ${getUniversalColor(ph)}">
+              ${nature}
+            </span>
+          </div>
+        `;
+      } catch (err) {
+        out.innerHTML = `
+          <div class="flex flex-col items-center justify-center h-64 text-center text-slate-400 space-y-2">
+            <i data-lucide="x-circle" class="w-8 h-8 text-red-400"></i>
+            <p class="text-sm font-semibold text-red-300">${err.message}</p>
+          </div>
+        `;
+      }
+      lucide.createIcons();
+    }
+
+    // =========================================================================
+    // QUIZ LOGIC
+    // =========================================================================
+    function renderQuizQuestion() {
+      const q = QUIZ_QUESTIONS[currentQuestionIdx];
+      const percent = Math.round(((currentQuestionIdx + 1) / QUIZ_QUESTIONS.length) * 100);
+
+      document.getElementById('quiz-progress-text').textContent = `Question ${currentQuestionIdx + 1} of ${QUIZ_QUESTIONS.length}`;
+      document.getElementById('quiz-percentage-text').textContent = `${percent}% Completed`;
+      document.getElementById('quiz-progress-bar').style.width = `${percent}%`;
+      document.getElementById('quiz-question-title').textContent = q.question;
+
+      // Options
+      const container = document.getElementById('quiz-options-container');
+      container.innerHTML = q.options.map((opt, idx) => {
+        const isSelected = selectedAnswers[currentQuestionIdx] === idx;
+        return `
+          <button
+            onclick="selectQuizAnswer(${idx})"
+            class="w-full p-4 rounded-xl text-left text-sm font-medium border transition-all flex items-center justify-between ${
+              isSelected
+                ? 'bg-indigo-600/20 border-indigo-500 text-white shadow-md'
+                : 'bg-slate-950/60 border-slate-800 text-slate-300 hover:bg-slate-800/80 hover:border-slate-700'
+            }"
+          >
+            <span>${opt}</span>
+            <span class="w-5 h-5 rounded-full border flex items-center justify-center ${
+              isSelected ? 'border-indigo-400 bg-indigo-500 text-white' : 'border-slate-700'
+            }">
+              ${isSelected ? '<span class="w-2 h-2 rounded-full bg-white"></span>' : ''}
+            </span>
+          </button>
+        `;
+      }).join('');
+
+      // Buttons
+      document.getElementById('quiz-prev-btn').disabled = (currentQuestionIdx === 0);
+      const nextBtn = document.getElementById('quiz-next-btn');
+      const isAnswered = selectedAnswers[currentQuestionIdx] !== undefined;
+      nextBtn.disabled = !isAnswered;
+
+      if (currentQuestionIdx === QUIZ_QUESTIONS.length - 1) {
+        nextBtn.textContent = 'Submit Exam';
+        nextBtn.className = 'px-6 py-2 rounded-xl text-xs font-bold bg-gradient-to-r from-emerald-500 to-teal-600 text-white hover:opacity-90 shadow-lg shadow-emerald-500/30 transition-all disabled:opacity-40';
+      } else {
+        nextBtn.textContent = 'Next Question';
+        nextBtn.className = 'px-5 py-2 rounded-xl text-xs font-bold bg-indigo-600 hover:bg-indigo-500 text-white disabled:opacity-40 shadow-lg shadow-indigo-600/30 transition-all';
+      }
+    }
+
+    function selectQuizAnswer(idx) {
+      selectedAnswers[currentQuestionIdx] = idx;
+      renderQuizQuestion();
+    }
+
+    function prevQuizQuestion() {
+      if (currentQuestionIdx > 0) {
+        currentQuestionIdx--;
+        renderQuizQuestion();
+      }
+    }
+
+    function nextQuizQuestion() {
+      if (currentQuestionIdx < QUIZ_QUESTIONS.length - 1) {
+        currentQuestionIdx++;
+        renderQuizQuestion();
+      } else {
+        submitQuiz();
+      }
+    }
+
+    function submitQuiz() {
+      let score = 0;
+      QUIZ_QUESTIONS.forEach((q, idx) => {
+        if (selectedAnswers[idx] === q.answer) score++;
+      });
+
+      document.getElementById('quiz-question-card').classList.add('hidden');
+      const resCard = document.getElementById('quiz-results-card');
+      resCard.classList.remove('hidden');
+
+      document.getElementById('quiz-final-score').textContent = `${score} / ${QUIZ_QUESTIONS.length}`;
+      document.getElementById('quiz-mastery-score').textContent = `${Math.round((score / QUIZ_QUESTIONS.length) * 100)}% Mastery Score`;
+
+      // Reviews
+      const reviewsList = document.getElementById('quiz-reviews-list');
+      reviewsList.innerHTML = QUIZ_QUESTIONS.map((q, idx) => {
+        const isCorrect = selectedAnswers[idx] === q.answer;
+        return `
+          <div class="p-4 rounded-xl border ${
+            isCorrect ? 'bg-emerald-950/20 border-emerald-500/40' : 'bg-red-950/20 border-red-500/40'
+          } space-y-2">
+            <div class="flex items-start justify-between gap-2">
+              <span class="text-xs font-bold text-white">${idx + 1}. ${q.question}</span>
+              ${isCorrect ? '<i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>' : '<i data-lucide="x-circle" class="w-4 h-4 text-red-400 shrink-0 mt-0.5"></i>'}
+            </div>
+            <p class="text-xs text-slate-300">
+              <span class="font-semibold text-slate-400">Correct Answer:</span> ${q.options[q.answer]}
+            </p>
+            <p class="text-xs text-slate-400 italic bg-slate-950/40 p-2 rounded-lg">
+              ${q.explanation}
+            </p>
+          </div>
+        `;
+      }).join('');
+
+      lucide.createIcons();
+    }
+
+    function resetQuiz() {
+      selectedAnswers = {};
+      currentQuestionIdx = 0;
+      document.getElementById('quiz-question-card').classList.remove('hidden');
+      document.getElementById('quiz-results-card').classList.add('hidden');
+      renderQuizQuestion();
+    }
+
+    // =========================================================================
+    // INITIALIZATION ON WINDOW LOAD
+    // =========================================================================
+    window.onload = function() {
+      lucide.createIcons();
+      renderSubstancesList();
+      renderIndicatorsList();
+      renderLabUI();
+      initSpectrumTicks();
+      updateSpectrumView(7.0);
+      updateTitration();
+      renderCalcPresets();
+      solveCalculator();
+      runParticleLoop();
+    };
+  </script>
+</body>
+</html>
