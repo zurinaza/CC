@@ -231,6 +231,11 @@ td.k{color:var(--ink);font-weight:600;white-space:nowrap}
 td.k.wrap{white-space:normal}
 td .mono,.mono{font-family:var(--mono);font-size:12.5px}
 .crit-n{font-family:var(--mono);color:var(--blue-deep);font-weight:600;font-size:13px}
+.mlcode{
+  font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.02em;
+  color:var(--blue-deep);background:var(--blue-tint);border-radius:4px;padding:3px 7px;
+  display:inline-block;
+}
 table.levels{min-width:880px;table-layout:fixed}
 table.levels td:first-child,table.levels th:first-child{width:132px}
 table.worked{min-width:1140px}
@@ -911,6 +916,16 @@ function sec_start(){
   +'<div class="stack">'
   +'<div class="panel p-rule"><span class="tag">The one rule</span><p>If a student could score full marks <strong>without using the competency</strong>, you have not assessed it. Every check on this site is a way of applying that rule earlier.</p></div>'
   +'</div>'
+  +'<h3>What you will be able to do</h3>'
+  +'<p class="body">The module has five learning outcomes. Each one is tied to a specific piece of work you will have produced by the end, recorded in <strong>My plan</strong>.</p>'
+  +'<div class="tablewrap"><table><thead><tr><th>Outcome</th><th>On completion you can</th><th>Where</th></tr></thead><tbody>'
+  +'<tr><td class="k"><span class="mlcode">ML01</span></td><td>Distinguish Collaboration from group work, teamwork and participation.</td><td><button class="btn sm" data-goto="meaning">What it means &rarr;</button></td></tr>'
+  +'<tr><td class="k"><span class="mlcode">ML02</span></td><td>Select and adapt a teaching method that develops Collaboration in your own course.</td><td><button class="btn sm" data-goto="methods">Choose a method &rarr;</button></td></tr>'
+  +'<tr><td class="k"><span class="mlcode">ML03</span></td><td>Design an assignment that produces individual evidence of Collaboration.</td><td><button class="btn sm" data-goto="brief">The assignment &rarr;</button></td></tr>'
+  +'<tr><td class="k"><span class="mlcode">ML04</span></td><td>Build the four-criterion rubric and adapt its descriptors to your discipline.</td><td><button class="btn sm" data-goto="rubric">The rubric &rarr;</button></td></tr>'
+  +'<tr><td class="k"><span class="mlcode">ML05</span></td><td>Audit your own design against the ways an alignment claim fails.</td><td><button class="btn sm" data-goto="audit">Align and audit &rarr;</button></td></tr>'
+  +'</tbody></table></div>'
+  +'<div class="stack"><div class="panel p-step"><span class="tag">How the outcomes are evidenced</span><p>ML01 by the self-checks; ML02 to ML05 by the five worksheet sections of <strong>My plan</strong>. A completed plan is the record that you worked through the module.</p></div></div>'
   +'<h3>What is already decided for you</h3>'
   +'<div class="fixedrow">'
   +'<div><b>Your course</b><span>One you teach now</span></div>'
