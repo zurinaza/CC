@@ -7,10 +7,10 @@
 <meta name="description" content="An interactive walkthrough of the UPM Collaboration Competency module (SIM-ESD-CC-01): choose your discipline cluster and every example, method and rubric is written for your own course.">
 <meta name="author" content="PEMACU ESD, Universiti Putra Malaysia">
 <meta property="og:title" content="Collaboration Competency Workbench">
-<meta property="og:description" content="From what the Collaboration competency means, through the pedagogy that develops it, to a rubric that survives an audit — written for your discipline.">
+<meta property="og:description" content="From what the Collaboration competency means, through the pedagogy that develops it, to a rubric that survives an audit - written for your discipline.">
 <meta property="og:type" content="website">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='18' fill='%232A5E8C'/%3E%3Ctext y='72' x='50' text-anchor='middle' font-size='60' font-family='Georgia,serif' fill='%23fff'%3EC%3C/text%3E%3C/svg%3E">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Sans:wght@400;450;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='18' fill='%230B4E86'/%3E%3Ctext y='72' x='50' text-anchor='middle' font-size='60' font-family='Georgia,serif' fill='%23fff'%3EC%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Sans:wght@400;450;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
 <style>
 *,*::before,*::after{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
@@ -21,25 +21,25 @@ button,input,select,textarea{font:inherit;color:inherit}
 <body>
 <style>
 :root{
-  --ground:#F1F5F9;
+  --ground:#E8EFF7;
   --surface:#FFFFFF;
-  --surface-2:#F7FAFC;
-  --ink:#152029;
-  --ink-2:#41576B;
-  --ink-3:#6C8199;
-  --line:#D9E2EC;
-  --line-2:#E9EFF5;
-  --blue:#2A5E8C;
-  --blue-deep:#1B4265;
-  --blue-tint:#E5EEF7;
-  --teal:#26756D;
-  --teal-tint:#E2F0EE;
-  --amber:#8A6A21;
-  --amber-tint:#F6EFDD;
-  --rose:#9C4F49;
-  --rose-tint:#F7E7E5;
-  --violet:#5B4B86;
-  --violet-tint:#EDE9F5;
+  --surface-2:#EFF5FB;
+  --ink:#08131C;
+  --ink-2:#243B50;
+  --ink-3:#4C6479;
+  --line:#BACBDD;
+  --line-2:#D8E5F0;
+  --blue:#0B4E86;
+  --blue-deep:#08304F;
+  --blue-tint:#CFE3F6;
+  --teal:#04665A;
+  --teal-tint:#C9E7E1;
+  --amber:#7C5206;
+  --amber-tint:#F7E5C4;
+  --rose:#98281F;
+  --rose-tint:#FBD8D4;
+  --violet:#4A2C8C;
+  --violet-tint:#E2D9F7;
   --shadow:0 1px 2px rgba(21,32,41,.05), 0 8px 24px -16px rgba(21,32,41,.28);
   --radius:6px;
   --sans:"IBM Plex Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -48,48 +48,48 @@ button,input,select,textarea{font:inherit;color:inherit}
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --ground:#0E151D;
-    --surface:#161F29;
-    --surface-2:#1B2632;
-    --ink:#E5ECF3;
-    --ink-2:#A9BAC9;
-    --ink-3:#7E92A5;
-    --line:#293747;
-    --line-2:#222E3C;
-    --blue:#7FB3DE;
-    --blue-deep:#A6CBEB;
-    --blue-tint:#1A2A3A;
-    --teal:#6FBDB2;
-    --teal-tint:#152A29;
-    --amber:#D6B26A;
-    --amber-tint:#2A2416;
-    --rose:#DE9891;
-    --rose-tint:#2C1D1C;
-    --violet:#A99BD1;
-    --violet-tint:#211E2E;
+    --ground:#080E15;
+    --surface:#111C27;
+    --surface-2:#182533;
+    --ink:#F5F9FD;
+    --ink-2:#D2E0EC;
+    --ink-3:#A3B8CB;
+    --line:#35485C;
+    --line-2:#2A3949;
+    --blue:#9CCEF5;
+    --blue-deep:#C6E4FA;
+    --blue-tint:#153048;
+    --teal:#8CDCCF;
+    --teal-tint:#0E3230;
+    --amber:#F0C978;
+    --amber-tint:#362B14;
+    --rose:#F8ADA4;
+    --rose-tint:#3B2320;
+    --violet:#C4B4F0;
+    --violet-tint:#2A2244;
     --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 30px -18px rgba(0,0,0,.8);
   }
 }
 :root[data-theme="dark"]{
-  --ground:#0E151D;
-  --surface:#161F29;
-  --surface-2:#1B2632;
-  --ink:#E5ECF3;
-  --ink-2:#A9BAC9;
-  --ink-3:#7E92A5;
-  --line:#293747;
-  --line-2:#222E3C;
-  --blue:#7FB3DE;
-  --blue-deep:#A6CBEB;
-  --blue-tint:#1A2A3A;
-  --teal:#6FBDB2;
-  --teal-tint:#152A29;
-  --amber:#D6B26A;
-  --amber-tint:#2A2416;
-  --rose:#DE9891;
-  --rose-tint:#2C1D1C;
-  --violet:#A99BD1;
-  --violet-tint:#211E2E;
+  --ground:#080E15;
+  --surface:#111C27;
+  --surface-2:#182533;
+  --ink:#F5F9FD;
+  --ink-2:#D2E0EC;
+  --ink-3:#A3B8CB;
+  --line:#35485C;
+  --line-2:#2A3949;
+  --blue:#9CCEF5;
+  --blue-deep:#C6E4FA;
+  --blue-tint:#153048;
+  --teal:#8CDCCF;
+  --teal-tint:#0E3230;
+  --amber:#F0C978;
+  --amber-tint:#362B14;
+  --rose:#F8ADA4;
+  --rose-tint:#3B2320;
+  --violet:#C4B4F0;
+  --violet-tint:#2A2244;
   --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 30px -18px rgba(0,0,0,.8);
 }
 
@@ -121,45 +121,45 @@ a{color:var(--blue);text-decoration-thickness:1px;text-underline-offset:2px}
 }
 .brand{padding:22px 20px 16px;border-bottom:1px solid var(--line-2)}
 .brand .code{
-  font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
-  color:var(--ink-3);display:block;margin-bottom:8px;
+  font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--ink-2);display:block;margin-bottom:8px;
 }
 .brand h1{font-size:19px;letter-spacing:-.01em}
 .brand .sub{font-size:12.5px;color:var(--ink-3);margin-top:6px;line-height:1.45}
 
 .picker{padding:16px 20px;border-bottom:1px solid var(--line-2);background:var(--surface-2)}
 .picker label{
-  font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
-  color:var(--ink-3);display:block;margin-bottom:7px;
+  font-family:var(--sans);font-size:10.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink-2);display:block;margin-bottom:7px;
 }
 .picker select{
   width:100%;font-family:var(--sans);font-size:13.5px;color:var(--ink);
   background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
   padding:8px 9px;line-height:1.3;
 }
-.picker .hint{font-size:11.5px;color:var(--ink-3);margin-top:7px;line-height:1.4}
+.picker .hint{font-size:12px;color:var(--ink-2);margin-top:7px;line-height:1.4}
 
 nav{padding:14px 12px 8px;flex:1}
 .navgroup{
-  font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--ink-3);padding:14px 8px 6px;
+  font-family:var(--sans);font-size:10.5px;font-weight:600;letter-spacing:.11em;text-transform:uppercase;
+  color:var(--ink-2);padding:15px 9px 6px;
 }
 .navgroup:first-child{padding-top:2px}
 .navbtn{
-  display:flex;align-items:baseline;gap:9px;width:100%;text-align:left;
+  display:flex;align-items:baseline;gap:10px;width:100%;text-align:left;
   background:none;border:0;border-radius:var(--radius);
   padding:7px 9px;cursor:pointer;color:var(--ink-2);
-  font-family:var(--sans);font-size:13.5px;line-height:1.35;
+  font-family:var(--sans);font-size:14px;line-height:1.35;
   transition:background .12s,color .12s;
 }
 .navbtn:hover{background:var(--surface-2);color:var(--ink)}
-.navbtn .ref{font-family:var(--mono);font-size:10.5px;color:var(--ink-3);flex:0 0 26px;letter-spacing:0}
+.navbtn .ref{font-family:var(--mono);font-size:12px;font-weight:600;color:var(--ink-2);flex:0 0 28px;letter-spacing:0;font-variant-numeric:tabular-nums}
 .navbtn.on{background:var(--blue-tint);color:var(--blue-deep);font-weight:500}
-.navbtn.on .ref{color:var(--blue)}
+.navbtn.on .ref{color:var(--blue-deep)}
 .navbtn.done .ref::after{content:"·";margin-left:2px;color:var(--teal);font-weight:700}
 
 .railfoot{padding:12px 20px 20px;border-top:1px solid var(--line-2);display:flex;flex-direction:column;gap:8px}
-.progressline{font-family:var(--mono);font-size:10px;letter-spacing:.06em;color:var(--ink-3);text-transform:uppercase}
+.progressline{font-family:var(--sans);font-size:10.5px;font-weight:600;letter-spacing:.07em;color:var(--ink-2);text-transform:uppercase}
 .bar{height:3px;background:var(--line-2);border-radius:2px;overflow:hidden}
 .bar i{display:block;height:100%;background:var(--teal);width:0;transition:width .3s}
 
@@ -173,8 +173,8 @@ section.view.on{display:block}
 @keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
 
 .eyebrow{
-  font-family:var(--mono);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;
-  color:var(--blue);display:flex;align-items:center;gap:10px;margin-bottom:14px;
+  font-family:var(--sans);font-size:12px;font-weight:600;letter-spacing:.085em;text-transform:uppercase;
+  color:var(--blue-deep);display:flex;align-items:center;gap:10px;margin-bottom:14px;
 }
 .eyebrow::after{content:"";height:1px;flex:1;background:var(--line)}
 h2.title{font-size:31px;letter-spacing:-.015em;margin-bottom:12px}
@@ -182,7 +182,8 @@ h2.title{font-size:31px;letter-spacing:-.015em;margin-bottom:12px}
 .lede.serif{font-family:var(--serif);font-size:18.5px;color:var(--ink)}
 
 h3{font-size:20px;margin:38px 0 4px;letter-spacing:-.01em}
-h3 .num{font-family:var(--mono);font-size:12px;color:var(--ink-3);margin-right:9px;letter-spacing:0;font-weight:400}
+h3 .num{font-family:var(--mono);font-size:12.5px;color:var(--ink-2);margin-right:9px;letter-spacing:0;font-weight:500}
+h3 .secnum{font-family:var(--mono);font-size:14.5px;color:var(--blue-deep);margin-right:10px;letter-spacing:0;font-weight:600;font-variant-numeric:tabular-nums}
 h4{font-size:15.5px;margin:24px 0 4px;font-family:var(--sans);font-weight:600}
 .body{max-width:66ch;color:var(--ink-2);margin-top:10px}
 .body strong{color:var(--ink);font-weight:600}
@@ -197,7 +198,7 @@ h4{font-size:15.5px;margin:24px 0 4px;font-family:var(--sans);font-weight:600}
   display:flex;flex-direction:column;gap:8px;
 }
 .panel .tag{
-  font-family:var(--mono);font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;font-weight:500;
+  font-family:var(--sans);font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;
 }
 .panel p, .panel li{font-size:14.5px;color:var(--ink-2);line-height:1.55}
 .panel strong{color:var(--ink)}
@@ -219,23 +220,23 @@ h4{font-size:15.5px;margin:24px 0 4px;font-family:var(--sans);font-weight:600}
 table{border-collapse:collapse;width:100%;font-size:14px;min-width:520px}
 th{
   text-align:left;background:var(--blue-deep);color:#fff;
-  font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:500;
-  padding:9px 12px;vertical-align:bottom;
+  font-family:var(--sans);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;
+  padding:10px 12px;vertical-align:bottom;
 }
-:root[data-theme="dark"] th{background:#22384C;color:var(--ink)}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) th{background:#22384C;color:var(--ink)}}
-td{padding:10px 12px;border-top:1px solid var(--line-2);color:var(--ink-2);vertical-align:top;line-height:1.5}
+:root[data-theme="dark"] th{background:#26425A;color:var(--ink)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) th{background:#26425A;color:var(--ink)}}
+td{padding:10px 12px;border-top:1px solid var(--line);color:var(--ink-2);vertical-align:top;line-height:1.5}
 tbody tr:nth-child(even){background:var(--surface-2)}
 td.k{color:var(--ink);font-weight:600;white-space:nowrap}
 td.k.wrap{white-space:normal}
 td .mono,.mono{font-family:var(--mono);font-size:12.5px}
-.crit-n{font-family:var(--mono);color:var(--blue);font-weight:500}
+.crit-n{font-family:var(--mono);color:var(--blue-deep);font-weight:600;font-size:13px}
 table.levels{min-width:880px;table-layout:fixed}
 table.levels td:first-child,table.levels th:first-child{width:132px}
 table.worked{min-width:1140px}
 table.worked td:nth-child(2),table.worked th:nth-child(2){width:150px}
 h3 .chip{
-  font-family:var(--mono);font-size:9.5px;letter-spacing:.11em;text-transform:uppercase;
+  font-family:var(--sans);font-size:10.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
   color:var(--blue);background:var(--blue-tint);border-radius:20px;padding:3px 9px;
   margin-left:10px;vertical-align:2px;font-weight:500;
 }
@@ -249,7 +250,7 @@ h3 .chip{
   background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
   padding:14px 15px;display:flex;flex-direction:column;gap:6px;
 }
-.card .n{font-family:var(--mono);font-size:11px;color:var(--blue);letter-spacing:.06em}
+.card .n{font-family:var(--mono);font-size:11.5px;font-weight:600;color:var(--blue-deep);letter-spacing:.05em}
 .card h5{margin:0;font-size:14.5px;font-weight:600;font-family:var(--sans);color:var(--ink);line-height:1.3}
 .card p{font-size:13.5px;color:var(--ink-2);line-height:1.5}
 .card.accent{border-top:2px solid var(--blue)}
@@ -270,7 +271,7 @@ h3 .chip{
 .link .txt span{font-size:13.5px;color:var(--ink-2)}
 .link .meta{
   flex:0 0 auto;padding:11px 14px;align-self:center;
-  font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);text-align:right;
+  font-family:var(--sans);font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);text-align:right;
 }
 .tick{height:12px;display:flex;justify-content:center;align-items:center;color:var(--line)}
 .tick svg{display:block}
@@ -281,7 +282,7 @@ h3 .chip{
   padding:11px 12px;border-top:2px solid var(--ink-3);
 }
 .fixedrow b{display:block;font-size:13.5px;color:var(--ink);font-weight:600}
-.fixedrow span{font-size:12.5px;color:var(--ink-3)}
+.fixedrow span{font-size:13px;color:var(--ink-2)}
 
 /* controls */
 .btn{
@@ -292,8 +293,8 @@ h3 .chip{
 }
 .btn:hover{background:var(--surface-2);border-color:var(--ink-3)}
 .btn.primary{background:var(--blue);border-color:var(--blue);color:#fff}
-:root[data-theme="dark"] .btn.primary{color:#0E151D}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .btn.primary{color:#0E151D}}
+:root[data-theme="dark"] .btn.primary{color:#080E15}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .btn.primary{color:#080E15}}
 .btn.primary:hover{background:var(--blue-deep);border-color:var(--blue-deep)}
 .btn.sm{font-size:12px;padding:5px 10px}
 .btn[aria-pressed="true"]{background:var(--blue-tint);border-color:var(--blue);color:var(--blue-deep)}
@@ -303,7 +304,7 @@ h3 .chip{
 /* quiz */
 .q{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;display:flex;flex-direction:column;gap:10px}
 .q .qhead{display:flex;gap:11px;align-items:baseline}
-.q .qn{font-family:var(--mono);font-size:12px;color:var(--blue);flex:0 0 auto}
+.q .qn{font-family:var(--mono);font-size:13px;font-weight:600;color:var(--blue-deep);flex:0 0 auto}
 .q .qtext{font-size:14.5px;color:var(--ink);line-height:1.5}
 .q .opts{display:flex;flex-wrap:wrap;gap:6px}
 .q .fb{
@@ -326,14 +327,14 @@ h3 .chip{
   display:flex;gap:11px;align-items:baseline;font-family:var(--sans);color:var(--ink);
 }
 .reveal > button:hover{background:var(--surface-2)}
-.reveal .qn{font-family:var(--mono);font-size:12px;color:var(--blue);flex:0 0 auto}
+.reveal .qn{font-family:var(--mono);font-size:13px;font-weight:600;color:var(--blue-deep);flex:0 0 auto}
 .reveal .qt{font-size:14.5px;line-height:1.5;flex:1}
 .reveal .chev{color:var(--ink-3);font-family:var(--mono);font-size:12px}
 .reveal .ans{display:none;padding:0 16px 14px 42px;flex-direction:column;gap:6px}
 .reveal.open .ans{display:flex}
 .reveal .verdict{font-size:14px;color:var(--ink);font-weight:600}
 .reveal .why{font-size:13.5px;color:var(--ink-2);line-height:1.55}
-.reveal .cluster{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
+.reveal .cluster{font-family:var(--sans);font-size:10.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--blue-deep)}
 
 /* checklist */
 .check{display:flex;flex-direction:column;gap:2px;margin-top:16px}
@@ -352,17 +353,17 @@ h3 .chip{
   background:none;border:0;cursor:pointer;padding:12px 15px;font-family:var(--sans);
 }
 .method > button:hover{background:var(--surface-2)}
-.method .mid{font-family:var(--mono);font-size:12.5px;color:var(--blue);font-weight:500;flex:0 0 34px}
+.method .mid{font-family:var(--mono);font-size:13.5px;color:var(--blue-deep);font-weight:600;flex:0 0 36px}
 .method .mname{font-size:14.5px;color:var(--ink);font-weight:600;flex:1}
 .method .fam{
-  font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);
+  font-family:var(--sans);font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);
   border:1px solid var(--line);border-radius:20px;padding:2px 8px;
 }
 .method .spec{display:none;border-top:1px solid var(--line-2);padding:4px 15px 15px}
 .method.open .spec{display:block}
 .spec dl{margin:0;display:grid;grid-template-columns:150px 1fr;gap:0}
 .spec dt{
-  font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);
+  font-family:var(--sans);font-size:10.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);
   padding:10px 12px 10px 0;border-top:1px solid var(--line-2);
 }
 .spec dd{margin:0;padding:10px 0;border-top:1px solid var(--line-2);font-size:14px;color:var(--ink-2);line-height:1.55}
@@ -371,7 +372,7 @@ h3 .chip{
 /* builder */
 .field{display:flex;flex-direction:column;gap:5px;margin-top:14px}
 .field label{font-size:13px;font-weight:600;color:var(--ink)}
-.field .help{font-size:12.5px;color:var(--ink-3);line-height:1.45}
+.field .help{font-size:12.5px;color:var(--ink-2);line-height:1.45}
 .field input,.field textarea,.field select{
   font-family:var(--sans);font-size:14px;color:var(--ink);background:var(--surface);
   border:1px solid var(--line);border-radius:var(--radius);padding:9px 11px;line-height:1.5;width:100%;
@@ -394,7 +395,7 @@ h3 .chip{
 .pagefoot{
   margin-top:52px;padding-top:18px;border-top:1px solid var(--line);
   display:flex;justify-content:space-between;gap:14px;align-items:center;flex-wrap:wrap;
-  font-family:var(--mono);font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);
+  font-family:var(--sans);font-size:10.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);
 }
 .jump{display:flex;gap:8px}
 
@@ -428,7 +429,6 @@ h3 .chip{
     <div class="brand">
       <span class="code">UPM ESD Series · SIM-ESD-CC-01</span>
       <h1>Collaboration Competency Workbench</h1>
-      <p class="sub">Take one topic you already teach through to a Collaboration mark an examiner can follow.</p>
     </div>
     <div class="mobilebar">
       <button class="btn sm" id="menubtn" aria-expanded="false">Contents</button>
@@ -437,7 +437,7 @@ h3 .chip{
     <div class="picker">
       <label for="cluster">Your discipline cluster</label>
       <select id="cluster"></select>
-      <p class="hint">Every worked example, method situation and rubric on this site rewrites itself for the cluster you choose.</p>
+      <p class="hint">Choose your cluster to start the module.</p>
     </div>
     <nav id="nav"></nav>
     <div class="railfoot">
@@ -906,12 +906,12 @@ function head(ref,eyebrow,title,lede){
 }
 
 function sec_start(){
-  return head("Section 0","Start here","One topic you already teach, one mark an examiner can follow",
-   "Somewhere in your syllabus is a topic where informed people want incompatible things. This site turns that topic into a Collaboration design: an activity, an assignment and a rubric.")
+  return head("Section 0","Start here","How to teach and assess Collaboration in your own course",
+   "Work through the tabs in order. You will finish with one activity, one assignment and one rubric that are ready to use.")
   +'<div class="stack">'
   +'<div class="panel p-rule"><span class="tag">The one rule</span><p>If a student could score full marks <strong>without using the competency</strong>, you have not assessed it. Every check on this site is a way of applying that rule earlier.</p></div>'
   +'</div>'
-  +'<h3>Four things arrive already decided</h3>'
+  +'<h3>What is already decided for you</h3>'
   +'<div class="fixedrow">'
   +'<div><b>Your course</b><span>One you teach now</span></div>'
   +'<div><b>The primary SDG</b><span>Already selected</span></div>'
@@ -927,7 +927,7 @@ function sec_start(){
   +'<div class="stack"><div class="panel p-warn"><span class="tag">The question an examiner asks</span><p>Not <em>did your students work together</em>. They ask: <strong>which document shows why two students in the same group scored differently?</strong></p></div></div>'
   +'<h3>How to use this site</h3>'
   +'<div class="stack tight">'
-  +'<div class="panel"><p><strong>1 &middot; Pick your discipline cluster</strong> in the sidebar. Examples, method situations and the rubric rewrite themselves for it.</p></div>'
+  +'<div class="panel"><p><strong>1 &middot; Pick your discipline cluster</strong> in the sidebar to customise the module to your cluster.</p></div>'
   +'<div class="panel"><p><strong>2 &middot; Work down the sidebar in order.</strong> Understand the competency, choose a method, write the brief, adapt the rubric, audit the result.</p></div>'
   +'<div class="panel"><p><strong>3 &middot; Fill in <em>My plan</em> as you go.</strong> It saves in this browser and can be copied into your course file at the end.</p></div>'
   +'</div>';
@@ -967,8 +967,9 @@ function sec_meaning(){
 function sec_criteria(){
   var h = head("Section 2.5","The rubric criteria","The four criteria",
     "The five abilities condense into three observable behaviours, and each becomes one rubric criterion. A fourth is added for what the student does with the analysis.");
+  h+='<h3>The four criteria, one by one</h3>';
   h+='<div class="grid g2">';
-  CRIT.forEach(function(c,i){ h+='<div class="card accent"><span class="n">Criterion '+(i+1)+'</span><h5>'+c.n+'</h5><p>'+c.q+'</p><p style="color:var(--ink-3);font-size:12.5px">'+c.from+'</p></div>'; });
+  CRIT.forEach(function(c,i){ h+='<div class="card accent"><span class="n">Criterion '+(i+1)+'</span><h5>'+c.n+'</h5><p>'+c.q+'</p><p style="color:var(--ink-2);font-size:12.5px">'+c.from+'</p></div>'; });
   h+='</div>';
   h+='<div class="stack"><div class="panel p-note"><span class="tag">Numbering</span><p>Where Collaboration is the <strong>first</strong> competency in a course these are criteria 1 to 4. Where it is the <strong>second</strong>, they are numbered 5 to 8 in the alignment table. Always name the criterion as well as numbering it.</p></div></div>';
   h+='<h3>The fixed rubric</h3><p class="body">This wording is the starting point for every discipline. The four criteria, their names and the four level names never change. Only the descriptors are rewritten &mdash; see <strong>The rubric</strong>.</p>';
@@ -1020,7 +1021,7 @@ function sec_methods(){
    +'<li><strong>Use two linked activities.</strong> Once produces a story. Twice, spaced, with focused feedback between, produces an ability.</li>'
    +'<li><strong>Leave an individual trace.</strong> Something each student personally wrote must survive the activity. Decide what it is before you run it.</li>'
    +'</ul></div></div>';
-  h+='<h3>The method bank <span class="chip">'+esc(c.n)+'</span></h3>';
+  h+='<h3>The method bank<span class="chip">'+esc(c.n)+'</span></h3>';
   var fams=["All","Inquiry","Project","Experiential","Simulation","Dialogue"];
   h+='<div class="filters" role="group" aria-label="Filter by method family">';
   fams.forEach(function(f){ h+='<button class="btn sm fam-f" data-fam="'+f+'" aria-pressed="'+(f==="All")+'">'+f+'</button>'; });
@@ -1057,6 +1058,7 @@ function sec_methods(){
 function sec_design(){
   var h = head("Section 4","The design map","Design it, then test it",
     "Six steps from a topic to a reported mark, and five tests that stop a weak design from continuing.");
+  h+='<h3>The six-step design workflow</h3>';
   var steps=[
    ["Identify competing interests","Choose a topic where informed people can reasonably want different outcomes.","Your discipline"],
    ["Select the pedagogy","Choose methods that require learners to engage with different perspectives.","Choose a method"],
@@ -1092,7 +1094,7 @@ function sec_brief(){
    +'<div class="card"><span class="n" style="color:var(--rose)">Assesses knowledge about it</span><h5 style="font-family:var(--serif);font-weight:400;font-style:italic">&ldquo;Discuss the importance of stakeholder collaboration in sustainable water management, with examples.&rdquo;</h5><p>A student who memorised the lecture and met nobody scores full marks. Nothing here supports four rubric levels except length and polish.</p></div>'
    +'<div class="card accent"><span class="n">Assesses the competency</span><h5 style="font-family:var(--serif);font-weight:400;font-style:italic">&ldquo;After the week 9 activity, submit: (a) a one-page statement of the position you argued against, written so its holder would accept it; (b) a concession log naming what you gave up, at whose prompting, and why; (c) one paragraph naming an affected group with no party at the table and what including them would have required; (d) one paragraph on what you now understand differently.&rdquo;</h5><p>Four clauses, four criteria. It cannot be started without having been in the room.</p></div>'
    +'</div>';
-  h+='<h3>The clause rule</h3>'
+  h+='<h3>The four clause rule</h3>'
    +'<div class="tablewrap"><table><thead><tr><th>Clause</th><th>Criterion</th><th>What it must require</th></tr></thead><tbody>'
    +'<tr><td class="k">(a)</td><td class="k wrap"><span class="crit-n">1</span> Representing other positions</td><td>A named opposing position, stated so its holder would accept the wording.</td></tr>'
    +'<tr><td class="k">(b)</td><td class="k wrap"><span class="crit-n">3</span> Handling disagreement</td><td>An account of the disagreement and how it was worked through, including who was given room.</td></tr>'
@@ -1130,7 +1132,7 @@ function sec_rubric(){
   var h = head("Section 5.5 to 5.8","The rubric","The rubric, written for your task",
     "Four criteria, four levels, and descriptors you must rewrite in the language of your own discipline. Adapting the wording is required, not optional.");
   h+='<div class="stack"><div class="panel p-rule"><span class="tag">Fixed, and yours</span><p><strong>Fixed:</strong> four criteria and their names; four levels named Limited, Developing, Proficient, Exemplary; and the judgement each criterion captures.</p><p><strong>Yours:</strong> the wording of the descriptors. A descriptor that still says &ldquo;affected groups&rdquo; when your task is about tenants, downstream households or seasonal workers has not been adapted.</p></div></div>';
-  h+='<h3>Worked rubric <span class="chip">'+esc(c.n)+'</span></h3>';
+  h+='<h3>Worked rubric<span class="chip">'+esc(c.n)+'</span></h3>';
   h+='<p class="body">Judged from the <strong>'+esc(c.s).toLowerCase()+'</strong>. The four criteria and level names are identical in every cluster; only the descriptor wording changes.</p>';
   h+='<div class="tablewrap"><table class="levels worked"><thead><tr><th>Criterion</th><th>Judged from</th>';
   LEVELS.forEach(function(l){ h+='<th>'+l+'</th>'; });
@@ -1208,15 +1210,15 @@ function sec_audit(){
 function sec_checks(){
   var h = head("Checks 1 to 3","Self-checks","Check what you have understood",
     "Answer alone, then compare. The comparison between what you thought and what is here is the learning.");
-  h+='<h3><span class="num">Check 1</span>Does this assess the Collaboration competency?</h3>';
+  h+='<h3>Check 1 &middot; does this assess the Collaboration competency?</h3>';
   h+='<div class="stack" id="c1a"></div>';
-  h+='<h3><span class="num">Check 1</span>Which criterion is this behaviour?</h3>';
+  h+='<h3>Check 1 &middot; which criterion is this behaviour?</h3>';
   h+='<div class="stack" id="c1b"></div>';
   h+='<div class="score"><span class="big" id="c1score">0/10</span><span class="lbl">Six or below means it is worth re-reading <strong>What it means</strong> and <strong>The four criteria</strong> before continuing.</span></div>';
   h+='<div class="row"><button class="btn" id="c1reset">Start Check 1 again</button></div>';
-  h+='<h3><span class="num">Check 2</span>Name the fault in the rubric or brief</h3><p class="body">Tap each item to see the fault and why it matters.</p>';
+  h+='<h3>Check 2 &middot; name the fault in the rubric or brief</h3><p class="body">Tap each item to see the fault and why it matters.</p>';
   h+='<div class="stack" id="c2"></div>';
-  h+='<h3><span class="num">Check 3</span>Diagnose six real assignments</h3><p class="body">Six assignments taken from real course files. Decide for yourself whether each assesses Collaboration and what the smallest fix would be, then reveal the answer.</p>';
+  h+='<h3>Check 3 &middot; diagnose six real assignments</h3><p class="body">Six assignments taken from real course files. Decide for yourself whether each assesses Collaboration and what the smallest fix would be, then reveal the answer.</p>';
   h+='<div class="stack" id="c3"></div>';
   h+='<div class="stack"><div class="panel p-def"><span class="tag">The seventh question</span><p>Now apply the same two questions to your own assignment. Does it assess Collaboration? If not, what is the smallest change? It is the only one an examiner will ever see the answer to.</p></div></div>';
   return h;
@@ -1241,6 +1243,7 @@ function sec_plan(){
    ["cd","Clause (d) &rarr; criterion 4, individual contribution","","textarea"],
    ["marker","Named second marker","A plan with no named second marker is an intention, not a plan.","input"]
   ];
+  h+='<h3>Your assessment plan</h3>';
   h+='<div style="max-width:70ch">';
   fields.forEach(function(f){
     h+='<div class="field"><label for="p_'+f[0]+'">'+f[1]+'</label>'
@@ -1386,6 +1389,11 @@ function render(id){
   var m=$("#main");
   m.innerHTML='<section class="view on">'+BUILD[id]()
     +'<div class="pagefoot"><span>UPM ESD Series &middot; SIM-ESD-CC-01 &middot; '+esc(CLUSTERS[ci].n)+'</span>'+nextPrev()+'</div></section>';
+  var meta=SECTIONS.filter(function(x){return x.id===id})[0];
+  var no=parseInt(meta.ref,10);
+  $$("section.view h3",m).forEach(function(h,i){
+    h.insertAdjacentHTML("afterbegin",'<span class="secnum">'+no+"."+(i+1)+'</span>');
+  });
   $$("[data-goto]",m).forEach(function(b){ b.addEventListener("click",function(){ go(b.dataset.goto); }); });
   wire(id);
 }
