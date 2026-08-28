@@ -1,1102 +1,1568 @@
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Effective Verifier Interview - Practical Training Module</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Chart.js CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            50: '#FDFBF7',
-                            100: '#F7F3EB',
-                            200: '#EFE6D5',
-                            500: '#D97706',
-                            600: '#C2410C',
-                            700: '#9A3412',
-                            800: '#1E293B',
-                            900: '#0F172A',
-                        },
-                        sage: {
-                            50: '#F0FDF4',
-                            100: '#DCFCE7',
-                            500: '#10B981',
-                            700: '#047857',
-                            800: '#065F46',
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        .chart-container {
-            position: relative;
-            width: 100%;
-            max-width: 550px;
-            margin-left: auto;
-            margin-right: auto;
-            height: 280px;
-            max-height: 320px;
-        }
-        @media (min-width: 768px) {
-            .chart-container {
-                height: 320px;
-            }
-        }
-        /* Custom scrollbar for inner tab containers */
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: #F1F5F9;
-            border-radius: 4px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #CBD5E1;
-            border-radius: 4px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: #94A3B8;
-        }
-    </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Collaboration Competency Workbench</title>
+<meta name="description" content="An interactive walkthrough of the UPM Collaboration Competency module (SIM-ESD-CC-01): choose your discipline cluster and every example, method and rubric is written for your own course.">
+<meta name="author" content="PEMACU ESD, Universiti Putra Malaysia">
+<meta property="og:title" content="Collaboration Competency Workbench">
+<meta property="og:description" content="From what the Collaboration competency means, through the pedagogy that develops it, to a rubric that survives an audit - written for your discipline.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='18' fill='%230B4E86'/%3E%3Ctext y='72' x='50' text-anchor='middle' font-size='60' font-family='Georgia,serif' fill='%23fff'%3EC%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Sans:wght@400;450;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+img,svg{max-width:100%;height:auto}
+button,input,select,textarea{font:inherit;color:inherit}
+</style>
 </head>
-<body class="bg-brand-50 text-slate-800 font-sans antialiased selection:bg-amber-200 selection:text-amber-900 min-h-screen flex flex-col">
-
-    <!-- Chosen Palette: Warm Neutral Harmony (Warm Sand Background #FDFBF7, Deep Slate Primary #1E293B, Terracotta/Amber Accents #C2410C / #D97706, Sage Green Details #047857) -->
-    <!-- Application Structure Plan:
-         The application is designed as an interactive, practical workshop companion divided into 6 functional sections:
-         1. Executive Dashboard & Interactive Agenda: Gives trainers and participants an instant overview of the 2.5-hour roadmap, protected time blocks, and learning outcomes with dynamic visual time allocation.
-         2. Practical Standard & Question Builder: Translates the Ask-Listen-Record standard and provides an interactive step-by-step Question Construction Tool where teams turn desktop review gaps into compliant questions using the 3-pattern framework.
-         3. Interactive Trainer Demonstration: A side-by-side script simulator contrasting weak vs. effective interviewing with pause-and-reflect prompts to make the standard visible before practice.
-         4. Activity 2 Coached Practice Suite: Features interactive role assigners, a live practice timer with session stages, and a dynamic digital Observer Checklist (Appendix B) with real-time feedback tallying.
-         5. Reference Library & Difficult Situations Matrix: Searchable/filterable Do's, Don'ts, and situational handling strategies for live interview challenges.
-         6. Mock Readiness & Appendix Generator: Interactive 5-check readiness tool, post-interview debrief separator, and interactive Appendix A sheet ready for print/saving.
-         This non-linear design empowers facilitators to project/manage the session and allows verifier teams to interactively prepare and document their work in real-time. -->
-    <!-- Visualization & Content Choices:
-         - Session Plan Time Allocation: Chart.js Donut Chart -> Visualizes protected practice time vs lecture time -> Confirming 75% time spent in practice/demo.
-         - Ask-Listen-Record Evidence Cycle: Custom HTML/CSS Interactive Tri-Fold Cards -> Click to reveal specific behaviors and verifier tips.
-         - Trainer Demonstration Weak vs Effective: Dynamic Toggle Script Player -> Audio/Visual text playback mode with reflection prompt.
-         - Practice Round Stage Timer: Vanilla JS Countdown Clock with phase indicators -> Keeps Activity 2 tightly managed.
-         - Appendix B Observer Checklist: Interactive Rating Form with auto-summary score & feedback builder.
-         - Appendix A Planning Sheet: Interactive Form with instant printable/exportable preview -> Saves team work for mock session.
-         - CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. All visuals rely on HTML5 Canvas (Chart.js) or CSS3/Tailwind UI elements. -->
-    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
-
-    <!-- TOP NAVIGATION BAR -->
-    <header class="sticky top-0 z-50 bg-slate-900 text-white shadow-md border-b border-slate-700">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16">
-                <div class="flex items-center space-x-3">
-                    <div class="bg-amber-500 text-slate-950 font-black text-lg px-2.5 py-1 rounded shadow-sm">TA10</div>
-                    <div>
-                        <h1 class="text-base sm:text-lg font-bold leading-tight text-white">Effective Verifier Interview</h1>
-                        <p class="text-xs text-slate-300 hidden sm:block">Practical Training Module & Workstation • 22 August 2026</p>
-                    </div>
-                </div>
-                <nav class="hidden md:flex space-x-1 text-xs font-semibold">
-                    <button onclick="switchTab('dashboard')" id="nav-dashboard" class="nav-btn px-3 py-2 rounded-md hover:bg-slate-800 transition text-amber-400 bg-slate-800">Dashboard & Agenda</button>
-                    <button onclick="switchTab('standard')" id="nav-standard" class="nav-btn px-3 py-2 rounded-md hover:bg-slate-800 transition text-slate-300">Standard & Questions</button>
-                    <button onclick="switchTab('demo')" id="nav-demo" class="nav-btn px-3 py-2 rounded-md hover:bg-slate-800 transition text-slate-300">Trainer Demo</button>
-                    <button onclick="switchTab('practice')" id="nav-practice" class="nav-btn px-3 py-2 rounded-md hover:bg-slate-800 transition text-slate-300">Practice & Timer</button>
-                    <button onclick="switchTab('toolkit')" id="nav-toolkit" class="nav-btn px-3 py-2 rounded-md hover:bg-slate-800 transition text-slate-300">Reference Toolkit</button>
-                    <button onclick="switchTab('appendices')" id="nav-appendices" class="nav-btn px-3 py-2 rounded-md hover:bg-slate-800 transition text-slate-300">Appendices & Mock Prep</button>
-                </nav>
-                <div class="md:hidden">
-                    <select id="mobile-nav" onchange="switchTab(this.value)" class="bg-slate-800 text-amber-400 text-xs font-bold rounded px-2 py-1.5 border border-slate-700">
-                        <option value="dashboard">1. Dashboard & Agenda</option>
-                        <option value="standard">2. Standard & Questions</option>
-                        <option value="demo">3. Trainer Demo</option>
-                        <option value="practice">4. Practice & Timer</option>
-                        <option value="toolkit">5. Reference Toolkit</option>
-                        <option value="appendices">6. Appendices & Prep</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <!-- MAIN CONTAINER -->
-    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
-
-        <!-- ================= SECTION 1: DASHBOARD & AGENDA ================= -->
-        <section id="sec-dashboard" class="tab-content space-y-6">
-            <!-- Intro Paragraph -->
-            <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
-                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-                    <div>
-                        <div class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-800 mb-2">
-                            Session Duration: 150 Minutes (08:00 - 10:30)
-                        </div>
-                        <h2 class="text-2xl font-bold text-slate-900">Practical Verifier Interview Training Workstation</h2>
-                        <p class="text-slate-600 text-sm mt-1 max-w-3xl">
-                            This module prepares verifier teams to conduct focused, respectful, and evidence-based stakeholder interviews. Starting from desktop review findings (VT1–VT4 & SVR), teams build actionable questions, participate in a coached mock interview, and leave ready for official verification sessions.
-                        </p>
-                    </div>
-                    <div class="flex flex-wrap gap-2 text-center">
-                        <div class="bg-amber-50 border border-amber-200 rounded-lg p-3 min-w-[110px]">
-                            <span class="block text-2xl font-black text-amber-700">2</span>
-                            <span class="text-xs text-amber-900 font-medium">Core Activities</span>
-                        </div>
-                        <div class="bg-slate-50 border border-slate-200 rounded-lg p-3 min-w-[110px]">
-                            <span class="block text-2xl font-black text-slate-800">3</span>
-                            <span class="text-xs text-slate-600 font-medium">Max Questions</span>
-                        </div>
-                        <div class="bg-emerald-50 border border-emerald-200 rounded-lg p-3 min-w-[110px]">
-                            <span class="block text-2xl font-black text-emerald-700">75 min</span>
-                            <span class="text-xs text-emerald-900 font-medium">Protected Practice</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Dashboard Grid: Timeline & Learning Outcomes -->
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                <!-- Left Column: Session Agenda Table & Timeline -->
-                <div class="lg:col-span-8 bg-white rounded-xl p-6 shadow-sm border border-slate-200 flex flex-col">
-                    <h3 class="text-lg font-bold text-slate-900 mb-1 flex items-center justify-between">
-                        <span>2.5-Hour Trainer-Ready Sequence</span>
-                        <span class="text-xs font-normal text-slate-500">Click any row to jump to feature</span>
-                    </h3>
-                    <p class="text-xs text-slate-500 mb-4">Protect the 30-min planning, 45-min practice, and 15-min mock prep blocks.</p>
-                   
-                    <div class="overflow-x-auto custom-scrollbar flex-grow">
-                        <table class="w-full text-left text-xs text-slate-700">
-                            <thead class="bg-slate-100 text-slate-800 uppercase font-bold text-[11px] border-b border-slate-200">
-                                <tr>
-                                    <th class="p-3">Time</th>
-                                    <th class="p-3">Min</th>
-                                    <th class="p-3">Focus</th>
-                                    <th class="p-3">Trainer Execution & Activity Focus</th>
-                                    <th class="p-3">Immediate Output</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-slate-100">
-                                <tr class="hover:bg-amber-50/60 cursor-pointer transition" onclick="switchTab('standard')">
-                                    <td class="p-3 font-semibold text-slate-900 whitespace-nowrap">08:00 - 08:15</td>
-                                    <td class="p-3 font-bold text-amber-700">15</td>
-                                    <td class="p-3 font-semibold">Welcome & Scope</td>
-                                    <td class="p-3">Connect to desktop review. Set working rules & check VT1–VT4/SVR materials.</td>
-                                    <td class="p-3"><span class="bg-slate-100 text-slate-700 px-2 py-1 rounded font-medium">Scope Confirmed</span></td>
-                                </tr>
-                                <tr class="hover:bg-amber-50/60 cursor-pointer transition" onclick="switchTab('standard')">
-                                    <td class="p-3 font-semibold text-slate-900 whitespace-nowrap">08:15 - 08:35</td>
-                                    <td class="p-3 font-bold text-amber-700">20</td>
-                                    <td class="p-3 font-semibold">Good Standard</td>
-                                    <td class="p-3">Explain Ask-Listen-Record cycle, 6 habits, and Do's & Don'ts with simple model.</td>
-                                    <td class="p-3"><span class="bg-slate-100 text-slate-700 px-2 py-1 rounded font-medium">Standard Clear</span></td>
-                                </tr>
-                                <tr class="hover:bg-amber-50/60 cursor-pointer transition bg-amber-50/30" onclick="switchTab('standard')">
-                                    <td class="p-3 font-semibold text-amber-900 whitespace-nowrap">08:35 - 09:05</td>
-                                    <td class="p-3 font-bold text-amber-700">30</td>
-                                    <td class="p-3 font-semibold text-amber-900">Activity 1: Planning</td>
-                                    <td class="p-3 text-slate-800">Teams select 1 desktop priority & draft max 3 questions. Trainer confirms Q1.</td>
-                                    <td class="p-3"><span class="bg-amber-100 text-amber-800 px-2 py-1 rounded font-bold">3 Usable Questions</span></td>
-                                </tr>
-                                <tr class="hover:bg-slate-50">
-                                    <td class="p-3 font-semibold text-slate-400 whitespace-nowrap">09:05 - 09:15</td>
-                                    <td class="p-3 font-bold text-slate-400">10</td>
-                                    <td class="p-3 text-slate-400">Break & Setup</td>
-                                    <td class="p-3 text-slate-400">Arrange 5-person practice roles and distribute observer feedback forms.</td>
-                                    <td class="p-3"><span class="bg-slate-100 text-slate-500 px-2 py-1 rounded">Roles Assigned</span></td>
-                                </tr>
-                                <tr class="hover:bg-amber-50/60 cursor-pointer transition" onclick="switchTab('demo')">
-                                    <td class="p-3 font-semibold text-slate-900 whitespace-nowrap">09:15 - 09:30</td>
-                                    <td class="p-3 font-bold text-amber-700">15</td>
-                                    <td class="p-3 font-semibold">Trainer Demo</td>
-                                    <td class="p-3">Contrast weak vs. effective approach. Pause for participant reflection.</td>
-                                    <td class="p-3"><span class="bg-slate-100 text-slate-700 px-2 py-1 rounded font-medium">Process Visible</span></td>
-                                </tr>
-                                <tr class="hover:bg-amber-50/60 cursor-pointer transition bg-emerald-50/30" onclick="switchTab('practice')">
-                                    <td class="p-3 font-semibold text-emerald-950 whitespace-nowrap">09:30 - 10:15</td>
-                                    <td class="p-3 font-bold text-emerald-700">45</td>
-                                    <td class="p-3 font-semibold text-emerald-950">Activity 2: Coached Practice</td>
-                                    <td class="p-3 text-slate-800">Conduct full interview practice, rapporteur read-back, observer feedback & coaching.</td>
-                                    <td class="p-3"><span class="bg-emerald-100 text-emerald-800 px-2 py-1 rounded font-bold">1 Complete Practice</span></td>
-                                </tr>
-                                <tr class="hover:bg-amber-50/60 cursor-pointer transition bg-slate-50" onclick="switchTab('appendices')">
-                                    <td class="p-3 font-semibold text-slate-900 whitespace-nowrap">10:15 - 10:30</td>
-                                    <td class="p-3 font-bold text-amber-700">15</td>
-                                    <td class="p-3 font-semibold">Mock Prep</td>
-                                    <td class="p-3">Confirm priorities, maximum 3 questions, roles, evidence links & readiness check.</td>
-                                    <td class="p-3"><span class="bg-slate-200 text-slate-800 px-2 py-1 rounded font-bold">Mock Plan Ready</span></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- Right Column: Time Allocation Chart & Learning Outcomes -->
-                <div class="lg:col-span-4 space-y-6 flex flex-col">
-                    <!-- Chart Card -->
-                    <div class="bg-white rounded-xl p-5 shadow-sm border border-slate-200">
-                        <h3 class="text-sm font-bold text-slate-900 mb-2">Session Time Distribution (150 min)</h3>
-                        <div class="chart-container">
-                            <canvas id="agendaChart"></canvas>
-                        </div>
-                    </div>
-
-                    <!-- Learning Outcomes Card -->
-                    <div class="bg-white rounded-xl p-5 shadow-sm border border-slate-200 flex-grow">
-                        <h3 class="text-sm font-bold text-slate-900 mb-3 flex items-center gap-2">
-                            <span class="w-2 h-2 rounded-full bg-amber-500"></span>
-                            Key Learning Outcomes
-                        </h3>
-                        <ul class="space-y-2 text-xs text-slate-600">
-                            <li class="flex items-start gap-2">
-                                <span class="text-amber-600 font-bold">✓</span>
-                                <span>Select 1 interview priority from VT1-VT4 requirement, SVR statement & evidence matter.</span>
-                            </li>
-                            <li class="flex items-start gap-2">
-                                <span class="text-amber-600 font-bold">✓</span>
-                                <span>Prepare no more than 3 clear questions for the selected session.</span>
-                            </li>
-                            <li class="flex items-start gap-2">
-                                <span class="text-amber-600 font-bold">✓</span>
-                                <span>Open and close an interview clearly and professionally.</span>
-                            </li>
-                            <li class="flex items-start gap-2">
-                                <span class="text-amber-600 font-bold">✓</span>
-                                <span>Apply the <strong>Ask-Listen-Record</strong> cycle and separate responses from evidence shown.</span>
-                            </li>
-                            <li class="flex items-start gap-2">
-                                <span class="text-amber-600 font-bold">✓</span>
-                                <span>Debrief as a verifier team without making a premature rating or approval decision.</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-
-        <!-- ================= SECTION 2: STANDARD & QUESTION BUILDER ================= -->
-        <section id="sec-standard" class="tab-content hidden space-y-6">
-            <!-- Intro Paragraph -->
-            <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
-                <h2 class="text-xl font-bold text-slate-900 mb-1">The Practical Standard & Question Construction</h2>
-                <p class="text-slate-600 text-sm">
-                    This section presents the standard verifier behavior framework across the three verification stages (Before, During, After), detailing the core <strong>Ask-Listen-Record</strong> evidence cycle. It also includes the interactive <strong>Guided Question Builder Tool</strong> for Activity 1, helping teams turn desktop review gaps into maximum 3 structured questions.
-                </p>
-            </div>
-
-            <!-- Standard Framework: Before / During / After -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div class="bg-white p-5 rounded-xl border-t-4 border-amber-500 shadow-sm border-x border-b border-slate-200">
-                    <div class="text-xs font-bold uppercase tracking-wider text-amber-700 mb-1">BEFORE INTERVIEW</div>
-                    <h3 class="font-bold text-slate-900 text-base mb-2">Prepare Evidence Focus</h3>
-                    <ul class="text-xs text-slate-600 space-y-2">
-                        <li>• Review relevant VT requirement, verifier note & rating field.</li>
-                        <li>• Compare SVR statement directly with reviewed evidence.</li>
-                        <li>• State exactly what still needs checking during interview.</li>
-                        <li>• Assign lead, supporting interviewer, rapporteur & timekeeper.</li>
-                    </ul>
-                </div>
-                <div class="bg-white p-5 rounded-xl border-t-4 border-emerald-600 shadow-sm border-x border-b border-slate-200">
-                    <div class="text-xs font-bold uppercase tracking-wider text-emerald-700 mb-1">DURING INTERVIEW</div>
-                    <h3 class="font-bold text-slate-900 text-base mb-2">Ask, Listen & Check</h3>
-                    <ul class="text-xs text-slate-600 space-y-2">
-                        <li>• Explain purpose, roles, and available time clearly.</li>
-                        <li>• Ask <strong>one clear question at a time</strong>.</li>
-                        <li>• Listen fully; base follow-up directly on response.</li>
-                        <li>• Request specific example or exact evidence source.</li>
-                    </ul>
-                </div>
-                <div class="bg-white p-5 rounded-xl border-t-4 border-indigo-600 shadow-sm border-x border-b border-slate-200">
-                    <div class="text-xs font-bold uppercase tracking-wider text-indigo-700 mb-1">AFTER INTERVIEW</div>
-                    <h3 class="font-bold text-slate-900 text-base mb-2">Debrief & Triangulate</h3>
-                    <ul class="text-xs text-slate-600 space-y-2">
-                        <li>• Separate what was stated from evidence shown or identified.</li>
-                        <li>• Compare notes and resolve recording differences.</li>
-                        <li>• Identify contradictions, missing evidence or follow-up.</li>
-                        <li>• <strong>Do not announce rating during interview!</strong></li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- Ask-Listen-Record Interactive Cards -->
-            <div class="bg-slate-900 text-white rounded-xl p-6 shadow-md">
-                <h3 class="text-base font-bold text-amber-400 mb-2">The Ask-Listen-Record Evidence Cycle</h3>
-                <p class="text-xs text-slate-300 mb-4">Click each phase to see specific verifier execution habits.</p>
-               
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div class="bg-slate-800 border border-slate-700 rounded-lg p-4 hover:border-amber-500 transition cursor-pointer" onclick="toggleCycleDetail('ask')">
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-xs font-bold text-amber-400 uppercase">Phase 1</span>
-                            <span class="text-xl font-black text-slate-600">01</span>
-                        </div>
-                        <h4 class="text-base font-bold text-white mb-1">ASK</h4>
-                        <p class="text-xs text-slate-300">Use "What must be checked" & "Who/evidence source" fields to frame one clear first question.</p>
-                        <div id="cycle-ask" class="mt-3 pt-3 border-t border-slate-700 text-xs text-amber-200 space-y-1">
-                            <p><strong>Rule:</strong> Avoid multi-part questions. Base directly on VT1-VT4/SVR priority.</p>
-                        </div>
-                    </div>
-
-                    <div class="bg-slate-800 border border-slate-700 rounded-lg p-4 hover:border-emerald-500 transition cursor-pointer" onclick="toggleCycleDetail('listen')">
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-xs font-bold text-emerald-400 uppercase">Phase 2</span>
-                            <span class="text-xl font-black text-slate-600">02</span>
-                        </div>
-                        <h4 class="text-base font-bold text-white mb-1">LISTEN</h4>
-                        <p class="text-xs text-slate-300">Allow response to guide next step. Ask for explanation, example, or record location only if answer needs support.</p>
-                        <div id="cycle-listen" class="mt-3 pt-3 border-t border-slate-700 text-xs text-emerald-200 space-y-1">
-                            <p><strong>Rule:</strong> Do not interrupt or coach the interviewee toward an answer.</p>
-                        </div>
-                    </div>
-
-                    <div class="bg-slate-800 border border-slate-700 rounded-lg p-4 hover:border-indigo-500 transition cursor-pointer" onclick="toggleCycleDetail('record')">
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-xs font-bold text-indigo-400 uppercase">Phase 3</span>
-                            <span class="text-xl font-black text-slate-600">03</span>
-                        </div>
-                        <h4 class="text-base font-bold text-white mb-1">RECORD</h4>
-                        <p class="text-xs text-slate-300">Link response to VT/SVR reference. Keep stakeholder claims separate from physical evidence shown.</p>
-                        <div id="cycle-record" class="mt-3 pt-3 border-t border-slate-700 text-xs text-indigo-200 space-y-1">
-                            <p><strong>Rule:</strong> Record statements, evidence, and verifier interpretations in distinct categories.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- INTERACTIVE QUESTION BUILDER TOOL FOR ACTIVITY 1 -->
-            <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
-                <div class="flex flex-col md:flex-row md:items-center justify-between pb-4 mb-4 border-b border-slate-200 gap-2">
-                    <div>
-                        <span class="bg-amber-100 text-amber-800 text-xs font-bold px-2 py-0.5 rounded">Activity 1 Workspace</span>
-                        <h3 class="text-lg font-bold text-slate-900 mt-1">Guided Question Builder (30-Minute Activity Tool)</h3>
-                        <p class="text-xs text-slate-500">Turn one desktop-review matter into no more than 3 compliant interview questions.</p>
-                    </div>
-                    <button onclick="loadSampleQuestionSet()" class="text-xs bg-slate-800 hover:bg-slate-700 text-white font-semibold px-3 py-1.5 rounded transition">
-                        Load Sample Desktop Priority
-                    </button>
-                </div>
-
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                    <!-- Left: Form inputs for Question Construction -->
-                    <div class="lg:col-span-7 space-y-4">
-                        <div>
-                            <label class="block text-xs font-bold text-slate-700 mb-1">1. Selected VT / SVR Priority Reference</label>
-                            <input type="text" id="qb-ref" placeholder="e.g., VT4 Requirement 2.1 - Course Learning Outcome Attainment" class="w-full text-xs p-2.5 border border-slate-300 rounded focus:ring-2 focus:ring-amber-500 focus:outline-none">
-                        </div>
-
-                        <div>
-                            <label class="block text-xs font-bold text-slate-700 mb-1">2. What Must Be Checked & Target Stakeholder</label>
-                            <input type="text" id="qb-target" placeholder="e.g., Calculation worksheet for 82% outcome attainment (Programme Coordinator)" class="w-full text-xs p-2.5 border border-slate-300 rounded focus:ring-2 focus:ring-amber-500 focus:outline-none">
-                        </div>
-
-                        <!-- 3 Questions Generator Pattern -->
-                        <div class="space-y-3 pt-2">
-                            <h4 class="text-xs font-bold text-slate-800 uppercase tracking-wide">Draft Up To 3 Main Questions (Simple Pattern)</h4>
-                           
-                            <div class="bg-slate-50 p-3 rounded border border-slate-200">
-                                <label class="block text-xs font-bold text-amber-800 mb-1">Question 1: Understand the Practice</label>
-                                <input type="text" id="qb-q1" placeholder="e.g., Please explain how the reported 82% course learning outcome attainment result was calculated." class="w-full text-xs p-2 border border-slate-300 rounded focus:ring-1 focus:ring-amber-500">
-                            </div>
-
-                            <div class="bg-slate-50 p-3 rounded border border-slate-200">
-                                <label class="block text-xs font-bold text-emerald-800 mb-1">Question 2: Obtain a Specific Example</label>
-                                <input type="text" id="qb-q2" placeholder="e.g., Which specific assessment tasks and student cohorts were included in this calculation?" class="w-full text-xs p-2 border border-slate-300 rounded focus:ring-1 focus:ring-emerald-500">
-                            </div>
-
-                            <div class="bg-slate-50 p-3 rounded border border-slate-200">
-                                <label class="block text-xs font-bold text-indigo-800 mb-1">Question 3: Identify Supporting Evidence</label>
-                                <input type="text" id="qb-q3" placeholder="e.g., Which record or calculation worksheet can confirm this, and where can the team locate it?" class="w-full text-xs p-2 border border-slate-300 rounded focus:ring-1 focus:ring-indigo-500">
-                            </div>
-                        </div>
-
-                        <div class="pt-2 flex gap-3">
-                            <button onclick="run4QuestionChecks()" class="bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs px-4 py-2 rounded shadow transition">
-                                Apply 4-Check Validation
-                            </button>
-                            <button onclick="transferToAppendixA()" class="bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs px-4 py-2 rounded shadow transition">
-                                Send to Appendix A Planning Sheet
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Right: 4 Quality Checks Validator Box -->
-                    <div class="lg:col-span-5 bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col justify-between">
-                        <div>
-                            <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wide mb-3 flex items-center justify-between">
-                                <span>Quality Checks Checklist</span>
-                                <span class="text-[10px] bg-slate-200 text-slate-700 px-1.5 py-0.5 rounded">Activity 1 Standard</span>
-                            </h4>
-
-                            <div class="space-y-3 text-xs">
-                                <div id="check-item-1" class="p-2.5 rounded bg-white border border-slate-200 flex items-start gap-2">
-                                    <span class="check-icon font-bold text-slate-400">[ ]</span>
-                                    <div>
-                                        <p class="font-bold text-slate-800">1. Directly Linked to VT/SVR Priority</p>
-                                        <p class="text-[11px] text-slate-500">Avoid general question lists; focus strictly on desktop review gap.</p>
-                                    </div>
-                                </div>
-
-                                <div id="check-item-2" class="p-2.5 rounded bg-white border border-slate-200 flex items-start gap-2">
-                                    <span class="check-icon font-bold text-slate-400">[ ]</span>
-                                    <div>
-                                        <p class="font-bold text-slate-800">2. Clear & Respectful Wording</p>
-                                        <p class="text-[11px] text-slate-500">No leading questions, blaming language, or suggesting expected answers.</p>
-                                    </div>
-                                </div>
-
-                                <div id="check-item-3" class="p-2.5 rounded bg-white border border-slate-200 flex items-start gap-2">
-                                    <span class="check-icon font-bold text-slate-400">[ ]</span>
-                                    <div>
-                                        <p class="font-bold text-slate-800">3. Single Main Question at a Time</p>
-                                        <p class="text-[11px] text-slate-500">Do not bundle several questions together into one paragraph.</p>
-                                    </div>
-                                </div>
-
-                                <div id="check-item-4" class="p-2.5 rounded bg-white border border-slate-200 flex items-start gap-2">
-                                    <span class="check-icon font-bold text-slate-400">[ ]</span>
-                                    <div>
-                                        <p class="font-bold text-slate-800">4. Can Produce Checkable Evidence</p>
-                                        <p class="text-[11px] text-slate-500">Leads to an explanation, concrete example, or tangible document source.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div id="validation-summary" class="mt-4 p-3 rounded bg-amber-50 text-amber-900 border border-amber-200 text-xs font-medium text-center">
-                            Fill in your questions and click "Apply 4-Check Validation" above to test compliance.
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-
-        <!-- ================= SECTION 3: TRAINER DEMONSTRATION ================= -->
-        <section id="sec-demo" class="tab-content hidden space-y-6">
-            <!-- Intro Paragraph -->
-            <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
-                <h2 class="text-xl font-bold text-slate-900 mb-1">Trainer Demonstration Module (09:15 - 09:30)</h2>
-                <p class="text-slate-600 text-sm">
-                    This 15-minute demonstration visually models the difference between a ineffective (weak) interview technique and an effective, evidence-focused approach before participants begin Activity 2. It includes a interactive reflection prompt at the mid-demonstration pause point.
-                </p>
-            </div>
-
-            <!-- Scenario Setup Card -->
-            <div class="bg-amber-900 text-amber-50 rounded-xl p-5 shadow-md">
-                <div class="flex items-center justify-between mb-2">
-                    <span class="text-xs font-bold uppercase tracking-wider text-amber-300">Demonstration Case Scenario</span>
-                    <span class="text-xs bg-amber-800 px-2 py-1 rounded">SVR & VT4 Audit Focus</span>
-                </div>
-                <h3 class="text-base font-bold mb-1">Course Learning Outcome Attainment Gap</h3>
-                <p class="text-xs text-amber-100 leading-relaxed">
-                    <strong>SVR Statement:</strong> "82% of enrolled students achieved the prescribed course learning outcomes."<br>
-                    <strong>Desktop Review Finding:</strong> The overall result is stated, but the underlying calculation worksheet, sample student grades, and record of review action were omitted from the submission.<br>
-                    <strong>Verifier Task:</strong> Interview the Course Coordinator to check how the outcome was calculated, reviewed, and used to improve teaching.
-                </p>
-            </div>
-
-            <!-- Side-by-Side Comparison Player -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Weak Approach Block -->
-                <div class="bg-red-50 rounded-xl p-5 border border-red-200 shadow-sm flex flex-col justify-between">
-                    <div>
-                        <div class="flex items-center justify-between mb-3">
-                            <span class="text-xs font-bold text-red-700 uppercase bg-red-100 px-2 py-0.5 rounded">Weak Approach (3 Minutes)</span>
-                            <span class="text-xs text-red-600 font-semibold">Avoid These Habits</span>
-                        </div>
-                       
-                        <div class="space-y-3 text-xs text-slate-800">
-                            <div class="bg-white p-3 rounded border border-red-200">
-                                <p class="font-bold text-red-900 mb-1">Leading & Accusatory Question:</p>
-                                <p class="italic text-slate-600">“Your evidence for attainment is incomplete, isn't it?”</p>
-                            </div>
-                            <div class="bg-white p-3 rounded border border-red-200">
-                                <p class="font-bold text-red-900 mb-1">Multiple Bundled Questions:</p>
-                                <p class="italic text-slate-600">“Did you calculate the 82% correctly, review it with colleagues, and make changes to improve teaching?”</p>
-                            </div>
-                            <div class="bg-white p-3 rounded border border-red-200">
-                                <p class="font-bold text-red-900 mb-1">Blaming Language & Interruption:</p>
-                                <p class="italic text-slate-600">“Why did you fail to attach the calculation worksheet?” <span class="text-red-600 font-bold">[Interrupts interviewee before they finish speaking]</span></p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mt-4 pt-3 border-t border-red-200 text-[11px] text-red-800 font-medium">
-                        <strong>Impact:</strong> Makes interviewee defensive, fails to locate actual evidence, and creates ambiguity.
-                    </div>
-                </div>
-
-                <!-- Effective Approach Block -->
-                <div class="bg-emerald-50 rounded-xl p-5 border border-emerald-200 shadow-sm flex flex-col justify-between">
-                    <div>
-                        <div class="flex items-center justify-between mb-3">
-                            <span class="text-xs font-bold text-emerald-800 uppercase bg-emerald-100 px-2 py-0.5 rounded">Effective Approach (6 Minutes)</span>
-                            <span class="text-xs text-emerald-700 font-semibold">Standard To Model</span>
-                        </div>
-
-                        <div class="space-y-2.5 text-xs text-slate-800">
-                            <div class="bg-white p-2.5 rounded border border-emerald-200">
-                                <p class="font-bold text-emerald-900">1. Professional Opening:</p>
-                                <p class="text-slate-600">“We would like to understand how the reported outcome attainment was calculated and used. We have about 7 minutes for this topic.”</p>
-                            </div>
-                            <div class="bg-white p-2.5 rounded border border-emerald-200">
-                                <p class="font-bold text-emerald-900">2. First Clear Question:</p>
-                                <p class="text-slate-600">“Please explain how the 82% attainment result was calculated.”</p>
-                            </div>
-                            <div class="bg-white p-2.5 rounded border border-emerald-200">
-                                <p class="font-bold text-emerald-900">3. Follow-up on Evidence Source:</p>
-                                <p class="text-slate-600">“Which assessments were included, and could you identify the worksheet used?”</p>
-                            </div>
-                            <div class="bg-white p-2.5 rounded border border-emerald-200">
-                                <p class="font-bold text-emerald-900">4. Factual Summary Closing:</p>
-                                <p class="text-slate-600">“To confirm: the coordinator calculates the result using the assessment sheet, and actions are logged in meeting minutes. Is that accurate?”</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mt-4 pt-3 border-t border-emerald-200 text-[11px] text-emerald-900 font-medium">
-                        <strong>Impact:</strong> Establishes clear factual record, identifies exact evidence location, keeps discussion professional.
-                    </div>
-                </div>
-            </div>
-
-            <!-- Mid-Demonstration Interactive Reflection Prompt -->
-            <div class="bg-slate-800 text-white p-5 rounded-xl border border-slate-700 shadow-sm">
-                <h3 class="text-sm font-bold text-amber-400 mb-2 flex items-center gap-2">
-                    <span class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 text-xs">Pause Point (Participant Reflection Prompt)</span>
-                    What did you observe?
-                </h3>
-                <p class="text-xs text-slate-300 mb-4">When the trainer pauses during the demonstration, ask participants to identify:</p>
-               
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                    <div class="bg-slate-900 p-3 rounded border border-slate-700 text-xs">
-                        <span class="text-amber-400 font-bold block mb-1">1. What was heard?</span>
-                        <p class="text-slate-400">The stakeholder explained that calculations happen in Excel, but moderation minutes are stored separately.</p>
-                    </div>
-                    <div class="bg-slate-900 p-3 rounded border border-slate-700 text-xs">
-                        <span class="text-amber-400 font-bold block mb-1">2. What requires evidence?</span>
-                        <p class="text-slate-400">The raw grade calculation sheet and the course committee meeting minutes reflecting the review.</p>
-                    </div>
-                    <div class="bg-slate-900 p-3 rounded border border-slate-700 text-xs">
-                        <span class="text-amber-400 font-bold block mb-1">3. Next useful question?</span>
-                        <p class="text-slate-400">“Where can the verifier team access the course committee meeting minutes for October?”</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-
-        <!-- ================= SECTION 4: PRACTICE & TIMER ================= -->
-        <section id="sec-practice" class="tab-content hidden space-y-6">
-            <!-- Intro Paragraph -->
-            <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
-                <h2 class="text-xl font-bold text-slate-900 mb-1">Activity 2: Coached Interview Practice Suite (09:30 - 10:15)</h2>
-                <p class="text-slate-600 text-sm">
-                    In this 45-minute coached practice, verifier teams conduct a complete practice interview using the priority and questions prepared in Activity 1. Use the interactive 5-person role assigner, live session stage clock, and digital Appendix B Observer Checklist below to manage the round.
-                </p>
-            </div>
-
-            <!-- Team Roles Matrix (5 Persons) -->
-            <div class="bg-white rounded-xl p-5 shadow-sm border border-slate-200">
-                <h3 class="text-sm font-bold text-slate-900 mb-3">5-Person Team Role Assignment</h3>
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
-                    <div class="p-3 bg-amber-50 rounded-lg border border-amber-200">
-                        <span class="text-[10px] font-bold text-amber-800 uppercase block">Role 1</span>
-                        <span class="font-bold text-slate-900 text-xs block mt-0.5">Lead Interviewer</span>
-                        <p class="text-[11px] text-slate-600 mt-1">Leads opening, introduces team, asks Q1 and manages main sequence.</p>
-                    </div>
-                    <div class="p-3 bg-slate-50 rounded-lg border border-slate-200">
-                        <span class="text-[10px] font-bold text-slate-600 uppercase block">Role 2</span>
-                        <span class="font-bold text-slate-900 text-xs block mt-0.5">Supporting Interviewer</span>
-                        <p class="text-[11px] text-slate-600 mt-1">Listens actively, asks follow-up on evidence or specific examples.</p>
-                    </div>
-                    <div class="p-3 bg-slate-50 rounded-lg border border-slate-200">
-                        <span class="text-[10px] font-bold text-slate-600 uppercase block">Role 3</span>
-                        <span class="text-[10px] font-bold text-indigo-700 uppercase block">Stakeholder</span>
-                        <span class="font-bold text-slate-900 text-xs block mt-0.5">Programme Coordinator</span>
-                        <p class="text-[11px] text-slate-600 mt-1">Answers from SVR/evidence only; does NOT invent unnecessary details.</p>
-                    </div>
-                    <div class="p-3 bg-slate-50 rounded-lg border border-slate-200">
-                        <span class="text-[10px] font-bold text-slate-600 uppercase block">Role 4</span>
-                        <span class="font-bold text-slate-900 text-xs block mt-0.5">Rapporteur</span>
-                        <p class="text-[11px] text-slate-600 mt-1">Records key statements, evidence identified & unresolved gaps. Not transcript.</p>
-                    </div>
-                    <div class="p-3 bg-emerald-50 rounded-lg border border-emerald-200">
-                        <span class="text-[10px] font-bold text-emerald-800 uppercase block">Role 5</span>
-                        <span class="font-bold text-slate-900 text-xs block mt-0.5">Observer / Timekeeper</span>
-                        <p class="text-[11px] text-slate-600 mt-1">Monitors time & completes Appendix B checklist for targeted feedback.</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Practice Stage Timer & Allocation Chart -->
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                <!-- Live Coached Session Timer -->
-                <div class="lg:col-span-7 bg-slate-900 text-white rounded-xl p-6 shadow-md flex flex-col justify-between">
-                    <div>
-                        <div class="flex items-center justify-between border-b border-slate-700 pb-3 mb-4">
-                            <div>
-                                <span class="text-xs font-bold text-amber-400 uppercase tracking-wider">Activity 2 Live Clock</span>
-                                <h3 class="text-lg font-bold text-white">45-Minute Coached Round Management</h3>
-                            </div>
-                            <span id="timer-stage-badge" class="bg-amber-500 text-slate-950 font-bold text-xs px-2.5 py-1 rounded">
-                                Stage 1: Setup (5 min)
-                            </span>
-                        </div>
-
-                        <div class="text-center py-4">
-                            <div id="timer-display" class="text-5xl sm:text-6xl font-black font-mono tracking-tight text-white">
-                                05:00
-                            </div>
-                            <p id="timer-stage-desc" class="text-xs text-amber-200 mt-2">
-                                Confirm priority, 3 questions, stakeholder details, and team roles.
-                            </p>
-                        </div>
-
-                        <!-- Phase Buttons -->
-                        <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 mt-4 text-[11px]">
-                            <button onclick="setTimerPhase(1)" class="p-2 bg-slate-800 hover:bg-slate-700 rounded border border-slate-700 text-center text-slate-300 font-semibold focus:border-amber-400">
-                                1. Setup (5m)
-                            </button>
-                            <button onclick="setTimerPhase(2)" class="p-2 bg-slate-800 hover:bg-slate-700 rounded border border-slate-700 text-center text-slate-300 font-semibold focus:border-amber-400">
-                                2. Interview (15m)
-                            </button>
-                            <button onclick="setTimerPhase(3)" class="p-2 bg-slate-800 hover:bg-slate-700 rounded border border-slate-700 text-center text-slate-300 font-semibold focus:border-amber-400">
-                                3. Debrief (10m)
-                            </button>
-                            <button onclick="setTimerPhase(4)" class="p-2 bg-slate-800 hover:bg-slate-700 rounded border border-slate-700 text-center text-slate-300 font-semibold focus:border-amber-400">
-                                4. Coaching (10m)
-                            </button>
-                            <button onclick="setTimerPhase(5)" class="p-2 bg-slate-800 hover:bg-slate-700 rounded border border-slate-700 text-center text-slate-300 font-semibold focus:border-amber-400">
-                                5. Record (5m)
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="flex items-center justify-center gap-3 mt-6 pt-4 border-t border-slate-800">
-                        <button id="btn-start-timer" onclick="startTimer()" class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs px-6 py-2.5 rounded transition shadow">
-                            Start Stage Timer
-                        </button>
-                        <button onclick="pauseTimer()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs px-4 py-2.5 rounded border border-slate-700 transition">
-                            Pause
-                        </button>
-                        <button onclick="resetTimer()" class="bg-slate-800 hover:bg-slate-700 text-slate-400 font-bold text-xs px-4 py-2.5 rounded border border-slate-700 transition">
-                            Reset
-                        </button>
-                    </div>
-                </div>
-
-                <!-- 45-Min Allocation Chart -->
-                <div class="lg:col-span-5 bg-white rounded-xl p-5 shadow-sm border border-slate-200">
-                    <h3 class="text-sm font-bold text-slate-900 mb-2">45-Minute Coached Round Allocation</h3>
-                    <div class="chart-container">
-                        <canvas id="practiceChart"></canvas>
-                    </div>
-                </div>
-            </div>
-
-            <!-- APPENDIX B: INTERACTIVE OBSERVER CHECKLIST -->
-            <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
-                <div class="flex flex-col md:flex-row md:items-center justify-between pb-4 mb-4 border-b border-slate-200 gap-2">
-                    <div>
-                        <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-2 py-0.5 rounded">Appendix B Tool</span>
-                        <h3 class="text-lg font-bold text-slate-900 mt-1">Interview Practice Observer Checklist</h3>
-                        <p class="text-xs text-slate-500">Completed by Timekeeper/Observer during Activity 2 round.</p>
-                    </div>
-                    <div class="text-xs bg-slate-100 px-3 py-1.5 rounded font-mono text-slate-700">
-                        Observed Score: <span id="obs-score-count" class="font-bold text-emerald-700">0 / 10 Yes</span>
-                    </div>
-                </div>
-
-                <div class="overflow-x-auto custom-scrollbar">
-                    <table class="w-full text-left text-xs">
-                        <thead class="bg-slate-100 text-slate-800 font-bold uppercase text-[11px]">
-                            <tr>
-                                <th class="p-3 w-7/12">Observed Behavior Standard</th>
-                                <th class="p-3 w-3/12 text-center">Rating</th>
-                                <th class="p-3 w-2/12">Short Note</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-slate-100 text-slate-700">
-                            <!-- Items 1 to 10 -->
-                            <tr>
-                                <td class="p-3 font-medium">1. Explained purpose, stakeholder group, team roles & available time.</td>
-                                <td class="p-3 text-center">
-                                    <select onchange="updateObsScore()" class="obs-rate text-xs p-1 border rounded bg-slate-50">
-                                        <option value="No">No</option>
-                                        <option value="Partly">Partly</option>
-                                        <option value="Yes" selected>Yes</option>
-                                    </select>
-                                </td>
-                                <td class="p-3"><input type="text" placeholder="Note..." class="w-full text-xs p-1 border rounded"></td>
-                            </tr>
-                            <tr>
-                                <td class="p-3 font-medium">2. Main question linked directly to specific VT1-VT4/SVR priority.</td>
-                                <td class="p-3 text-center">
-                                    <select onchange="updateObsScore()" class="obs-rate text-xs p-1 border rounded bg-slate-50">
-                                        <option value="No">No</option>
-                                        <option value="Partly">Partly</option>
-                                        <option value="Yes" selected>Yes</option>
-                                    </select>
-                                </td>
-                                <td class="p-3"><input type="text" placeholder="Note..." class="w-full text-xs p-1 border rounded"></td>
-                            </tr>
-                            <tr>
-                                <td class="p-3 font-medium">3. Asked one clear question at a time (no bundling).</td>
-                                <td class="p-3 text-center">
-                                    <select onchange="updateObsScore()" class="obs-rate text-xs p-1 border rounded bg-slate-50">
-                                        <option value="No">No</option>
-                                        <option value="Partly">Partly</option>
-                                        <option value="Yes">Yes</option>
-                                    </select>
-                                </td>
-                                <td class="p-3"><input type="text" placeholder="Note..." class="w-full text-xs p-1 border rounded"></td>
-                            </tr>
-                            <tr>
-                                <td class="p-3 font-medium">4. Listened actively without interrupting, arguing or coaching answer.</td>
-                                <td class="p-3 text-center">
-                                    <select onchange="updateObsScore()" class="obs-rate text-xs p-1 border rounded bg-slate-50">
-                                        <option value="No">No</option>
-                                        <option value="Partly">Partly</option>
-                                        <option value="Yes" selected>Yes</option>
-                                    </select>
-                                </td>
-                                <td class="p-3"><input type="text" placeholder="Note..." class="w-full text-xs p-1 border rounded"></td>
-                            </tr>
-                            <tr>
-                                <td class="p-3 font-medium">5. Follow-up questions were based on actual response received.</td>
-                                <td class="p-3 text-center">
-                                    <select onchange="updateObsScore()" class="obs-rate text-xs p-1 border rounded bg-slate-50">
-                                        <option value="No">No</option>
-                                        <option value="Partly">Partly</option>
-                                        <option value="Yes">Yes</option>
-                                    </select>
-                                </td>
-                                <td class="p-3"><input type="text" placeholder="Note..." class="w-full text-xs p-1 border rounded"></td>
-                            </tr>
-                            <tr>
-                                <td class="p-3 font-medium">6. Requested specific example or exact evidence source when needed.</td>
-                                <td class="p-3 text-center">
-                                    <select onchange="updateObsScore()" class="obs-rate text-xs p-1 border rounded bg-slate-50">
-                                        <option value="No">No</option>
-                                        <option value="Partly">Partly</option>
-                                        <option value="Yes">Yes</option>
-                                    </select>
-                                </td>
-                                <td class="p-3"><input type="text" placeholder="Note..." class="w-full text-xs p-1 border rounded"></td>
-                            </tr>
-                            <tr>
-                                <td class="p-3 font-medium">7. Rapporteur separated stakeholder response, evidence shown & note.</td>
-                                <td class="p-3 text-center">
-                                    <select onchange="updateObsScore()" class="obs-rate text-xs p-1 border rounded bg-slate-50">
-                                        <option value="No">No</option>
-                                        <option value="Partly">Partly</option>
-                                        <option value="Yes">Yes</option>
-                                    </select>
-                                </td>
-                                <td class="p-3"><input type="text" placeholder="Note..." class="w-full text-xs p-1 border rounded"></td>
-                            </tr>
-                            <tr>
-                                <td class="p-3 font-medium">8. Participation and time were managed appropriately within limits.</td>
-                                <td class="p-3 text-center">
-                                    <select onchange="updateObsScore()" class="obs-rate text-xs p-1 border rounded bg-slate-50">
-                                        <option value="No">No</option>
-                                        <option value="Partly">Partly</option>
-                                        <option value="Yes">Yes</option>
-                                    </select>
-                                </td>
-                                <td class="p-3"><input type="text" placeholder="Note..." class="w-full text-xs p-1 border rounded"></td>
-                            </tr>
-                            <tr>
-                                <td class="p-3 font-medium">9. Summarised factual understanding and invited stakeholder correction.</td>
-                                <td class="p-3 text-center">
-                                    <select onchange="updateObsScore()" class="obs-rate text-xs p-1 border rounded bg-slate-50">
-                                        <option value="No">No</option>
-                                        <option value="Partly">Partly</option>
-                                        <option value="Yes">Yes</option>
-                                    </select>
-                                </td>
-                                <td class="p-3"><input type="text" placeholder="Note..." class="w-full text-xs p-1 border rounded"></td>
-                            </tr>
-                            <tr>
-                                <td class="p-3 font-medium">10. Closed professionally and did NOT announce rating or decision.</td>
-                                <td class="p-3 text-center">
-                                    <select onchange="updateObsScore()" class="obs-rate text-xs p-1 border rounded bg-slate-50">
-                                        <option value="No">No</option>
-                                        <option value="Partly">Partly</option>
-                                        <option value="Yes" selected>Yes</option>
-                                    </select>
-                                </td>
-                                <td class="p-3"><input type="text" placeholder="Note..." class="w-full text-xs p-1 border rounded"></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <!-- Structured Feedback Formula Input -->
-                <div class="mt-6 pt-4 border-t border-slate-200 bg-slate-50 p-4 rounded-lg">
-                    <h4 class="text-xs font-bold text-slate-800 uppercase tracking-wide mb-2">3-Part Focused Feedback Formula</h4>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
-                        <div>
-                            <label class="block font-bold text-emerald-800 mb-1">1. One Strength (What helped):</label>
-                            <input type="text" placeholder="e.g., Lead interviewer kept questions clearly linked to SVR priority." class="w-full p-2 border rounded border-slate-300">
-                        </div>
-                        <div>
-                            <label class="block font-bold text-amber-800 mb-1">2. One Improvement (Reduced clarity):</label>
-                            <input type="text" placeholder="e.g., Supporting interviewer asked two questions joined together." class="w-full p-2 border rounded border-slate-300">
-                        </div>
-                        <div>
-                            <label class="block font-bold text-indigo-800 mb-1">3. One Action (For next round):</label>
-                            <input type="text" placeholder="e.g., Pause after the answer before framing the follow-up prompt." class="w-full p-2 border rounded border-slate-300">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-
-        <!-- ================= SECTION 5: REFERENCE TOOLKIT ================= -->
-        <section id="sec-toolkit" class="tab-content hidden space-y-6">
-            <!-- Intro Paragraph -->
-            <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
-                <h2 class="text-xl font-bold text-slate-900 mb-1">Practical Interview Reference Toolkit</h2>
-                <p class="text-slate-600 text-sm">
-                    A quick-reference guide during interview preparation and facilitator feedback. Explore essential Do's and Don'ts across all 7 interview stages, or use the interactive decision matrix below to handle challenging interview situations effectively.
-                </p>
-            </div>
-
-            <!-- Do's and Don'ts Filterable Table -->
-            <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
-                    <h3 class="text-base font-bold text-slate-900">Stage-by-Stage Do's and Don'ts Reference</h3>
-                    <div class="flex items-center gap-2">
-                        <label class="text-xs font-semibold text-slate-500">Filter Stage:</label>
-                        <select id="toolkit-stage-filter" onchange="filterToolkitStage(this.value)" class="text-xs p-1.5 border border-slate-300 rounded font-semibold text-slate-700">
-                            <option value="all">All 7 Stages</option>
-                            <option value="Prepare">1. Prepare</option>
-                            <option value="Open">2. Open</option>
-                            <option value="Ask">3. Ask</option>
-                            <option value="Listen">4. Listen</option>
-                            <option value="Evidence">5. Evidence Focus</option>
-                            <option value="Record">6. Record</option>
-                            <option value="Close">7. Close</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="overflow-x-auto custom-scrollbar">
-                    <table class="w-full text-left text-xs">
-                        <thead class="bg-slate-100 text-slate-800 font-bold uppercase text-[11px]">
-                            <tr>
-                                <th class="p-3 w-2/12">Stage</th>
-                                <th class="p-3 w-5/12 text-emerald-900 bg-emerald-50/50">DO (Effective Practice)</th>
-                                <th class="p-3 w-5/12 text-red-900 bg-red-50/50">AVOID (Weak Habit)</th>
-                            </tr>
-                        </thead>
-                        <tbody id="toolkit-table-body" class="divide-y divide-slate-100 text-slate-700">
-                            <tr data-stage="Prepare">
-                                <td class="p-3 font-bold text-slate-900">Prepare</td>
-                                <td class="p-3 bg-emerald-50/20">Review VT/SVR reference, evidence gap, and select appropriate stakeholder.</td>
-                                <td class="p-3 bg-red-50/20">Preparing a long general question list or asking every standard guiding question.</td>
-                            </tr>
-                            <tr data-stage="Open">
-                                <td class="p-3 font-bold text-slate-900">Open</td>
-                                <td class="p-3 bg-emerald-50/20">Explain purpose, roles, available time, and how information will be used.</td>
-                                <td class="p-3 bg-red-50/20">Beginning abruptly or promising confidentiality beyond agreed verification rules.</td>
-                            </tr>
-                            <tr data-stage="Ask">
-                                <td class="p-3 font-bold text-slate-900">Ask</td>
-                                <td class="p-3 bg-emerald-50/20">Use one clear, respectful question linked to what must be checked.</td>
-                                <td class="p-3 bg-red-50/20">Leading, blaming, vague, or several questions joined together.</td>
-                            </tr>
-                            <tr data-stage="Listen">
-                                <td class="p-3 font-bold text-slate-900">Listen</td>
-                                <td class="p-3 bg-emerald-50/20">Allow response to finish and invite relevant participants to contribute.</td>
-                                <td class="p-3 bg-red-50/20">Interrupting, arguing, coaching the answer, or letting one person dominate.</td>
-                            </tr>
-                            <tr data-stage="Evidence">
-                                <td class="p-3 font-bold text-slate-900">Evidence</td>
-                                <td class="p-3 bg-emerald-50/20">Ask for a specific example or exact evidence source when needed.</td>
-                                <td class="p-3 bg-red-50/20">Treating a stakeholder statement as sufficient proof without checking records.</td>
-                            </tr>
-                            <tr data-stage="Record">
-                                <td class="p-3 font-bold text-slate-900">Record</td>
-                                <td class="p-3 bg-emerald-50/20">Separate what was stated, evidence shown, verifier note, and follow-up.</td>
-                                <td class="p-3 bg-red-50/20">Writing full transcript, unnecessary personal data, or unsupported conclusions.</td>
-                            </tr>
-                            <tr data-stage="Close">
-                                <td class="p-3 font-bold text-slate-900">Close</td>
-                                <td class="p-3 bg-emerald-50/20">Summarise factual understanding, invite correction, and explain next step.</td>
-                                <td class="p-3 bg-red-50/20">Announcing a rating, finding, or approval decision during interview.</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Handling Difficult Interview Situations Matrix -->
-            <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
-                <h3 class="text-base font-bold text-slate-900 mb-1">When the Interview Becomes Difficult</h3>
-                <p class="text-xs text-slate-500 mb-4">Click any situation to highlight recommended verifier response strategy.</p>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="p-4 rounded-lg bg-slate-50 border border-slate-200 hover:border-amber-500 transition cursor-pointer" onclick="highlightDiffScenario(this)">
-                        <div class="flex items-center justify-between mb-1">
-                            <span class="text-xs font-bold text-amber-800">Situation 1</span>
-                            <span class="text-[10px] bg-slate-200 px-2 py-0.5 rounded text-slate-700">Vague Response</span>
-                        </div>
-                        <h4 class="text-xs font-bold text-slate-900 mb-2">Stakeholder provides a high-level or general answer.</h4>
-                        <div class="text-xs text-slate-600 bg-white p-2.5 rounded border border-slate-200">
-                            <strong>Recommended Response:</strong> “Can you give one specific recent example, and identify which record confirms it?”
-                        </div>
-                    </div>
-
-                    <div class="p-4 rounded-lg bg-slate-50 border border-slate-200 hover:border-amber-500 transition cursor-pointer" onclick="highlightDiffScenario(this)">
-                        <div class="flex items-center justify-between mb-1">
-                            <span class="text-xs font-bold text-amber-800">Situation 2</span>
-                            <span class="text-[10px] bg-slate-200 px-2 py-0.5 rounded text-slate-700">Overly Long Answer</span>
-                        </div>
-                        <h4 class="text-xs font-bold text-slate-900 mb-2">Stakeholder speaks at length off-topic.</h4>
-                        <div class="text-xs text-slate-600 bg-white p-2.5 rounded border border-slate-200">
-                            <strong>Recommended Response:</strong> Thank the stakeholder, politely restate the exact matter being checked, and ask the next focused question.
-                        </div>
-                    </div>
-
-                    <div class="p-4 rounded-lg bg-slate-50 border border-slate-200 hover:border-amber-500 transition cursor-pointer" onclick="highlightDiffScenario(this)">
-                        <div class="flex items-center justify-between mb-1">
-                            <span class="text-xs font-bold text-amber-800">Situation 3</span>
-                            <span class="text-[10px] bg-slate-200 px-2 py-0.5 rounded text-slate-700">Unknown Information</span>
-                        </div>
-                        <h4 class="text-xs font-bold text-slate-900 mb-2">Stakeholder does not know the answer.</h4>
-                        <div class="text-xs text-slate-600 bg-white p-2.5 rounded border border-slate-200">
-                            <strong>Recommended Response:</strong> Do not pressure the person. Record who or which specific document can provide the required information.
-                        </div>
-                    </div>
-
-                    <div class="p-4 rounded-lg bg-slate-50 border border-slate-200 hover:border-amber-500 transition cursor-pointer" onclick="highlightDiffScenario(this)">
-                        <div class="flex items-center justify-between mb-1">
-                            <span class="text-xs font-bold text-amber-800">Situation 4</span>
-                            <span class="text-[10px] bg-slate-200 px-2 py-0.5 rounded text-slate-700">Defensive Behavior</span>
-                        </div>
-                        <h4 class="text-xs font-bold text-slate-900 mb-2">Stakeholder becomes defensive or anxious.</h4>
-                        <div class="text-xs text-slate-600 bg-white p-2.5 rounded border border-slate-200">
-                            <strong>Recommended Response:</strong> Restate that the purpose is to understand and verify programme evidence, not to blame individuals.
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Professional Safeguard Notice -->
-                <div class="mt-4 p-3 rounded-lg bg-amber-50 border border-amber-200 text-xs text-amber-900 flex items-center gap-2">
-                    <span class="font-bold text-amber-800">Professional Safeguard:</span>
-                    <span>Declare any conflict of interest to facilitator immediately, discuss only information relevant to verification, and keep all notes in official records.</span>
-                </div>
-            </div>
-        </section>
-
-
-        <!-- ================= SECTION 6: APPENDICES & MOCK PREP ================= -->
-        <section id="sec-appendices" class="tab-content hidden space-y-6">
-            <!-- Intro Paragraph -->
-            <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
-                <h2 class="text-xl font-bold text-slate-900 mb-1">Mock Interview Preparation & Post-Session Tools</h2>
-                <p class="text-slate-600 text-sm">
-                    In the final 15 minutes (10:15–10:30), teams complete the 5-point readiness check, set up their official Appendix A planning sheet, and review the 4-part post-interview evidence debrief process.
-                </p>
-            </div>
-
-            <!-- Readiness Checklist (10:15 - 10:30) -->
-            <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
-                <div class="flex items-center justify-between border-b border-slate-200 pb-3 mb-4">
-                    <h3 class="text-base font-bold text-slate-900">5-Minute Readiness Check for Mock Session</h3>
-                    <span id="readiness-counter" class="text-xs bg-slate-100 text-slate-700 px-2.5 py-1 rounded font-bold">0 of 5 Ready</span>
-                </div>
-
-                <div class="space-y-3 text-xs">
-                    <label class="flex items-start gap-3 p-3 bg-slate-50 rounded border border-slate-200 cursor-pointer hover:bg-amber-50/50 transition">
-                        <input type="checkbox" onchange="updateReadinessCount()" class="ready-chk mt-0.5 rounded text-amber-600 focus:ring-amber-500">
-                        <div>
-                            <span class="font-bold text-slate-900 block">1. Evidence Focus Ready</span>
-                            <span class="text-slate-500">Every main question is linked directly to a stated VT1-VT4 or SVR priority matter.</span>
-                        </div>
-                    </label>
-
-                    <label class="flex items-start gap-3 p-3 bg-slate-50 rounded border border-slate-200 cursor-pointer hover:bg-amber-50/50 transition">
-                        <input type="checkbox" onchange="updateReadinessCount()" class="ready-chk mt-0.5 rounded text-amber-600 focus:ring-amber-500">
-                        <div>
-                            <span class="font-bold text-slate-900 block">2. Team Roles Assigned</span>
-                            <span class="text-slate-500">Lead interviewer, supporting interviewer(s), rapporteur, and timekeeper are clearly confirmed.</span>
-                        </div>
-                    </label>
-
-                    <label class="flex items-start gap-3 p-3 bg-slate-50 rounded border border-slate-200 cursor-pointer hover:bg-amber-50/50 transition">
-                        <input type="checkbox" onchange="updateReadinessCount()" class="ready-chk mt-0.5 rounded text-amber-600 focus:ring-amber-500">
-                        <div>
-                            <span class="font-bold text-slate-900 block">3. Maximum 3 Questions Formulated</span>
-                            <span class="text-slate-500">First question is clear; follow-up prompts are flexible based on interviewee response.</span>
-                        </div>
-                    </label>
-
-                    <label class="flex items-start gap-3 p-3 bg-slate-50 rounded border border-slate-200 cursor-pointer hover:bg-amber-50/50 transition">
-                        <input type="checkbox" onchange="updateReadinessCount()" class="ready-chk mt-0.5 rounded text-amber-600 focus:ring-amber-500">
-                        <div>
-                            <span class="font-bold text-slate-900 block">4. Desktop Records Open</span>
-                            <span class="text-slate-500">VT1-VT4, SVR, and priority desktop review records are accessible to team members.</span>
-                        </div>
-                    </label>
-
-                    <label class="flex items-start gap-3 p-3 bg-slate-50 rounded border border-slate-200 cursor-pointer hover:bg-amber-50/50 transition">
-                        <input type="checkbox" onchange="updateReadinessCount()" class="ready-chk mt-0.5 rounded text-amber-600 focus:ring-amber-500">
-                        <div>
-                            <span class="font-bold text-slate-900 block">5. Timing & Conduct Agreed</span>
-                            <span class="text-slate-500">Opening, interview, summary, and closing times confirmed. Team agrees NOT to announce ratings.</span>
-                        </div>
-                    </label>
-                </div>
-            </div>
-
-            <!-- Post-Interview Debrief 4 Information Types -->
-            <div class="bg-slate-900 text-white rounded-xl p-6 shadow-md">
-                <h3 class="text-base font-bold text-amber-400 mb-1">Post-Interview Debrief & Information Separation</h3>
-                <p class="text-xs text-slate-300 mb-4">Immediately following each session, teams must separate notes into 4 distinct categories before triangulation.</p>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
-                    <div class="bg-slate-800 p-3.5 rounded border border-slate-700">
-                        <span class="text-amber-400 font-bold block mb-1">1. Stakeholder Response</span>
-                        <p class="text-slate-300">What the participant verbally explained or stated during the interview.</p>
-                    </div>
-                    <div class="bg-slate-800 p-3.5 rounded border border-slate-700">
-                        <span class="text-emerald-400 font-bold block mb-1">2. Evidence Shown</span>
-                        <p class="text-slate-300">Exact document, section, system record, or file named or physically inspected.</p>
-                    </div>
-                    <div class="bg-slate-800 p-3.5 rounded border border-slate-700">
-                        <span class="text-indigo-400 font-bold block mb-1">3. Verifier Note</span>
-                        <p class="text-slate-300">Team analysis on relevance to VT/SVR matter, including gaps identified.</p>
-                    </div>
-                    <div class="bg-slate-800 p-3.5 rounded border border-slate-700">
-                        <span class="text-rose-400 font-bold block mb-1">4. Follow-up Action</span>
-                        <p class="text-slate-300">What still requires checking, responsible person, and triangulation plan.</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- APPENDIX A FORM GENERATOR -->
-            <div id="appendix-a-container" class="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-200 pb-3 mb-4 gap-2">
-                    <div>
-                        <span class="bg-amber-100 text-amber-800 text-xs font-bold px-2 py-0.5 rounded">Appendix A Form</span>
-                        <h3 class="text-lg font-bold text-slate-900 mt-1">Stakeholder Interview Planning Sheet</h3>
-                        <p class="text-xs text-slate-500">Record max 3 main priorities for the mock interview session.</p>
-                    </div>
-                    <button onclick="window.print()" class="text-xs bg-slate-800 text-white font-bold px-3 py-1.5 rounded hover:bg-slate-700 transition">
-                        Print / Export Sheet
-                    </button>
-                </div>
-
-                <div class="space-y-4 text-xs">
-                    <!-- Top Metadata -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <div>
-                            <label class="block font-bold text-slate-700 mb-1">Programme / Assigned SVR:</label>
-                            <input type="text" id="app-a-prog" placeholder="e.g., Bachelor of Computer Science SVR 2026" class="w-full p-2 border rounded">
-                        </div>
-                        <div>
-                            <label class="block font-bold text-slate-700 mb-1">Verifier Team / Stakeholder Session:</lab
+<body>
+<style>
+:root{
+  --ground:#E8EFF7;
+  --surface:#FFFFFF;
+  --surface-2:#EFF5FB;
+  --ink:#08131C;
+  --ink-2:#243B50;
+  --ink-3:#4C6479;
+  --line:#BACBDD;
+  --line-2:#D8E5F0;
+  --blue:#0B4E86;
+  --blue-deep:#08304F;
+  --blue-tint:#CFE3F6;
+  --teal:#04665A;
+  --teal-tint:#C9E7E1;
+  --amber:#7C5206;
+  --amber-tint:#F7E5C4;
+  --rose:#98281F;
+  --rose-tint:#FBD8D4;
+  --violet:#4A2C8C;
+  --violet-tint:#E2D9F7;
+  --shadow:0 1px 2px rgba(21,32,41,.05), 0 8px 24px -16px rgba(21,32,41,.28);
+  --radius:6px;
+  --sans:"IBM Plex Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --serif:"Spectral", Georgia, "Times New Roman", serif;
+  --mono:"IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#080E15;
+    --surface:#111C27;
+    --surface-2:#182533;
+    --ink:#F5F9FD;
+    --ink-2:#D2E0EC;
+    --ink-3:#A3B8CB;
+    --line:#35485C;
+    --line-2:#2A3949;
+    --blue:#9CCEF5;
+    --blue-deep:#C6E4FA;
+    --blue-tint:#153048;
+    --teal:#8CDCCF;
+    --teal-tint:#0E3230;
+    --amber:#F0C978;
+    --amber-tint:#362B14;
+    --rose:#F8ADA4;
+    --rose-tint:#3B2320;
+    --violet:#C4B4F0;
+    --violet-tint:#2A2244;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 30px -18px rgba(0,0,0,.8);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#080E15;
+  --surface:#111C27;
+  --surface-2:#182533;
+  --ink:#F5F9FD;
+  --ink-2:#D2E0EC;
+  --ink-3:#A3B8CB;
+  --line:#35485C;
+  --line-2:#2A3949;
+  --blue:#9CCEF5;
+  --blue-deep:#C6E4FA;
+  --blue-tint:#153048;
+  --teal:#8CDCCF;
+  --teal-tint:#0E3230;
+  --amber:#F0C978;
+  --amber-tint:#362B14;
+  --rose:#F8ADA4;
+  --rose-tint:#3B2320;
+  --violet:#C4B4F0;
+  --violet-tint:#2A2244;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 30px -18px rgba(0,0,0,.8);
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--ground);
+  color:var(--ink);
+  font-family:var(--sans);
+  font-size:16px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{font-family:var(--serif);font-weight:600;text-wrap:balance;margin:0;line-height:1.2}
+p{margin:0}
+a{color:var(--blue);text-decoration-thickness:1px;text-underline-offset:2px}
+:focus-visible{outline:2px solid var(--blue);outline-offset:2px;border-radius:3px}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+
+/* ---------- shell ---------- */
+.shell{display:flex;min-height:100vh;align-items:stretch}
+
+.rail{
+  width:274px;flex:0 0 274px;
+  background:var(--surface);
+  border-right:1px solid var(--line);
+  display:flex;flex-direction:column;
+  position:sticky;top:0;height:100vh;overflow-y:auto;
+}
+.brand{padding:22px 20px 16px;border-bottom:1px solid var(--line-2)}
+.brand .code{
+  font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--ink-2);display:block;margin-bottom:8px;
+}
+.brand h1{font-size:19px;letter-spacing:-.01em}
+.brand .sub{font-size:12.5px;color:var(--ink-3);margin-top:6px;line-height:1.45}
+
+.picker{padding:16px 20px;border-bottom:1px solid var(--line-2);background:var(--surface-2)}
+.picker label{
+  font-family:var(--sans);font-size:10.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink-2);display:block;margin-bottom:7px;
+}
+.picker select{
+  width:100%;font-family:var(--sans);font-size:13.5px;color:var(--ink);
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+  padding:8px 9px;line-height:1.3;
+}
+.picker .hint{font-size:12px;color:var(--ink-2);margin-top:7px;line-height:1.4}
+
+nav{padding:14px 12px 8px;flex:1}
+.navgroup{
+  font-family:var(--sans);font-size:10.5px;font-weight:600;letter-spacing:.11em;text-transform:uppercase;
+  color:var(--ink-2);padding:15px 9px 6px;
+}
+.navgroup:first-child{padding-top:2px}
+.navbtn{
+  display:flex;align-items:baseline;gap:10px;width:100%;text-align:left;
+  background:none;border:0;border-radius:var(--radius);
+  padding:7px 9px;cursor:pointer;color:var(--ink-2);
+  font-family:var(--sans);font-size:14px;line-height:1.35;
+  transition:background .12s,color .12s;
+}
+.navbtn:hover{background:var(--surface-2);color:var(--ink)}
+.navbtn .ref{font-family:var(--mono);font-size:12px;font-weight:600;color:var(--ink-2);flex:0 0 28px;letter-spacing:0;font-variant-numeric:tabular-nums}
+.navbtn.on{background:var(--blue-tint);color:var(--blue-deep);font-weight:500}
+.navbtn.on .ref{color:var(--blue-deep)}
+.navbtn.done .ref::after{content:"·";margin-left:2px;color:var(--teal);font-weight:700}
+
+.railfoot{padding:12px 20px 20px;border-top:1px solid var(--line-2);display:flex;flex-direction:column;gap:8px}
+.progressline{font-family:var(--sans);font-size:10.5px;font-weight:600;letter-spacing:.07em;color:var(--ink-2);text-transform:uppercase}
+.bar{height:3px;background:var(--line-2);border-radius:2px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--teal);width:0;transition:width .3s}
+
+.mobilebar{display:none}
+
+/* ---------- main ---------- */
+main{flex:1;min-width:0;padding:0 0 96px}
+.wrap{max-width:900px;padding:44px 44px 0;margin:0 auto}
+section.view{display:none;animation:fade .22s ease-out}
+section.view.on{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+
+.eyebrow{
+  font-family:var(--sans);font-size:12px;font-weight:600;letter-spacing:.085em;text-transform:uppercase;
+  color:var(--blue-deep);display:flex;align-items:center;gap:10px;margin-bottom:14px;
+}
+.eyebrow::after{content:"";height:1px;flex:1;background:var(--line)}
+h2.title{font-size:31px;letter-spacing:-.015em;margin-bottom:12px}
+.lede{font-size:17px;color:var(--ink-2);max-width:62ch;line-height:1.55}
+.lede.serif{font-family:var(--serif);font-size:18.5px;color:var(--ink)}
+
+h3{font-size:20px;margin:38px 0 4px;letter-spacing:-.01em}
+h3 .num{font-family:var(--mono);font-size:12.5px;color:var(--ink-2);margin-right:9px;letter-spacing:0;font-weight:500}
+h3 .secnum{font-family:var(--mono);font-size:14.5px;color:var(--blue-deep);margin-right:10px;letter-spacing:0;font-weight:600;font-variant-numeric:tabular-nums}
+h4{font-size:15.5px;margin:24px 0 4px;font-family:var(--sans);font-weight:600}
+.body{max-width:66ch;color:var(--ink-2);margin-top:10px}
+.body strong{color:var(--ink);font-weight:600}
+.body + .body{margin-top:12px}
+.stack{display:flex;flex-direction:column;gap:12px;margin-top:16px}
+.stack.tight{gap:8px}
+
+/* panels */
+.panel{
+  border-radius:var(--radius);padding:16px 18px;
+  border:1px solid var(--line);background:var(--surface);
+  display:flex;flex-direction:column;gap:8px;
+}
+.panel .tag{
+  font-family:var(--sans);font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;
+}
+.panel p, .panel li{font-size:14.5px;color:var(--ink-2);line-height:1.55}
+.panel strong{color:var(--ink)}
+.panel ul,.panel ol{margin:0;padding-left:19px;display:flex;flex-direction:column;gap:5px}
+.p-def{background:var(--amber-tint);border-color:transparent;border-left:3px solid var(--amber)}
+.p-def .tag{color:var(--amber)}
+.p-def em{font-family:var(--serif);font-size:16px;font-style:italic;color:var(--ink);line-height:1.5}
+.p-rule{background:var(--violet-tint);border-color:transparent;border-left:3px solid var(--violet)}
+.p-rule .tag{color:var(--violet)}
+.p-step{background:var(--teal-tint);border-color:transparent;border-left:3px solid var(--teal)}
+.p-step .tag{color:var(--teal)}
+.p-warn{background:var(--rose-tint);border-color:transparent;border-left:3px solid var(--rose)}
+.p-warn .tag{color:var(--rose)}
+.p-note{background:var(--surface-2)}
+.p-note .tag{color:var(--ink-3)}
+
+/* tables */
+.tablewrap{overflow-x:auto;margin-top:16px;border:1px solid var(--line);border-radius:var(--radius);background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:14px;min-width:520px}
+th{
+  text-align:left;background:var(--blue-deep);color:#fff;
+  font-family:var(--sans);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;
+  padding:10px 12px;vertical-align:bottom;
+}
+:root[data-theme="dark"] th{background:#26425A;color:var(--ink)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) th{background:#26425A;color:var(--ink)}}
+td{padding:10px 12px;border-top:1px solid var(--line);color:var(--ink-2);vertical-align:top;line-height:1.5}
+tbody tr:nth-child(even){background:var(--surface-2)}
+td.k{color:var(--ink);font-weight:600;white-space:nowrap}
+td.k.wrap{white-space:normal}
+td .mono,.mono{font-family:var(--mono);font-size:12.5px}
+.crit-n{font-family:var(--mono);color:var(--blue-deep);font-weight:600;font-size:13px}
+table.levels{min-width:880px;table-layout:fixed}
+table.levels td:first-child,table.levels th:first-child{width:132px}
+table.worked{min-width:1140px}
+table.worked td:nth-child(2),table.worked th:nth-child(2){width:150px}
+h3 .chip{
+  font-family:var(--sans);font-size:10.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--blue);background:var(--blue-tint);border-radius:20px;padding:3px 9px;
+  margin-left:10px;vertical-align:2px;font-weight:500;
+}
+
+/* cards */
+.grid{display:grid;gap:12px;margin-top:16px}
+.grid.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.grid.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.grid.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.card{
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+  padding:14px 15px;display:flex;flex-direction:column;gap:6px;
+}
+.card .n{font-family:var(--mono);font-size:11.5px;font-weight:600;color:var(--blue-deep);letter-spacing:.05em}
+.card h5{margin:0;font-size:14.5px;font-weight:600;font-family:var(--sans);color:var(--ink);line-height:1.3}
+.card p{font-size:13.5px;color:var(--ink-2);line-height:1.5}
+.card.accent{border-top:2px solid var(--blue)}
+
+/* chain / steps */
+.chain{display:flex;flex-direction:column;gap:0;margin-top:18px}
+.link{
+  display:flex;gap:0;align-items:stretch;background:var(--surface);
+  border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;
+}
+.link .no{
+  flex:0 0 42px;display:flex;align-items:center;justify-content:center;
+  background:var(--teal);color:#fff;font-family:var(--mono);font-size:14px;font-weight:500;
+}
+.link.given .no{background:var(--ink-3)}
+.link .txt{padding:11px 14px;flex:1;min-width:0}
+.link .txt b{display:block;font-size:14.5px;color:var(--ink);font-weight:600}
+.link .txt span{font-size:13.5px;color:var(--ink-2)}
+.link .meta{
+  flex:0 0 auto;padding:11px 14px;align-self:center;
+  font-family:var(--sans);font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);text-align:right;
+}
+.tick{height:12px;display:flex;justify-content:center;align-items:center;color:var(--line)}
+.tick svg{display:block}
+
+.fixedrow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:16px}
+.fixedrow div{
+  background:var(--surface-2);border:1px solid var(--line-2);border-radius:var(--radius);
+  padding:11px 12px;border-top:2px solid var(--ink-3);
+}
+.fixedrow b{display:block;font-size:13.5px;color:var(--ink);font-weight:600}
+.fixedrow span{font-size:13px;color:var(--ink-2)}
+
+/* controls */
+.btn{
+  font-family:var(--sans);font-size:13px;font-weight:500;
+  background:var(--surface);color:var(--ink);border:1px solid var(--line);
+  border-radius:var(--radius);padding:7px 13px;cursor:pointer;
+  transition:background .12s,border-color .12s;
+}
+.btn:hover{background:var(--surface-2);border-color:var(--ink-3)}
+.btn.primary{background:var(--blue);border-color:var(--blue);color:#fff}
+:root[data-theme="dark"] .btn.primary{color:#080E15}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .btn.primary{color:#080E15}}
+.btn.primary:hover{background:var(--blue-deep);border-color:var(--blue-deep)}
+.btn.sm{font-size:12px;padding:5px 10px}
+.btn[aria-pressed="true"]{background:var(--blue-tint);border-color:var(--blue);color:var(--blue-deep)}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:14px}
+.filters{display:flex;flex-wrap:wrap;gap:6px;margin-top:16px}
+
+/* quiz */
+.q{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.q .qhead{display:flex;gap:11px;align-items:baseline}
+.q .qn{font-family:var(--mono);font-size:13px;font-weight:600;color:var(--blue-deep);flex:0 0 auto}
+.q .qtext{font-size:14.5px;color:var(--ink);line-height:1.5}
+.q .opts{display:flex;flex-wrap:wrap;gap:6px}
+.q .fb{
+  display:none;font-size:13.5px;line-height:1.55;padding:10px 12px;border-radius:var(--radius);
+  background:var(--surface-2);color:var(--ink-2);border-left:3px solid var(--line);
+}
+.q .fb.show{display:block}
+.q .fb.right{background:var(--teal-tint);border-color:var(--teal)}
+.q .fb.wrong{background:var(--rose-tint);border-color:var(--rose)}
+.q .fb b{color:var(--ink)}
+.score{
+  display:flex;align-items:baseline;gap:12px;margin-top:18px;padding:13px 16px;
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+}
+.score .big{font-family:var(--mono);font-size:24px;color:var(--blue);font-variant-numeric:tabular-nums}
+.score .lbl{font-size:13.5px;color:var(--ink-2)}
+.reveal{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+.reveal > button{
+  width:100%;text-align:left;background:none;border:0;cursor:pointer;padding:13px 16px;
+  display:flex;gap:11px;align-items:baseline;font-family:var(--sans);color:var(--ink);
+}
+.reveal > button:hover{background:var(--surface-2)}
+.reveal .qn{font-family:var(--mono);font-size:13px;font-weight:600;color:var(--blue-deep);flex:0 0 auto}
+.reveal .qt{font-size:14.5px;line-height:1.5;flex:1}
+.reveal .chev{color:var(--ink-3);font-family:var(--mono);font-size:12px}
+.reveal .ans{display:none;padding:0 16px 14px 42px;flex-direction:column;gap:6px}
+.reveal.open .ans{display:flex}
+.reveal .verdict{font-size:14px;color:var(--ink);font-weight:600}
+.reveal .why{font-size:13.5px;color:var(--ink-2);line-height:1.55}
+.reveal .cluster{font-family:var(--sans);font-size:10.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--blue-deep)}
+
+/* checklist */
+.check{display:flex;flex-direction:column;gap:2px;margin-top:16px}
+.check label{
+  display:flex;gap:11px;align-items:flex-start;padding:9px 12px;border-radius:var(--radius);
+  cursor:pointer;font-size:14px;color:var(--ink-2);line-height:1.5;
+}
+.check label:hover{background:var(--surface-2)}
+.check input{margin:3px 0 0;accent-color:var(--teal);width:15px;height:15px;flex:0 0 auto}
+.check input:checked + span{color:var(--ink-3);text-decoration:line-through}
+
+/* accordion methods */
+.method{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+.method > button{
+  width:100%;display:flex;gap:12px;align-items:center;text-align:left;
+  background:none;border:0;cursor:pointer;padding:12px 15px;font-family:var(--sans);
+}
+.method > button:hover{background:var(--surface-2)}
+.method .mid{font-family:var(--mono);font-size:13.5px;color:var(--blue-deep);font-weight:600;flex:0 0 36px}
+.method .mname{font-size:14.5px;color:var(--ink);font-weight:600;flex:1}
+.method .fam{
+  font-family:var(--sans);font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);
+  border:1px solid var(--line);border-radius:20px;padding:2px 8px;
+}
+.method .spec{display:none;border-top:1px solid var(--line-2);padding:4px 15px 15px}
+.method.open .spec{display:block}
+.spec dl{margin:0;display:grid;grid-template-columns:150px 1fr;gap:0}
+.spec dt{
+  font-family:var(--sans);font-size:10.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);
+  padding:10px 12px 10px 0;border-top:1px solid var(--line-2);
+}
+.spec dd{margin:0;padding:10px 0;border-top:1px solid var(--line-2);font-size:14px;color:var(--ink-2);line-height:1.55}
+.spec dd strong{color:var(--ink)}
+
+/* builder */
+.field{display:flex;flex-direction:column;gap:5px;margin-top:14px}
+.field label{font-size:13px;font-weight:600;color:var(--ink)}
+.field .help{font-size:12.5px;color:var(--ink-2);line-height:1.45}
+.field input,.field textarea,.field select{
+  font-family:var(--sans);font-size:14px;color:var(--ink);background:var(--surface);
+  border:1px solid var(--line);border-radius:var(--radius);padding:9px 11px;line-height:1.5;width:100%;
+}
+.field textarea{min-height:70px;resize:vertical}
+.outline{
+  font-family:var(--serif);font-size:15px;line-height:1.7;color:var(--ink);
+  background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--blue);
+  border-radius:var(--radius);padding:16px 18px;margin-top:16px;
+  display:flex;flex-direction:column;gap:11px;
+}
+.outline mark{background:var(--blue-tint);color:var(--blue-deep);padding:0 3px;border-radius:2px;font-weight:500}
+.toast{
+  position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(70px);
+  background:var(--ink);color:var(--ground);font-size:13.5px;padding:9px 16px;border-radius:20px;
+  opacity:0;transition:opacity .2s,transform .2s;pointer-events:none;z-index:60;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+.pagefoot{
+  margin-top:52px;padding-top:18px;border-top:1px solid var(--line);
+  display:flex;justify-content:space-between;gap:14px;align-items:center;flex-wrap:wrap;
+  font-family:var(--sans);font-size:10.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);
+}
+.jump{display:flex;gap:8px}
+
+/* ---------- responsive ---------- */
+@media (max-width: 900px){
+  .grid.g4{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .grid.g3{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .fixedrow{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width: 760px){
+  .shell{flex-direction:column}
+  .rail{
+    position:static;height:auto;width:100%;flex:none;border-right:0;border-bottom:1px solid var(--line);
+  }
+  .rail nav,.rail .railfoot,.rail .picker{display:none}
+  .rail.open nav,.rail.open .railfoot,.rail.open .picker{display:block}
+  .mobilebar{display:flex;gap:10px;align-items:center;justify-content:space-between;padding:0 20px 16px}
+  .wrap{padding:26px 20px 0}
+  h2.title{font-size:25px}
+  .grid.g2,.grid.g3,.grid.g4{grid-template-columns:1fr}
+  .fixedrow{grid-template-columns:1fr}
+  .spec dl{grid-template-columns:1fr;gap:0}
+  .spec dt{padding-bottom:0;border-top:1px solid var(--line-2)}
+  .spec dd{padding-top:3px;border-top:0}
+  .link .meta{display:none}
+}
+</style>
+
+<div class="shell">
+  <aside class="rail" id="rail">
+    <div class="brand">
+      <span class="code">UPM ESD Series · SIM-ESD-CC-01</span>
+      <h1>Collaboration Competency Workbench</h1>
+    </div>
+    <div class="mobilebar">
+      <button class="btn sm" id="menubtn" aria-expanded="false">Contents</button>
+      <span class="mono" style="color:var(--ink-3);font-size:11px" id="mobwhere">Start here</span>
+    </div>
+    <div class="picker">
+      <label for="cluster">Your discipline cluster</label>
+      <select id="cluster"></select>
+      <p class="hint">Choose your cluster to start the module.</p>
+    </div>
+    <nav id="nav"></nav>
+    <div class="railfoot">
+      <span class="progressline" id="progtext">0 of 14 sections opened</span>
+      <div class="bar"><i id="progbar"></i></div>
+    </div>
+  </aside>
+
+  <main>
+    <div class="wrap" id="main"></div>
+  </main>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============ FIXED CONTENT ============ */
+var CRIT = [
+  {n:"Representing other positions", q:"Can the student state a position they disagree with, accurately and fairly, in a form its holder would accept?", from:"Ability 2 - understand and respect the needs, perspectives and actions of others (empathy)."},
+  {n:"Who is absent", q:"Can the student identify affected groups that were not represented in the process?", from:"Ability 5 - facilitate collaborative and participatory problem solving."},
+  {n:"Handling disagreement", q:"Did the student help resolve the disagreement rather than avoid or suppress it?", from:"Abilities 3 and 4 - empathic leadership, and dealing with conflicts in a group."},
+  {n:"Individual contribution", q:"What did this student personally change, concede or integrate, and at whose prompting?", from:"Added by UPM so a mark inside group work can be attributed to a person. Also carries ability 1, learn from others."}
+];
+var LEVELS = ["1 Limited","2 Developing","3 Proficient","4 Exemplary"];
+var GENERIC = [
+  ["Describes only their own position.","Describes another position but distorts it.","States a disagreed-with position accurately.","States it accurately enough that its holder would accept the account."],
+  ["Considers only the people in the room.","Notes that others exist but not who.","Identifies affected groups absent from the process.","Identifies the absent groups and what their absence changed."],
+  ["Avoids or suppresses the disagreement.","Acknowledges it but leaves it unresolved.","Works the disagreement through to a position.","Works it through and shows how it changed the outcome."],
+  ["No individual evidence; only the group product.","Claims a contribution but cannot show it.","Documents what they personally changed, conceded or integrated.","Documents it and explains at whose prompting, and why."]
+];
+var METHODS = [
+  {id:"M1",n:"Problem-Based Learning",f:"Inquiry",do:"An open-ended problem with no single right answer.",sub:"A one-page reasoning log: the definition I proposed, the one the group adopted, whose input changed mine, what I conceded.",also:"Systems Thinking, Critical Thinking",
+   conflict:"The file is built so the safest choice for each individual case, added together, is the worst choice overall. More technical knowledge does not resolve it.",
+   run:"Two sessions of 90 minutes, three weeks apart. Session A defines the problem; independent reading between; session B produces the protocol.",
+   prompt:"Which people are affected by this decision and appear nowhere in your file?",
+   watch:"Marking the protocol marks the group. Mark the reasoning log."},
+  {id:"M2",n:"Jigsaw",f:"Inquiry",do:"Master one part alone, then teach it to people who cannot finish without it.",sub:"An individual check on my own component, plus which other expert's argument changed my recommendation and what it corrected.",also:"Systems Thinking",
+   conflict:"The material is built so the four components conflict and cannot be reconciled. A choice must be made, and every choice makes some affected group invisible.",
+   run:"60 minutes in expert groups, 60 minutes in home groups, 20 minutes comparing the positions issued.",
+   prompt:"Which group does your chosen option make invisible, and what would including them require?",
+   watch:"If the four components agree, this is a comprehension test. Check the disagreement before issuing it."},
+  {id:"M3",n:"Project-Based Learning",f:"Project",do:"Weeks of work toward an output for a named client.",sub:"A signed contribution record plus a two-page justification memo: the option selected, whose interest was conceded, at whose prompting, what I now understand differently.",also:"Strategic, Integrated Problem-solving",
+   conflict:"The budget cannot fund what the affected party requests. The regulator's minimum sits between the two, so choosing it decides whose claim is discounted.",
+   run:"Four milestones: week 3 framing, week 6 options, week 9 client panel, week 11 final delivery.",
+   prompt:"Who is affected and not on the petition? Petitioners are self-selected.",
+   watch:"A polished report hides a weak process. Assess at milestones; never let the report alone carry the mark."},
+  {id:"M4",n:"Design Thinking",f:"Project",do:"Build with real users, then be corrected by one you did not expect.",sub:"A reframing memo: the problem statement before user contact and after, the exact comment that forced the change, who the design still disadvantages.",also:"Self-awareness, Strategic",
+   conflict:"The second round of contact is arranged so it invalidates the team's definition of the problem, at the point where changing it is expensive.",
+   run:"Week 2 first contact, week 3 define, week 5 prototype, week 6 test one, week 8 test two, week 10 redefine and rebuild.",
+   prompt:"Which group does your final design still disadvantage, and what would including them have cost?",
+   watch:"Teams will imagine users instead of meeting them. Require the contact log as a condition of submission."},
+  {id:"M5",n:"Rapid Design Workshop",f:"Project",do:"A short, time-boxed working session against requirements that conflict.",sub:"A trade-off log: which requirement my scheme broke and why, whose requirement I defended that was not my own, the moment I changed the scheme.",also:"Integrated Problem-solving",
+   conflict:"The four requirement cards are incompatible. Every scheme must break one, so the decision is about whose claim loses, not about technique.",
+   run:"30 minutes briefing, 60 minutes first attempt, 15 minutes cross-table challenge, 45 minutes resolution, 30 minutes presentation and defence.",
+   prompt:"State the requirement you are about to break in the form its holder would state it, before you break it.",
+   watch:"Reward the scheme and you reward the fastest drafter. Mark the trade-off log."},
+  {id:"M6",n:"SULAM / Service Learning",f:"Experiential",do:"A real community need, with the partner defining the problem.",sub:"Five journal entries written to set prompts, plus the partner feedback form.",also:"Self-awareness, Normative",
+   conflict:"Two groups inside the same community are consulted separately, their accounts do not match, and only one of them holds formal standing.",
+   run:"Week 2 problem definition with the partner, weeks 4 to 9 fieldwork, week 10 review with both groups present, week 12 delivery.",
+   prompt:"Whose account of the problem did you adopt, and whose did you set aside?",
+   watch:"Hours served is not evidence, and neither is gratitude. Mark the precision of the reflection, never its warmth."},
+  {id:"M7",n:"Living Lab",f:"Experiential",do:"A real change on campus, run with the staff it affects.",sub:"An account of the negotiation with affected staff: what they asked for, what changed in the design, what monitoring showed I got wrong.",also:"Strategic, Integrated Problem-solving",
+   conflict:"The change cannot proceed without the daily cooperation of people with no stake in the students' grade, and whose work it alters.",
+   run:"Weeks 1 to 3 baseline, week 4 negotiation with affected staff, weeks 5 to 10 live, week 11 monitoring, week 12 report including what failed.",
+   prompt:"Submit the signed consent record, with what the staff asked for and whether it was granted.",
+   watch:"Students design around staff, then report success. The consent record is what prevents this."},
+  {id:"M8",n:"Role-Play",f:"Simulation",do:"Take a role and decide under constraints that conflict with another role's.",sub:"A justification written afterwards: what I pushed for, the strongest form of the position I opposed, what I conceded and to whom, what I did about the person with least airtime.",also:"Normative",
+   conflict:"Every role card carries a private constraint, set so no joint position can be reached without someone breaking theirs. The party with the most legitimate claim has the least standing.",
+   run:"20 minutes preparation, 50 minutes in role, 20 minutes debrief conducted out of role.",
+   prompt:"Who spoke least, and what did each of you do about it?",
+   watch:"Performance skill is not competence. A confident speaker with weak reasoning must not score highly. Mark the written justification."},
+  {id:"M9",n:"Negotiation / Mock Hearing",f:"Simulation",do:"Reach a published agreement across conflicting interests, under deadline.",sub:"A concession log, plus a one-page account of an opposing party's position written so its holder would accept it.",also:"Normative",
+   conflict:"Confidential briefs set each party a limit. Agreement is possible only if at least two concede a stated priority. Deadlock is a permitted and instructive outcome.",
+   run:"15 minutes briefing, 20 minutes separate preparation, 45 minutes negotiation, 10 minutes drafting, 20 minutes debrief.",
+   prompt:"Who is affected by this decision and had no party at the table?",
+   watch:"If one party wins outright, the briefs were set wrongly. Check that room for agreement exists before running it."},
+  {id:"M10",n:"Structured Academic Controversy",f:"Dialogue",do:"Argue a position, then argue against yourself, then seek a joint one.",sub:"A statement: the strongest argument on the side I did not start on, the point at which I changed my mind or why I did not, the joint position I could sign.",also:"Normative, Critical Thinking",
+   conflict:"The switch is compulsory, and a pair may not switch until the opposing pair accepts its restatement of their case as accurate.",
+   run:"15 minutes preparation, 10 minutes each side presents, 10 minutes each side restates the other's case, 20 minutes with sides switched, 20 minutes roles dropped, 15 minutes writing.",
+   prompt:"Who is affected by this proposition and was represented by neither pair?",
+   watch:"The restatement step is where the competency lives, and it is the step cut when running late. Cut preparation instead. Never grade the position held."},
+  {id:"M11",n:"Deliberative Forum",f:"Dialogue",do:"A citizens' panel weighs options and must produce a minority report.",sub:"A statement: the option I entered with, the option I left with, the testimony that moved me, and whether I signed the main recommendation or the minority report and why.",also:"Normative",
+   conflict:"The briefing papers are of equal quality and genuinely incompatible. There is no analytically correct answer, so the panel cannot settle it by finding the right paper.",
+   run:"30 minutes reading, 40 minutes questioning witnesses, 40 minutes table discussion, 30 minutes drafting the recommendation, 20 minutes drafting the minority report.",
+   prompt:"Which affected group had no witness, and what would you have asked them?",
+   watch:"The minority report is the device that stops the panel rewarding conformity. Require at least one member per table to be able to sign it."}
+];
+</script>
+
+<script>
+/* ============ 14 DISCIPLINE CLUSTERS ============ */
+/* m = the situation for M1..M11 in this cluster.  r = rubric rows [judgedFrom, L1, L2, L3, L4] */
+var CLUSTERS = [
+{n:"Health, Medical and Life Sciences",
+ t:"Antimicrobial stewardship",
+ i:"Clinicians want certainty for the patient in front of them; public health wants restraint for patients who do not yet exist. The future patient cannot insist.",
+ p:"M1 Problem-Based Learning; M8 Role-Play; M6 SULAM",
+ a:"Students work a stewardship file split so each holds one part only; they state the clinical position they oppose in its strongest form; they name the patients absent from the file; a treatment meeting is run in which one family member has least standing.",
+ am:"Case conference simulation, plus an individual clinical memo",
+ s:"Individual clinical memo",
+ o:"The opposed clinical position as its holder would accept it; the patient group absent from the file and what their absence changed; the disagreement worked through and room made for the family member with least standing; what was conceded, at whose prompting.",
+ m:["The unit that ran out of options. Groups act as a hospital stewardship committee facing rising antibiotic resistance; each student holds a different part of the file.",
+ "Four case definitions for one outbreak; the notified count changes with the definition chosen.",
+ "A clinic redesign with fixed staffing, where access and safety targets cannot both be met.",
+ "Patient information tested with a low-literacy patient and one who does not speak the clinic's language.",
+ "A hospital unit layout with infection control, patient dignity, staffing and cost cards.",
+ "A health-literacy engagement with a clinic and, separately, with the people who never attend it.",
+ "A hand-hygiene or waste-segregation change negotiated with support staff.",
+ "A treatment-withdrawal meeting where one family member has least standing.",
+ "A formulary hearing between clinicians, pharmacy, a patient group and the payer.",
+ "A proposition on mandatory vaccination or on rationing a scarce treatment.",
+ "A panel on the harms and benefits of a screening programme."],
+ r:[["Part (a), the opposed clinical position","Gives only the student's own recommendation; the opposing clinician does not appear.","Mentions the opposing clinician, but as simple over-prescribing.","States the case of the opposing clinician accurately, including the risk to the patient in front of them.","States it so the opposing clinician would accept the wording, and concedes what is strongest in it."],
+    ["Part (c), patients absent from the file","Considers only those present at the case conference.","Notes that others are affected but does not say who.","Names future patients and non-attenders and what including them would require.","Names them and states what their absence changed: the protocol was written for present cases only."],
+    ["The account of the case conference","Reports no disagreement, or records it as settled without discussion.","Records the disagreement but leaves it open.","Works the disagreement through to an agreed prescribing protocol.","Works it through, makes room for the family member with least standing, and shows what changed as a result."],
+    ["Part (d), the closing paragraph","No individual account; only the group prescribing protocol.","Claims a contribution to the group protocol but cannot show it.","Records what the student changed or conceded, and what they took from the opposing clinician.","Records it, names at whose prompting, and states what they now judge differently about prescribing under uncertainty."]]},
+
+{n:"Sciences",
+ t:"Fertiliser runoff",
+ i:"Smallholders need yield now; downstream fishing households need water quality. Neither attends the other's meetings.",
+ p:"M7 Living Lab; M2 Jigsaw; M11 Deliberative Forum",
+ a:"Students run a real monitoring or handling change and must negotiate it with the technicians and operators whose work it alters; each masters one analytical method and must reconcile it with three that disagree at the regulatory threshold.",
+ am:"Live intervention with a consent record, plus an individual negotiation account",
+ s:"Individual negotiation account",
+ o:"The affected staff position in their own terms; the residents or users left unconsulted and what that changed; the concession made to staff who could not refuse; what monitoring showed the student got wrong.",
+ m:["Parts of a contaminated-site dataset: the safest remediation per sample is collectively unaffordable.",
+ "Four analytical methods for one contaminant; detection limits disagree exactly at the regulatory threshold.",
+ "A monitoring programme where statistical power and budget conflict with the community's demand for coverage.",
+ "A public science output tested with a community group that distrusts the institution producing it.",
+ "A field campaign with safety, data quality, cost and landholder access cards.",
+ "A community monitoring engagement with residents and, separately, the operator being monitored.",
+ "The campus is the experiment. Students design and run a real change on campus: solvent handling in a teaching laboratory, canteen food waste, or cooling in one block. It goes live and is monitored.",
+ "A public inquiry on a monitoring result where a resident cannot read the report.",
+ "A consent hearing between operator, regulator, scientists and residents.",
+ "A proposition on a precautionary ban versus managed use.",
+ "A panel on the siting of a proposed research or industrial facility."],
+ r:[["The section giving the operators' position","Gives only the student's own recommendation; the technicians and operators do not appear.","Mentions the technicians and operators, but as resistance to change.","States the case of the technicians and operators accurately, including the cost to their own working day.","States it so the technicians and operators would accept the wording, and concedes what is strongest in it."],
+    ["The paragraph on residents or users not consulted","Considers only those present at the week 4 negotiation.","Notes that others are affected but does not say who.","Names residents downstream of the change and what including them would require.","Names them and states what their absence changed: the intervention was scoped to the laboratory only."],
+    ["The account of the week 4 negotiation","Reports no disagreement, or records it as settled without discussion.","Records the disagreement but leaves it open.","Works the disagreement through to a change the operators would run.","Works it through, makes room for staff who were in no position to refuse, and shows what changed as a result."],
+    ["The monitoring paragraph","No individual account; only the group intervention report.","Claims a contribution to the group intervention report but cannot show it.","Records what the student changed or conceded, and what they took from the technicians and operators.","Records it, names at whose prompting, and states what the monitoring showed they had got wrong."]]},
+
+{n:"Engineering",
+ t:"Discharge standard selection",
+ i:"The client wants the legal minimum, downstream users the achievable maximum, the regulator enforceability. All three are defensible.",
+ p:"M3 Project-Based Learning; M9 Negotiation / Mock Hearing; M5 Rapid Design Workshop",
+ a:"Teams specify a discharge standard against a client budget, regulator conditions and a downstream petition that cannot all be met; a client panel pushes back on cost at week 9; students find users not on the self-selected petition.",
+ am:"Client-panel negotiation, plus an individual justification memo",
+ s:"Individual justification memo",
+ o:"The downstream users' cost argument in its strongest financial form; the affected user absent from the petition and what that changed in the standard; the deadlock worked through; what was conceded and to whom.",
+ m:["A failure investigation where each student holds one subsystem log; the fix that is right for one worsens another.",
+ "Four design codes for one structure; each permits what another forbids.",
+ "The discharge standard. Teams act as consultants to a food-processing plant specifying effluent treatment, holding catchment data, a client budget letter, the regulator's conditions and a downstream petition.",
+ "A product tested with a user whose actual working conditions the team never modelled.",
+ "A plant layout with safety distance, cost, maintainability and community buffer cards.",
+ "A village infrastructure engagement with users and, separately, the authority that must maintain it.",
+ "An energy or water change negotiated with the maintenance team who must sustain it.",
+ "A design review where the operator who must maintain it has least standing.",
+ "A standards hearing between client, regulator, contractor and downstream users.",
+ "A proposition on a code change with significant cost implications.",
+ "A panel on an infrastructure route with three alignments."],
+ r:[["Part (a), the opposing position","Gives only the student's own recommendation; the downstream water users do not appear.","Mentions the downstream water users, but as an emotional appeal about the river.","States the case of the downstream water users accurately, including the cost of treatment they already bear.","States it so the downstream water users would accept the wording, and concedes what is strongest in it."],
+    ["Part (c), the absent user","Considers only those present at the client panel.","Notes that others are affected but does not say who.","Names downstream households not on the petition and what including them would require.","Names them and states what their absence changed: the standard was set to the petition, not the catchment."],
+    ["The narrative section of the concession log","Reports no disagreement, or records it as settled without discussion.","Records the disagreement but leaves it open.","Works the disagreement through to the standard actually selected.","Works it through, makes room for a party with less leverage than their own team, and shows what changed as a result."],
+    ["Part (d), the closing paragraph","No individual account; only the team design report.","Claims a contribution to the team design report but cannot show it.","Records what the student changed or conceded, and what they took from the downstream water users.","Records it, names at whose prompting, and states what they now understand differently about the budget constraint."]]},
+
+{n:"Computer Science and Information Technology",
+ t:"Triage or recommender algorithms",
+ i:"Accuracy for the majority is bought with error for a minority absent from the training data.",
+ p:"M4 Design Thinking; M1 Problem-Based Learning; M2 Jigsaw",
+ a:"Teams build a public-service tool with two rounds of contact with real users, the second including a user the team did not recruit and did not anticipate, arranged so it invalidates the week 3 definition of the problem.",
+ am:"User-testing cycle with a contact log, plus an individual reframing memo",
+ s:"Individual reframing memo",
+ o:"The unanticipated user's requirement as that user stated it; the group the design still disadvantages and what including them would cost; how the team settled its disagreement about reframing; the comment that changed the student's own position.",
+ m:["An incident file split by system layer; the fastest fix at each layer breaks the layer below.",
+ "Four fairness measures for one classifier; no model satisfies more than two.",
+ "A system whose accessibility budget is below the standard the user group requires.",
+ "The user you did not test with. Teams build a public-service digital tool with two rounds of real user contact, the second including a user recruited by the lecturer rather than the team.",
+ "A system design with speed, privacy, cost and accessibility cards.",
+ "A digital-inclusion engagement with an NGO and, separately, its clients who are offline.",
+ "A campus system change negotiated with the help desk and the users it re-routes.",
+ "An incident review where the on-call engineer has least standing.",
+ "A data-sharing negotiation between platform, regulator, researchers and the people described.",
+ "A proposition on encryption, content moderation or algorithmic transparency.",
+ "A panel on public use of a recognition or scoring system."],
+ r:[["The paragraph on the unanticipated user","Gives only the student's own recommendation; the unanticipated user does not appear.","Mentions the unanticipated user, but as a defect report.","States the case of the unanticipated user accurately, including the workaround they already use.","States it so the unanticipated user would accept the wording, and concedes what is strongest in it."],
+    ["The paragraph on the group still disadvantaged","Considers only those present at the week 8 test.","Notes that others are affected but does not say who.","Names users with no device or no connection and what including them would require.","Names them and states what their absence changed: the design assumed a smartphone throughout."],
+    ["The account of the decision to reframe","Reports no disagreement, or records it as settled without discussion.","Records the disagreement but leaves it open.","Works the disagreement through to a reframed problem statement.","Works it through, makes room for the team member who wanted to scrap the week 3 definition, and shows what changed as a result."],
+    ["The before-and-after problem statement","No individual account; only the team prototype.","Claims a contribution to the team prototype but cannot show it.","Records what the student changed or conceded, and what they took from the unanticipated user.","Records it, names at whose prompting, and states which of their own assumptions the user comment removed."]]},
+
+{n:"Mathematics and Statistics",
+ t:"Indicator choice and aggregation",
+ i:"A mean and a median tell different stories about the same community. Whoever picks the statistic picks the winner.",
+ p:"M2 Jigsaw; M10 Structured Academic Controversy; M11 Deliberative Forum",
+ a:"Four expert groups each master one deprivation measure, then home groups must issue one ranking although the measures conflict; students argue for an indicator, then against it; they identify whom their statistic makes invisible.",
+ am:"Indicator negotiation, plus an individual statistical position statement",
+ s:"Individual statistical position statement",
+ o:"The strongest case for the measure rejected, in its advocates' terms; the group the chosen measure makes invisible; how the ranking dispute was settled; which expert's argument changed the recommendation and what it corrected.",
+ m:["Each student receives a different subsample; the defensible estimate for each conflicts with the pooled one.",
+ "Four ways to count the poor. An agency must publish one deprivation figure for five districts; four expert groups each master one measure, then home groups must issue a single ranking.",
+ "An analytics product where the client wants one headline number and users need the uncertainty shown.",
+ "A dashboard tested with a decision-maker who visibly misreads the uncertainty display.",
+ "A survey design with precision, respondent burden, cost and coverage cards.",
+ "A data audit with the agency that publishes the figures and, separately, the residents they describe.",
+ "A queueing or scheduling change negotiated with the counter staff whose day it re-times.",
+ "A statistics review board where the surveyed community has least standing.",
+ "A negotiation on the official indicator between agency, ministry, media and the community measured.",
+ "A proposition on a disputed statistical adjustment in official reporting.",
+ "A panel on a census question or a classification change."],
+ r:[["The paragraph on the measure rejected","Gives only the student's own recommendation; the advocates of the rejected measure do not appear.","Mentions the advocates of the rejected measure, but as a preference for simple numbers.","States the case of the advocates of the rejected measure accurately, including the data that supports it.","States it so the advocates of the rejected measure would accept the wording, and concedes what is strongest in it."],
+    ["The paragraph on the group made invisible","Considers only those present at the home group.","Notes that others are affected but does not say who.","Names the population the chosen measure does not count and what including them would require.","Names them and states what their absence changed: two districts moved in the ranking."],
+    ["The account of the home group's ranking","Reports no disagreement, or records it as settled without discussion.","Records the disagreement but leaves it open.","Works the disagreement through to a single agreed ranking.","Works it through, makes room for an expert whose measure was being dismissed, and shows what changed as a result."],
+    ["The closing statement","No individual account; only the group ranking.","Claims a contribution to the group ranking but cannot show it.","Records what the student changed or conceded, and what they took from the advocates of the rejected measure.","Records it, names at whose prompting, and states which expert's argument corrected their recommendation."]]},
+
+{n:"Education",
+ t:"Streaming and resource allocation",
+ i:"Teachers want manageable classes, some parents want acceleration, others want retained support. Learners are not consulted.",
+ p:"M11 Deliberative Forum; M10 Structured Academic Controversy; M9 Negotiation",
+ a:"The class becomes a citizens' panel on medium of instruction or a funding formula, working from three incompatible briefing papers and questioning six witnesses; a recommendation and a minority report are both required.",
+ am:"Deliberative panel, plus an individual forum statement",
+ s:"Individual forum statement",
+ o:"The option not signed in its strongest form; the affected group with no witness and what they would have been asked; the discussion held open for a participant being talked over; the testimony that moved the student.",
+ m:["A school improvement file split by role; the action each role would fund crowds out the others.",
+ "Four assessment models for one cohort; each identifies a different set of failing students.",
+ "A curriculum package where the funder's contact hours and the teachers' method are incompatible.",
+ "A learning resource tested with a learner whose disability the team did not anticipate.",
+ "A timetable with contact hours, inclusion support, staffing and room cards.",
+ "A learning-support engagement with teachers and, separately, parents who never attend meetings.",
+ "A teaching-space or timetable pilot negotiated with the staff it displaces.",
+ "A placement or exclusion meeting where the learner has least standing.",
+ "A funding formula negotiation between ministry, schools, the teachers' union and parents.",
+ "A proposition on streaming, standardised testing or medium of instruction.",
+ "The panel on medium of instruction. The class becomes a citizens' panel of about twenty-four on medium of instruction, working from three incompatible briefing papers and questioning six witnesses."],
+ r:[["The paragraph restating the option not signed","Gives only the student's own recommendation; the option the student did not sign does not appear.","Mentions the option the student did not sign, but as a slogan about standards.","States the case of the option the student did not sign accurately, including its best evidence.","States it so an advocate of that option would accept the wording, and concedes what is strongest in it."],
+    ["The answer to the prompt asked before drafting","Considers only those present at the panel.","Notes that others are affected but does not say who.","Names learners themselves, who had no witness, and what including them would require.","Names them and states what their absence changed: the recommendation addressed teachers only."],
+    ["The account of the table discussion","Reports no disagreement, or records it as settled without discussion.","Records the disagreement but leaves it open.","Works the disagreement through to a recommendation and a minority report.","Works it through, makes room for a participant being talked over, and shows what changed as a result."],
+    ["The entered-with, left-with statement","No individual account; only the panel recommendation.","Claims a contribution to the panel recommendation but cannot show it.","Records what the student changed or conceded, and what they took from the option they did not sign.","Records it, names at whose prompting, and states which testimony moved them and what it corrected."]]},
+
+{n:"Economics, Accounting, Business, Finance and Management",
+ t:"Supplier selection",
+ i:"Margin, employment in the supplying community and disclosure duties pull three ways. The supplier's workforce has no seat.",
+ p:"M9 Negotiation / Mock Hearing; M1 Problem-Based Learning; M10 Structured Academic Controversy",
+ a:"Four delegations negotiate a supplier labour standard under confidential limits that allow agreement only if two concede a stated priority; a published decision is required by the deadline.",
+ am:"Multi-party negotiation with a published decision, plus an individual concession log",
+ s:"Individual concession log and opposing-position account",
+ o:"An opposing delegation's position written in its holder's terms; the affected group with no party at the table and what their presence would have changed; the deadlock broken and at what cost; concessions and at whose prompting.",
+ m:["A failing-supplier file; the prudent finance, procurement and disclosure positions cannot all be funded.",
+ "Four valuation bases for one asset; each produces a different solvency verdict.",
+ "A venture plan where investor return and a living-wage commitment cannot both be met.",
+ "A financial product tested with a customer with no bank account or informal income.",
+ "A service network with margin, local employment, customer access and emissions cards.",
+ "A microenterprise engagement with owners and, separately, their unpaid family workers.",
+ "A procurement or catering change negotiated with the vendors whose income it alters.",
+ "A restructuring meeting where the contract workforce has least standing.",
+ "The supplier standard. A retailer must set a labour standard for its suppliers: four delegations are finance, procurement, the supplier's management and a workers' organisation from the supplying district.",
+ "A proposition on mandatory living-wage disclosure in supply chains.",
+ "A panel on a subsidy or tax change with three drafted options."],
+ r:[["The account of an opposing delegation","Gives only the student's own recommendation; the workers' organisation does not appear.","Mentions the workers' organisation, but as an unaffordable demand.","States the case of the workers' organisation accurately, including the commercial pressure the student rejects.","States it so the workers' organisation would accept the wording, and concedes what is strongest in it."],
+    ["The paragraph on the group with no party","Considers only those present at the negotiation table.","Notes that others are affected but does not say who.","Names the supplier's workforce and its subcontractors and what including them would require.","Names them and states what their absence changed: the standard bound the supplier but not its subcontractors."],
+    ["The negotiation narrative","Reports no disagreement, or records it as settled without discussion.","Records the disagreement but leaves it open.","Works the disagreement through to a published standard, or a reasoned deadlock.","Works it through, makes room for the delegation with the least formal leverage, and shows what changed as a result."],
+    ["The individual concession entries","No individual account; only the agreed standard.","Claims a contribution to the agreed standard but cannot show it.","Records what the student changed or conceded, and what they took from the workers' organisation.","Records it, names at whose prompting, and states what the concession cost their own delegation."]]},
+
+{n:"Language, Literature and Communication",
+ t:"Crisis communication",
+ i:"The agency wants calm, the affected community wants full disclosure, and the least literate audience gets the least usable message.",
+ p:"M8 Role-Play; M10 Structured Academic Controversy; M11 Deliberative Forum",
+ a:"Six roles take part in a press conference on a discharge incident, one of them a resident briefed in a minority language and given restricted speaking time; private constraints make a joint statement impossible unless someone breaks theirs.",
+ am:"Crisis communication role-play, plus an individual written justification",
+ s:"Individual written justification",
+ o:"The opposed party's position in the register that party would use; the audience left unreachable and what reaching them would require; what the student did about the participant with restricted time; the clause pushed for and conceded.",
+ m:["A misinformation incident with one file per channel; the correction that works on each contradicts the others.",
+ "Four translations of one disputed clause; each shifts where liability falls.",
+ "A campaign where the client's message control conflicts with the community's language needs.",
+ "A public notice tested with the least literate part of its intended audience.",
+ "A newsroom decision with accuracy, speed, harm to a named party and audience reach cards.",
+ "A documentation engagement with speakers of a language and, separately, the institution archiving them.",
+ "A signage or announcement redesign negotiated with the staff who must deliver it.",
+ "The statement nobody can sign. A press conference on a factory discharge incident: six roles, one of them a resident briefed in a minority language and given restricted speaking time.",
+ "A broadcast code hearing between broadcaster, regulator, complainant and advertiser.",
+ "A proposition on language policy or on the right to be forgotten.",
+ "A panel on a media regulation proposal."],
+ r:[["The paragraph giving the opposed party's position","Gives only the student's own recommendation; the residents' representative does not appear.","Mentions the residents' representative, but as a demand for blame.","States the case of the residents' representative accurately, including what disclosure would cost them if withheld.","States it so the residents' representative would accept the wording, and concedes what is strongest in it."],
+    ["The paragraph on the unreachable audience","Considers only those present at the press conference.","Notes that others are affected but does not say who.","Names the audience who read neither language of the statement and what including them would require.","Names them and states what their absence changed: the statement reached only literate readers."],
+    ["The account of the statement drafting","Reports no disagreement, or records it as settled without discussion.","Records the disagreement but leaves it open.","Works the disagreement through to a statement the parties could issue.","Works it through, makes room for the participant with restricted speaking time, and shows what changed as a result."],
+    ["The record of the clause pushed for","No individual account; only the joint statement.","Claims a contribution to the joint statement but cannot show it.","Records what the student changed or conceded, and what they took from the residents' representative.","Records it, names at whose prompting, and states what they now judge differently about disclosure."]]},
+
+{n:"Sociology, Psychology and Human Development",
+ t:"Community intervention design",
+ i:"The funder's outcome measure, the practitioner's method and the community's own account of the problem rarely coincide.",
+ p:"M10 Structured Academic Controversy; M6 SULAM; M1 Problem-Based Learning",
+ a:"Students argue a contested welfare proposition, then must have their restatement of the opposing case accepted before switching sides; in the field they consult a provider and, separately, the people who do not use the service.",
+ am:"Controversy cycle, plus an individual change-of-mind statement",
+ s:"Individual change-of-mind statement",
+ o:"The strongest argument on the side not started on; whose account of the problem was displaced; the joint position both pairs could sign; the point at which the student's view changed, or reasons why it did not.",
+ m:["A safeguarding case with fragmented agency records; each agency's correct next step blocks another's.",
+ "Four working definitions of one concept; each yields a different prevalence.",
+ "An intervention where the funder's outcome measure and the community's stated priority diverge.",
+ "An instrument tested with a respondent for whom half the items do not apply.",
+ "A service design with confidentiality, reach, safeguarding and cost cards.",
+ "A needs assessment with a service provider and, separately, people who do not use the service.",
+ "A wellbeing change negotiated with the students targeted and the staff who deliver it.",
+ "A case conference where the service user has least standing.",
+ "An ethics committee hearing between researcher, institution, participant group and funder.",
+ "Argue it, then argue against yourself. Groups of four split into two pairs on a contested proposition, for example that conditional cash transfers should replace in-kind support in a named district.",
+ "A panel on a welfare conditionality proposal."],
+ r:[["The paragraph on the side not started on","Gives only the student's own recommendation; the side the student did not start on does not appear.","Mentions the side the student did not start on, but as an ideological position.","States the case of the side the student did not start on accurately, including the argument they found hardest to answer.","States it so that side would accept the wording, and concedes what is strongest in it."],
+    ["The paragraph on whose account was displaced","Considers only those present at the controversy.","Notes that others are affected but does not say who.","Names the people the proposition is about and what including them would require.","Names them and states what their absence changed: the joint position was written for practitioners."],
+    ["The account of reaching the joint position","Reports no disagreement, or records it as settled without discussion.","Records the disagreement but leaves it open.","Works the disagreement through to a joint position both pairs could sign.","Works it through, makes room for the pair whose restatement was rejected twice, and shows what changed as a result."],
+    ["The change-of-mind paragraph","No individual account; only the joint statement.","Claims a contribution to the joint statement but cannot show it.","Records what the student changed or conceded, and what they took from the side they did not start on.","Records it, names at whose prompting, and states the point at which their own view changed, or why it did not."]]},
+
+{n:"Architecture, Design, Built Environment and Construction",
+ t:"Urban redevelopment",
+ i:"Density targets, heritage value and the security of existing occupants are incompatible. Occupants are not on the client list.",
+ p:"M5 Rapid Design Workshop; M3 Project-Based Learning; M9 Negotiation",
+ a:"A three-hour design session issues four incompatible requirement cards, the occupants' card held by the smallest sub-team; every scheme must break one requirement, stated in its holder's terms before it is broken.",
+ am:"Design session with a pin-up defence, plus an individual trade-off log",
+ s:"Individual trade-off log",
+ o:"The broken requirement as its holder would state it; what the occupants' absence changed in the scheme; the claim defended that was not the student's own; the moment the scheme changed and what caused it.",
+ m:["A post-incident building file; the compliant remedy for each discipline breaches another's requirement.",
+ "Four accessibility or fire standards for one building; meeting one breaches another.",
+ "A brief where density, heritage and existing occupancy cannot all be honoured.",
+ "A space tested with an occupant whose pattern of use was never in the brief.",
+ "Three hours, one site, four claims. A three-hour session on a real infill site issues four cards: the density target, a heritage listing, the security of existing occupants and a flood easement.",
+ "An upgrading engagement with owner-occupiers and, separately, tenants.",
+ "A change to a shared space negotiated with its occupants and with the cleaners.",
+ "A planning hearing where the occupant without title has least standing.",
+ "A planning appeal between developer, authority, heritage body and occupants.",
+ "A proposition on demolition versus retrofit of a listed building.",
+ "A panel on a redevelopment plan with three options."],
+ r:[["The statement of the requirement broken","Gives only the student's own recommendation; the holder of the requirement broken does not appear.","Mentions the holder of the requirement broken, but as an obstacle to the density target.","States the case of the holder of the requirement broken accurately, including the consequence of breaking it.","States it so the holder of the requirement broken would accept the wording, and concedes what is strongest in it."],
+    ["The paragraph on the occupants","Considers only those present at the design session.","Notes that others are affected but does not say who.","Names the existing occupants and what including them would require.","Names them and states what their absence changed: the scheme rehoused nobody."],
+    ["The account of the cross-table challenge","Reports no disagreement, or records it as settled without discussion.","Records the disagreement but leaves it open.","Works the disagreement through to a scheme the table could defend.","Works it through, makes room for the smallest sub-team, holding the occupants' card, and shows what changed as a result."],
+    ["The entry on the moment the scheme changed","No individual account; only the group scheme.","Claims a contribution to the group scheme but cannot show it.","Records what the student changed or conceded, and what they took from the holder of the requirement broken.","Records it, names at whose prompting, and states what caused them to change the scheme."]]},
+
+{n:"Agriculture, Forestry, Aquaculture, Veterinary, Environmental and Food Sciences",
+ t:"Land and water use conversion",
+ i:"Plantation or pond returns, customary claims, animal welfare and biodiversity duties conflict. The customary claimant may hold no document.",
+ p:"M6 SULAM / Service Learning; M9 Negotiation / Mock Hearing; M7 Living Lab",
+ a:"A semester engagement consults the cooperative board and, separately, the non-member women who do the processing, whose accounts do not match; a land or water concession hearing puts customary claimants opposite commercial interests.",
+ am:"SULAM engagement with partner review, plus a prompted reflective journal",
+ s:"Prompted reflective journal with partner feedback",
+ o:"The second constituency's account in their own terms; what changed once both groups were in the review; the disagreement with the partner worked through; what the student stopped believing.",
+ m:["A yield-collapse file split into agronomy, hydrology, animal health and market data; each remedy defeats the others.",
+ "Four certification schemes for one farm or fishery; each passes and fails different practices.",
+ "A farm or aquaculture plan where certification, yield, animal welfare and customary access conflict.",
+ "An extension tool tested with a smallholder who has no smartphone.",
+ "A landscape or catchment plan with yield, biodiversity, customary access and water cards.",
+ "The plot with two owners. A semester engagement with a village cooperative board and, separately, the non-member women who do the processing.",
+ "A campus farm, hatchery or composting change negotiated with the workers who operate it.",
+ "A certification or welfare audit where the migrant harvest worker has least standing.",
+ "A land or water concession hearing between operator, agency, customary claimants and a conservation body.",
+ "A proposition on a conversion moratorium versus certification.",
+ "A panel on a fisheries, forestry or livestock quota with three options."],
+ r:[["Journal entry 2","Gives only the student's own recommendation; the non-member processors do not appear.","Mentions the non-member processors, but as reluctance to modernise.","States the case of the non-member processors accurately, including the income the change would cost them.","States it so the non-member processors would accept the wording, and concedes what is strongest in it."],
+    ["Journal entry 5","Considers only those present at the week 10 review.","Notes that others are affected but does not say who.","Names the second constituency inside the community and what including them would require.","Names them and states what their absence changed: the first plan served the board alone."],
+    ["Journal entries 3 and 4","Reports no disagreement, or records it as settled without discussion.","Records the disagreement but leaves it open.","Works the disagreement through to a plan both constituencies would sign.","Works it through, makes room for the constituency with no formal standing, and shows what changed as a result."],
+    ["Journal entry 4, read against the partner feedback","No individual account; only the delivered output.","Claims a contribution to the delivered output but cannot show it.","Records what the student changed or conceded, and what they took from the non-member processors.","Records it, names at whose prompting, and states what they stopped believing about the community's problem."]]},
+
+{n:"Law",
+ t:"Land tenure and environmental liability",
+ i:"Statutory title, customary claim and public interest point to different holders of the same land. The customary claimant cannot fund litigation.",
+ p:"M9 Negotiation / Mock Hearing; M10 Structured Academic Controversy; M8 Role-Play",
+ a:"A moot or settlement conference puts statutory title, customary claim and an environmental regulator in the same room over one parcel; each side must restate the opposing case accurately before argument proceeds; a settlement or a reasoned failure is required.",
+ am:"Moot or settlement conference, plus an individual client advice note",
+ s:"Individual client advice note",
+ o:"The opposing claim put at its highest, as its own counsel would put it; the interest holder with no representation and what representation would require; the point conceded to break deadlock; what the student would now advise differently and why.",
+ m:["A single set of facts with each student holding one instrument: title, tenancy, easement, consent; each reading is sound and they cannot all prevail.",
+ "Four authorities on one point of law; each is binding on a different question and they cannot all be applied.",
+ "A compliance programme where the client's appetite for risk and the regulator's expectation cannot both be met.",
+ "A plain-language legal form tested with a litigant in person who has already been turned away once.",
+ "A drafting session on one clause with certainty, fairness, enforceability and cost-of-compliance cards.",
+ "A legal-literacy clinic with an advice agency and, separately, clients whose cases it declined.",
+ "A change to a campus complaints or disciplinary process negotiated with those who administer it.",
+ "A plea or settlement meeting where the unrepresented party has least standing.",
+ "A settlement conference between statutory title holder, customary claimant, regulator and an unrepresented neighbour.",
+ "A proposition on strict liability versus a fault standard for environmental harm.",
+ "A panel on sentencing guidelines or on a proposed statutory duty."],
+ r:[["The paragraph putting the opposing claim at its highest","Gives only the student's own recommendation; the opposing counsel does not appear.","Mentions the opposing counsel, but as a technicality.","States the case of the opposing counsel accurately, including the authority most damaging to the student's own case.","States it so the opposing counsel would accept the wording, and concedes what is strongest in it."],
+    ["The paragraph on the unrepresented interest","Considers only those present at the settlement conference.","Notes that others are affected but does not say who.","Names the neighbour with an interest but no representation and what including them would require.","Names them and states what their absence changed: the settlement bound a party who was never heard."],
+    ["The account of the settlement conference","Reports no disagreement, or records it as settled without discussion.","Records the disagreement but leaves it open.","Works the disagreement through to a settlement, or a reasoned failure to settle.","Works it through, makes room for the party who could not fund litigation, and shows what changed as a result."],
+    ["The closing advice paragraph","No individual account; only the agreed settlement terms.","Claims a contribution to the agreed settlement terms but cannot show it.","Records what the student changed or conceded, and what they took from opposing counsel.","Records it, names at whose prompting, and states what they would now advise differently, and why."]]},
+
+{n:"Arts and Humanities",
+ t:"Heritage interpretation and display",
+ i:"The institution wants a coherent narrative, the source community wants control of its own account, and the funder wants attendance. The source community owns nothing in the building.",
+ p:"M10 Structured Academic Controversy; M6 SULAM; M11 Deliberative Forum",
+ a:"Students curate an interpretation of a contested object or text with a source community consulted directly; two readings of the same material are argued, then swapped; the community reviews the draft label before it is finalised.",
+ am:"Curatorial review with community consultation, plus an individual interpretive statement",
+ s:"Individual interpretive statement",
+ o:"The source community's reading in their own words; the audience or descendant group not consulted and what consulting them would require; the disagreement over the label worked through; what the student removed from the draft and at whose request.",
+ m:["An acquisition file split into ownership history, condition, community claim and funding; the responsible course for each defeats the others.",
+ "Four critical readings of one text or object; each is defensible and they cannot all appear on the same label.",
+ "An exhibition where the funder's attendance target and the source community's conditions cannot both be met.",
+ "A gallery label tested with a visitor from the community the object came from.",
+ "A gallery hang with narrative coherence, conservation limits, community conditions and visitor flow cards.",
+ "A community heritage project with a cultural association and, separately, the younger members who no longer attend.",
+ "A change to a campus gallery, performance or studio space negotiated with technicians and users.",
+ "A repatriation meeting where the source community has least standing.",
+ "A repatriation or loan negotiation between museum, source community, funder and government.",
+ "A proposition on restitution versus retention of a contested collection.",
+ "A panel on which histories a national collection should tell, with three curatorial options."],
+ r:[["The paragraph giving the source community's reading","Gives only the student's own recommendation; the source community does not appear.","Mentions the source community, but as a claim of ownership.","States the case of the source community accurately, including their account of how the object left them.","States it so the source community would accept the wording, and concedes what is strongest in it."],
+    ["The paragraph on the group not consulted","Considers only those present at the curatorial review.","Notes that others are affected but does not say who.","Names descendant communities not represented by the association and what including them would require.","Names them and states what their absence changed: the label spoke for a community that had not seen it."],
+    ["The account of the disagreement over the label","Reports no disagreement, or records it as settled without discussion.","Records the disagreement but leaves it open.","Works the disagreement through to a label the community would accept.","Works it through, makes room for the community member with no institutional standing, and shows what changed as a result."],
+    ["The record of what was removed from the draft","No individual account; only the group exhibition text.","Claims a contribution to the group exhibition text but cannot show it.","Records what the student changed or conceded, and what they took from the source community.","Records it, names at whose prompting, and states what they removed from the draft, and at whose request."]]},
+
+{n:"Hospitality, Tourism, Sport, Recreation and Services",
+ t:"Destination and event development",
+ i:"Operators want throughput, residents want a liveable street, and seasonal workers want hours that do not collapse out of season. Workers are not consulted on either.",
+ p:"M6 SULAM / Service Learning; M9 Negotiation / Mock Hearing; M7 Living Lab",
+ a:"Students plan a destination, event or service change with operators, a residents' association and seasonal staff consulted separately; a stakeholder forum must agree a carrying capacity or roster that no party can fully accept.",
+ am:"Stakeholder forum with a published plan, plus an individual impact and concession memo",
+ s:"Individual impact and concession memo",
+ o:"The residents' or workers' objection in their own terms; the seasonal or informal workforce with no seat and what including them would require; the capacity dispute worked through; the concession made and at whose prompting.",
+ m:["An overtourism file split into revenue, resident amenity, staffing and environmental load; each department's correct response worsens another's.",
+ "Four carrying-capacity models for one destination; each sets a different limit on visitor numbers.",
+ "A destination plan where operator throughput and resident amenity cannot both be met.",
+ "A booking or service journey tested with a guest with limited mobility and with the front-line worker who must deliver it.",
+ "An event plan with capacity, resident amenity, worker hours and safety cards.",
+ "A tourism engagement with an operators' association and, separately, the seasonal staff it employs.",
+ "A change to campus catering, accommodation or sport provision negotiated with the staff who run it.",
+ "A licensing or roster meeting where the seasonal worker has least standing.",
+ "A carrying-capacity negotiation between operators, a residents' association, the local authority and seasonal staff.",
+ "A proposition on a tourist levy or a cap on short-term letting.",
+ "A panel on visitor caps, cruise berthing or event licensing with three options."],
+ r:[["The paragraph giving the residents' or workers' objection","Gives only the student's own recommendation; the residents' association does not appear.","Mentions the residents' association, but as hostility to visitors.","States the case of the residents' association accurately, including the cost to daily life in the street.","States it so the residents' association would accept the wording, and concedes what is strongest in it."],
+    ["The paragraph on the workforce with no seat","Considers only those present at the stakeholder forum.","Notes that others are affected but does not say who.","Names seasonal and informal workers and what including them would require.","Names them and states what their absence changed: the roster was set without the people who work it."],
+    ["The account of the capacity dispute","Reports no disagreement, or records it as settled without discussion.","Records the disagreement but leaves it open.","Works the disagreement through to a capacity or roster figure the forum published.","Works it through, makes room for seasonal staff with no contract, and shows what changed as a result."],
+    ["The record of the concession made","No individual account; only the group destination plan.","Claims a contribution to the group destination plan but cannot show it.","Records what the student changed or conceded, and what they took from the residents' association.","Records it, names at whose prompting, and states what the concession cost, and at whose prompting it was made."]]}
+];
+</script>
+
+<script>
+/* ============ STATE ============ */
+var SECTIONS = [
+  {g:"Understand"},
+  {id:"start",  ref:"00", nav:"Start here"},
+  {id:"meaning",ref:"01", nav:"What it means"},
+  {id:"criteria",ref:"02",nav:"The four criteria"},
+  {g:"Your course"},
+  {id:"field",  ref:"03", nav:"Your discipline"},
+  {id:"methods",ref:"04", nav:"Choose a method"},
+  {id:"design", ref:"05", nav:"Design it, test it"},
+  {g:"Assess"},
+  {id:"brief",  ref:"06", nav:"The assignment"},
+  {id:"rubric", ref:"07", nav:"The rubric"},
+  {id:"audit",  ref:"08", nav:"Align and audit"},
+  {g:"Practise"},
+  {id:"checks", ref:"09", nav:"Self-checks"},
+  {id:"plan",   ref:"10", nav:"My plan"}
+];
+var IDS = SECTIONS.filter(function(s){return s.id}).map(function(s){return s.id});
+var store = {
+  get:function(k,d){ try{ var v=localStorage.getItem("esdcc_"+k); return v===null?d:JSON.parse(v); }catch(e){ return d; } },
+  set:function(k,v){ try{ localStorage.setItem("esdcc_"+k,JSON.stringify(v)); }catch(e){} }
+};
+var ci = store.get("cluster",0);
+if(typeof ci!=="number" || ci<0 || ci>13) ci=0;
+var seen = store.get("seen",[]);
+if(!Array.isArray(seen)) seen=[];
+var current = "start";
+function C(){ return CLUSTERS[ci]; }
+function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+
+/* ============ SECTION BUILDERS ============ */
+function head(ref,eyebrow,title,lede){
+  return '<div class="eyebrow">'+ref+' &middot; '+eyebrow+'</div><h2 class="title">'+title+'</h2><p class="lede">'+lede+'</p>';
+}
+
+function sec_start(){
+  return head("Section 0","Start here","How to teach and assess Collaboration in your own course",
+   "Work through the tabs in order. You will finish with one activity, one assignment and one rubric that are ready to use.")
+  +'<div class="stack">'
+  +'<div class="panel p-rule"><span class="tag">The one rule</span><p>If a student could score full marks <strong>without using the competency</strong>, you have not assessed it. Every check on this site is a way of applying that rule earlier.</p></div>'
+  +'</div>'
+  +'<h3>What is already decided for you</h3>'
+  +'<div class="fixedrow">'
+  +'<div><b>Your course</b><span>One you teach now</span></div>'
+  +'<div><b>The primary SDG</b><span>Already selected</span></div>'
+  +'<div><b>The competency</b><span>Collaboration</span></div>'
+  +'<div><b>The CLO</b><span>Already mapped to PLO12</span></div>'
+  +'</div>'
+  +'<div class="stack"><div class="panel p-step"><span class="tag">What you decide</span><p>The teaching activity, the assignment, and the rubric descriptors adapted to your discipline. That is all this site asks of you.</p></div></div>'
+  +'<h3>Group work is not Collaboration</h3>'
+  +'<div class="grid g2">'
+  +'<div class="card"><span class="n">Group work</span><h5>Divides labour among people who already agree</h5><p>Four students writing four sections have divided the work. Most existing group assignments are divisible, and a divisible task cannot evidence this competency.</p></div>'
+  +'<div class="card accent"><span class="n">Collaboration</span><h5>Integrates people who disagree</h5><p>The student must take seriously a position they think is wrong, notice who is affected but absent, and stay in a disagreement long enough to be changed by it.</p></div>'
+  +'</div>'
+  +'<div class="stack"><div class="panel p-warn"><span class="tag">The question an examiner asks</span><p>Not <em>did your students work together</em>. They ask: <strong>which document shows why two students in the same group scored differently?</strong></p></div></div>'
+  +'<h3>How to use this site</h3>'
+  +'<div class="stack tight">'
+  +'<div class="panel"><p><strong>1 &middot; Pick your discipline cluster</strong> in the sidebar to customise the module to your cluster.</p></div>'
+  +'<div class="panel"><p><strong>2 &middot; Work down the sidebar in order.</strong> Understand the competency, choose a method, write the brief, adapt the rubric, audit the result.</p></div>'
+  +'<div class="panel"><p><strong>3 &middot; Fill in <em>My plan</em> as you go.</strong> It saves in this browser and can be copied into your course file at the end.</p></div>'
+  +'</div>';
+}
+
+function sec_meaning(){
+  var abil=[
+   ["Learn from others","The student's position must have changed, and the change traced to a named person's input."],
+   ["Understand and respect other perspectives","State a position you disagree with, in a form its holder would accept."],
+   ["Relate to and be sensitive to others","Act on that understanding when you hold influence: make room for the party least able to insist."],
+   ["Deal with conflicts in a group","Disagreement must be present, surfaced and worked through."],
+   ["Facilitate participatory problem solving","Attend to who is affected by the problem and absent from the process."]];
+  var conf=[
+   ["...is group work","Four students writing four sections have divided labour, not collaborated.","Was any student's position changed by another?"],
+   ["...is participation","A student who dominates may participate a great deal but still fail to listen.","Who spoke least, and what did this student do about it?"],
+   ["...is agreement","Smooth agreement can hide an unresolved difference, or a silent member who gave up.","What was the main disagreement, and how was it handled?"],
+   ["...is communication skill","A persuasive speaker with a fixed position does not demonstrate Collaboration.","If presentation style is removed, is a change in position still visible?"]];
+  var h = head("Section 2","Understanding the competency","What Collaboration means",
+    "Five abilities in the source definition, four confusions that appear in real course files, and one constraint that rules out half the methods you might have used.");
+  h+='<div class="stack"><div class="panel p-def"><span class="tag">Definition &middot; UNESCO (2017)</span><em>Collaboration competency: the abilities to learn from others; to understand and respect the needs, perspectives and actions of others (empathy); to understand, relate to and be sensitive to others (empathic leadership); to deal with conflicts in a group; and to facilitate collaborative and participatory problem solving.</em></div></div>';
+  h+='<h3>The five abilities, and what each demands of student work</h3><div class="grid g2">';
+  abil.forEach(function(a,i){ h+='<div class="card"><span class="n">Ability '+(i+1)+'</span><h5>'+a[0]+'</h5><p>'+a[1]+'</p></div>'; });
+  h+='</div>';
+  h+='<h3>What Collaboration is not</h3><div class="tablewrap"><table><thead><tr><th>Confusion</th><th>Why it fails</th><th>Ask instead</th></tr></thead><tbody>';
+  conf.forEach(function(c){ h+='<tr><td class="k wrap">Collaboration '+c[0]+'</td><td>'+c[1]+'</td><td>'+c[2]+'</td></tr>'; });
+  h+='</tbody></table></div>';
+  h+='<h3>Which evidence can carry it</h3>';
+  h+='<div class="fixedrow" style="grid-template-columns:repeat(3,minmax(0,1fr))">'
+   +'<div><b>Cognitive</b><span>Knowledge &middot; supporting role</span></div>'
+   +'<div style="border-top-color:var(--teal);background:var(--teal-tint)"><b>Socio-emotional</b><span>Perspectives, empathy, conflict &middot; main role</span></div>'
+   +'<div><b>Behavioural</b><span>Participatory action &middot; important role</span></div></div>';
+  h+='<div class="stack"><div class="panel"><p>Because Collaboration is mainly socio-emotional and behavioural, the evidence must have two parts: <strong>a process</strong> in which the student engaged with another position, and <strong>an individual written record</strong> of what happened in it.</p></div>'
+   +'<div class="panel p-warn"><span class="tag">Cannot provide sufficient evidence</span><p>A written examination, a multiple-choice test, an essay written alone, an unprompted reflective paragraph. However the question is phrased, these produce knowledge evidence and no rubric repairs that.</p></div></div>';
+  return h;
+}
+
+function sec_criteria(){
+  var h = head("Section 2.5","The rubric criteria","The four criteria",
+    "The five abilities condense into three observable behaviours, and each becomes one rubric criterion. A fourth is added for what the student does with the analysis.");
+  h+='<h3>The four criteria, one by one</h3>';
+  h+='<div class="grid g2">';
+  CRIT.forEach(function(c,i){ h+='<div class="card accent"><span class="n">Criterion '+(i+1)+'</span><h5>'+c.n+'</h5><p>'+c.q+'</p><p style="color:var(--ink-2);font-size:12.5px">'+c.from+'</p></div>'; });
+  h+='</div>';
+  h+='<div class="stack"><div class="panel p-note"><span class="tag">Numbering</span><p>Where Collaboration is the <strong>first</strong> competency in a course these are criteria 1 to 4. Where it is the <strong>second</strong>, they are numbered 5 to 8 in the alignment table. Always name the criterion as well as numbering it.</p></div></div>';
+  h+='<h3>The fixed rubric</h3><p class="body">This wording is the starting point for every discipline. The four criteria, their names and the four level names never change. Only the descriptors are rewritten &mdash; see <strong>The rubric</strong>.</p>';
+  h+='<div class="tablewrap"><table class="levels"><thead><tr><th>Criterion</th>';
+  LEVELS.forEach(function(l){ h+='<th>'+l+'</th>'; });
+  h+='</tr></thead><tbody>';
+  CRIT.forEach(function(c,i){
+    h+='<tr><td class="k wrap"><span class="crit-n">'+(i+1)+'</span><br>'+c.n+'</td>';
+    GENERIC[i].forEach(function(d){ h+='<td>'+d+'</td>'; });
+    h+='</tr>';
+  });
+  h+='</tbody></table></div>';
+  h+='<div class="stack"><div class="panel p-rule"><span class="tag">Fixed</span><p>Four criteria and their names. Four levels: Limited, Developing, Proficient, Exemplary. Do not add a fifth criterion, drop one, or rename a level.</p></div></div>';
+  return h;
+}
+
+function sec_field(){
+  var c=C();
+  var h = head("Section 2.4 &amp; 3.4","Your discipline","Collaboration in "+esc(c.n),
+    "Collaboration cannot be practised on a problem with one right answer. Your course already contains a situation where informed people want incompatible things.");
+  h+='<div class="stack">'
+   +'<div class="panel"><span class="tag" style="color:var(--ink-3)">Topic already taught</span><p style="font-size:17px;color:var(--ink);font-family:var(--serif)">'+esc(c.t)+'</p></div>'
+   +'<div class="panel p-warn"><span class="tag">The competing interests</span><p>'+esc(c.i)+'</p></div></div>';
+  h+='<h3>Four questions to find your own topic</h3>'
+   +'<div class="stack tight">'
+   +'<div class="panel p-step"><p><strong>1</strong> &nbsp;Name one topic you already teach.</p></div>'
+   +'<div class="panel p-step"><p><strong>2</strong> &nbsp;Who is affected by decisions about it? List four groups.</p></div>'
+   +'<div class="panel p-step"><p><strong>3</strong> &nbsp;Do any two want incompatible things? State it in one sentence.</p></div>'
+   +'<div class="panel p-step"><p><strong>4</strong> &nbsp;Which of them has least ability to insist? That group is where criterion 2 enters.</p></div>'
+   +'<div class="panel p-note"><p>If question 3 fails, the topic is technical. Choose another week.</p></div></div>';
+  h+='<h3>The worked design for this cluster</h3>'
+   +'<div class="tablewrap"><table><tbody>'
+   +'<tr><td class="k">Pedagogy</td><td>'+esc(c.p)+'</td></tr>'
+   +'<tr><td class="k">Learning activities</td><td>'+esc(c.a)+'</td></tr>'
+   +'<tr><td class="k">Assessment method</td><td>'+esc(c.am)+'</td></tr>'
+   +'<tr><td class="k">Individual submission</td><td><strong>'+esc(c.s)+'</strong></td></tr>'
+   +'</tbody></table></div>';
+  h+='<h3>What that submission must contain</h3>'
+   +'<div class="stack"><div class="panel p-step"><span class="tag">In criterion order 1, 2, 3, 4</span><p>'+esc(c.o)+'</p></div></div>';
+  return h;
+}
+
+function sec_methods(){
+  var c=C();
+  var h = head("Section 3","Pedagogy","Choose a method",
+    "Eleven methods, each written for your cluster. All eleven are a strong fit for Collaboration; that is why they are in the bank.");
+  h+='<div class="stack"><div class="panel p-rule"><span class="tag">Three rules for any activity</span><ul>'
+   +'<li><strong>Build the conflict in.</strong> If four cooperative students can finish the task by dividing the work, the activity develops nothing.</li>'
+   +'<li><strong>Use two linked activities.</strong> Once produces a story. Twice, spaced, with focused feedback between, produces an ability.</li>'
+   +'<li><strong>Leave an individual trace.</strong> Something each student personally wrote must survive the activity. Decide what it is before you run it.</li>'
+   +'</ul></div></div>';
+  h+='<h3>The method bank<span class="chip">'+esc(c.n)+'</span></h3>';
+  var fams=["All","Inquiry","Project","Experiential","Simulation","Dialogue"];
+  h+='<div class="filters" role="group" aria-label="Filter by method family">';
+  fams.forEach(function(f){ h+='<button class="btn sm fam-f" data-fam="'+f+'" aria-pressed="'+(f==="All")+'">'+f+'</button>'; });
+  h+='</div><div class="stack" id="methodlist" style="margin-top:12px">';
+  METHODS.forEach(function(m,i){
+    h+='<div class="method" data-fam="'+m.f+'">'
+     +'<button type="button" aria-expanded="false"><span class="mid">'+m.id+'</span><span class="mname">'+m.n+'</span><span class="fam">'+m.f+'</span><span class="chev">+</span></button>'
+     +'<div class="spec"><dl>'
+     +'<dt>In your cluster</dt><dd><strong>'+esc(c.m[i])+'</strong></dd>'
+     +'<dt>The conflict built in</dt><dd>'+m.conflict+'</dd>'
+     +'<dt>Run and timing</dt><dd>'+m.run+'</dd>'
+     +'<dt>Required prompt</dt><dd>'+m.prompt+'</dd>'
+     +'<dt>Individual evidence</dt><dd>'+m.sub+'</dd>'
+     +'<dt>Watch out</dt><dd style="color:var(--rose)">'+m.watch+'</dd>'
+     +'<dt>Also develops</dt><dd>'+m.also+'</dd>'
+     +'</dl></div></div>';
+  });
+  h+='</div>';
+  h+='<h3>Practice, then assessed</h3><p class="body">Rule 2 asks for two linked activities on the same topic. Only the second one is marked.</p>'
+   +'<div class="tablewrap"><table><thead><tr><th>Arrangement</th><th>Practice &middot; week 5, no mark</th><th>Assessed &middot; week 9</th></tr></thead><tbody>'
+   +'<tr><td class="k">In class only</td><td>M10 Structured Academic Controversy, 90 minutes in class</td><td>M9 Negotiation on the assessed scenario, 2 hours in class</td></tr>'
+   +'<tr><td class="k wrap">With an external partner</td><td>M8 Role-Play with built-in role conflict, 90 minutes</td><td>M6 SULAM or M7 Living Lab with a real affected party, half a day. Requires a partner agreement and a risk assessment.</td></tr>'
+   +'</tbody></table></div>'
+   +'<div class="stack"><div class="panel p-step"><span class="tag">What the feedback between them does</span><ol>'
+   +'<li>After run one, students self-assess against the published rubric. Ten minutes, in writing.</li>'
+   +'<li>You return one sentence naming the single criterion to work on. Not a grade.</li>'
+   +'<li>Run two uses a different scenario and the identical rubric.</li>'
+   +'<li>Only run two is marked. Run one carries no mark, and is the reason run two is usable.</li>'
+   +'</ol></div>'
+   +'<div class="panel p-warn"><span class="tag">Methods that cannot carry a claim</span><p><strong>Gamification</strong> develops motivation only. <strong>Reflective and narrative methods alone</strong> evidence Self-awareness, not working across difference. <strong>A written exam</strong> reaches only the cognitive domain.</p></div></div>';
+  return h;
+}
+
+function sec_design(){
+  var h = head("Section 4","The design map","Design it, then test it",
+    "Six steps from a topic to a reported mark, and five tests that stop a weak design from continuing.");
+  h+='<h3>The six-step design workflow</h3>';
+  var steps=[
+   ["Identify competing interests","Choose a topic where informed people can reasonably want different outcomes.","Your discipline"],
+   ["Select the pedagogy","Choose methods that require learners to engage with different perspectives.","Choose a method"],
+   ["Plan practice and assessment","Practice activity, then feedback, then assessed activity.","Choose a method"],
+   ["Write the assessment brief","Ask for individual evidence matching the four criteria, one clause each.","The assignment"],
+   ["Write evidence indicators","State where the marker looks, and what each rubric level looks like in this task.","The rubric"],
+   ["Align, moderate and report","Check alignment, second-mark a sample, then report PLO12 attainment.","Align and audit"]];
+  var h2='<div class="chain">';
+  steps.forEach(function(s,i){
+    if(i) h2+='<div class="tick"><svg width="11" height="9" viewBox="0 0 11 9" aria-hidden="true"><path d="M5.5 9L0 0h11z" fill="currentColor"/></svg></div>';
+    h2+='<div class="link"><div class="no">'+(i+1)+'</div><div class="txt"><b>'+s[0]+'</b><span>'+s[1]+'</span></div><div class="meta">'+s[2]+'</div></div>';
+  });
+  h2+='</div>';
+  h+=h2;
+  h+='<div class="stack"><div class="panel p-def"><span class="tag">Key idea</span><p>The design is only as strong as its weakest link. Build the learning activity, the assessment and the rubric as one connected system, not as three separate decisions.</p></div></div>';
+  h+='<h3>The five tests</h3><p class="body">The tests are not steps. Answer each one about the design you have in mind. A failure sends you back to a step above rather than letting the design continue.</p>';
+  h+='<div class="stack" id="testrunner">';
+  TESTS.forEach(function(t,i){
+    h+='<div class="q" data-i="'+i+'"><div class="qhead"><span class="qn">T'+(i+1)+'</span><span class="qtext"><strong>'+t.name+'</strong><br>'+t.q+'</span></div>'
+     +'<div class="opts"><button class="btn sm t-ans" data-v="Yes">Yes</button><button class="btn sm t-ans" data-v="No">No</button></div>'
+     +'<div class="fb"></div></div>';
+  });
+  h+='</div><div class="row"><button class="btn" id="testreset">Clear answers</button></div>';
+  h+='<div class="stack"><div class="panel p-note"><span class="tag">Why the tests run in this order</span><p>Each test catches a fault the next step would hide. A weak topic produces a busy-looking activity; an activity with no built-in conflict produces a substantial-looking group document; a group document produces a mark that looks fair; and an assignment answerable without the competency produces a rubric that looks rigorous.</p></div></div>';
+  return h;
+}
+
+function sec_brief(){
+  var c=C();
+  var h = head("Section 5.1 to 5.4","Designing the assessment","The assignment brief",
+    "One assignment carries Collaboration. Write it in four clauses, one per criterion, and attach an individual submission to every group activity.");
+  h+='<div class="grid g2">'
+   +'<div class="card"><span class="n" style="color:var(--rose)">Assesses knowledge about it</span><h5 style="font-family:var(--serif);font-weight:400;font-style:italic">&ldquo;Discuss the importance of stakeholder collaboration in sustainable water management, with examples.&rdquo;</h5><p>A student who memorised the lecture and met nobody scores full marks. Nothing here supports four rubric levels except length and polish.</p></div>'
+   +'<div class="card accent"><span class="n">Assesses the competency</span><h5 style="font-family:var(--serif);font-weight:400;font-style:italic">&ldquo;After the week 9 activity, submit: (a) a one-page statement of the position you argued against, written so its holder would accept it; (b) a concession log naming what you gave up, at whose prompting, and why; (c) one paragraph naming an affected group with no party at the table and what including them would have required; (d) one paragraph on what you now understand differently.&rdquo;</h5><p>Four clauses, four criteria. It cannot be started without having been in the room.</p></div>'
+   +'</div>';
+  h+='<h3>The four clause rule</h3>'
+   +'<div class="tablewrap"><table><thead><tr><th>Clause</th><th>Criterion</th><th>What it must require</th></tr></thead><tbody>'
+   +'<tr><td class="k">(a)</td><td class="k wrap"><span class="crit-n">1</span> Representing other positions</td><td>A named opposing position, stated so its holder would accept the wording.</td></tr>'
+   +'<tr><td class="k">(b)</td><td class="k wrap"><span class="crit-n">3</span> Handling disagreement</td><td>An account of the disagreement and how it was worked through, including who was given room.</td></tr>'
+   +'<tr><td class="k">(c)</td><td class="k wrap"><span class="crit-n">2</span> Who is absent</td><td>An affected group absent from the process, and what including them would require.</td></tr>'
+   +'<tr><td class="k">(d)</td><td class="k wrap"><span class="crit-n">4</span> Individual contribution</td><td>What this student changed or conceded, at whose prompting, and what they now understand differently.</td></tr>'
+   +'</tbody></table></div>'
+   +'<div class="stack"><div class="panel p-rule"><p>A <strong>criterion with no clause</strong> means students were never asked for that evidence, so its absence cannot be marked down. A <strong>clause with no criterion</strong> is work you asked for and will not mark.</p></div></div>';
+  h+='<h3>The individual evidence rule</h3>'
+   +'<div class="stack"><div class="panel p-warn"><span class="tag">Two fixes that do not work</span><p>A bare peer-rating percentage measures popularity. A contribution split decided by the group measures bargaining about marks. A group viva produces one performance, not four judgements.</p></div>'
+   +'<div class="panel p-step"><span class="tag">Three that do</span><ul>'
+   +'<li><strong>A revision log.</strong> What changed, why, and at whose prompting.</li>'
+   +'<li><strong>A reflective account written to set prompts.</strong> Two pages is enough.</li>'
+   +'<li><strong>A justified peer assessment.</strong> Valid provided you mark the <em>justification</em>, never the ratings.</li>'
+   +'</ul></div>'
+   +'<div class="panel p-note"><span class="tag">In '+esc(c.n)+'</span><p>The individual submission for this cluster is the <strong>'+esc(c.s)+'</strong>, attached to: '+esc(c.am.toLowerCase())+'.</p></div></div>';
+  h+='<h3>Three traps when marking</h3>'
+   +'<div class="tablewrap"><table><thead><tr><th>Trap</th><th>Looks like</th><th>Fix</th></tr></thead><tbody>'
+   +'<tr><td class="k">Marking the group</td><td>A group report used as individual evidence. It scores 78, so all five students are recorded as Proficient.</td><td>Attach a short individual output. Five students in one group routinely land on three different levels.</td></tr>'
+   +'<tr><td class="k">Marking sincerity</td><td>A warmly written reflection scores above a dry one.</td><td>Mark specificity and reasoning: the named input, the named person, the stated change. Never sentiment.</td></tr>'
+   +'<tr><td class="k">Marking the position</td><td>Rewarding the student who took the side you would have taken, or who spoke most.</td><td>Mark whether the opposing position was represented accurately and whether a concession was actually made. Two students on opposite sides can both reach level 4.</td></tr>'
+   +'</tbody></table></div>';
+  h+='<h3>Placement, weight and threshold</h3>'
+   +'<div class="stack"><div class="panel p-rule"><span class="tag">Four decisions</span><ol>'
+   +'<li>Assess Collaboration through <strong>one</strong> component, not several. Split across three and none discriminates.</li>'
+   +'<li>Weight it <strong>15 to 25 per cent</strong>. Below 10 per cent students under-invest and the evidence degrades.</li>'
+   +'<li>Attainment is computed from the four criteria alone. Other criteria may carry course marks; state this in the outline.</li>'
+   +'<li><strong>Mark all four levels.</strong> The rubric is not capped for Collaboration.</li>'
+   +'</ol></div>'
+   +'<div class="panel p-note"><p>The group event is not marked for PLO12. It creates the conditions; the individual submission carries the judgement. The week 5 practice run carries no mark at all.</p></div></div>';
+  return h;
+}
+
+function sec_rubric(){
+  var c=C();
+  var h = head("Section 5.5 to 5.8","The rubric","The rubric, written for your task",
+    "Four criteria, four levels, and descriptors you must rewrite in the language of your own discipline. Adapting the wording is required, not optional.");
+  h+='<div class="stack"><div class="panel p-rule"><span class="tag">Fixed, and yours</span><p><strong>Fixed:</strong> four criteria and their names; four levels named Limited, Developing, Proficient, Exemplary; and the judgement each criterion captures.</p><p><strong>Yours:</strong> the wording of the descriptors. A descriptor that still says &ldquo;affected groups&rdquo; when your task is about tenants, downstream households or seasonal workers has not been adapted.</p></div></div>';
+  h+='<h3>Worked rubric<span class="chip">'+esc(c.n)+'</span></h3>';
+  h+='<p class="body">Judged from the <strong>'+esc(c.s).toLowerCase()+'</strong>. The four criteria and level names are identical in every cluster; only the descriptor wording changes.</p>';
+  h+='<div class="tablewrap"><table class="levels worked"><thead><tr><th>Criterion</th><th>Judged from</th>';
+  LEVELS.forEach(function(l){ h+='<th>'+l+'</th>'; });
+  h+='</tr></thead><tbody>';
+  c.r.forEach(function(row,i){
+    h+='<tr><td class="k wrap"><span class="crit-n">'+(i+1)+'</span><br>'+CRIT[i].n+'</td>';
+    row.forEach(function(cell,j){ h+='<td'+(j===0?' style="color:var(--ink)"':'')+'>'+esc(cell)+'</td>'; });
+    h+='</tr>';
+  });
+  h+='</tbody></table></div>';
+  h+='<h3>How to adapt it, in five steps</h3><div class="stack tight">';
+  [["Keep the four criteria and their names unchanged.","Representing other positions; Who is absent; Handling disagreement; Individual contribution. Do not add a fifth, drop one, or reorder them."],
+   ["Rewrite each descriptor in disciplinary language.","Name the actual opposing party, the actual absent group and the actual group product in your task &mdash; not &ldquo;the stakeholder&rdquo;."],
+   ["Write level 1 and level 4 first.","Level 1 is the commonest error, the floor. Level 4 is the exemplary move, the ceiling. Then split the gap to create levels 2 and 3."],
+   ["Differentiate by quality of reasoning, not by counting.","One absent group named with what their absence changed is level 4. Three named without that is level 3."],
+   ["Test each criterion against the one rule.","Could a student score full marks on it without using the competency? If yes, it is measuring writing or effort &mdash; rewrite it."]
+  ].forEach(function(s,i){ h+='<div class="panel p-step"><span class="tag">Step '+(i+1)+'</span><p><strong>'+s[0]+'</strong> '+s[1]+'</p></div>'; });
+  h+='</div>';
+  h+='<h3>Four faults in a rubric</h3>'
+   +'<div class="tablewrap"><table><thead><tr><th>Fault</th><th>In a Collaboration rubric</th><th>Fix</th></tr></thead><tbody>'
+   +'<tr><td class="k wrap">Adjectives instead of descriptors</td><td>Excellent / Good / Fair / Poor collaboration. This is a grading scale, not a behaviour-based rubric.</td><td>Use the fixed descriptor set, adapted to your task.</td></tr>'
+   +'<tr><td class="k wrap">Levels separated by counting</td><td>&ldquo;Three absent groups&rdquo; versus &ldquo;one&rdquo;. This measures volume, not quality of reasoning.</td><td>Separate levels by reasoning and effect.</td></tr>'
+   +'<tr><td class="k wrap">Criteria restating the brief</td><td>&ldquo;Memo is well structured and within the word limit.&rdquo; This assesses report writing.</td><td>Keep it outside the four Collaboration criteria.</td></tr>'
+   +'<tr><td class="k wrap">Written after the task</td><td>A rubric created at marking time. Students were never asked for the evidence.</td><td>Publish the rubric with the brief, and record the date.</td></tr>'
+   +'</tbody></table></div>'
+   +'<div class="stack"><div class="panel p-warn"><span class="tag">Keep the four independent</span><p>If two criteria always rise and fall together, they are one criterion written twice. Name each criterion for the judgement it captures, never for a feature of the output: &ldquo;Representing other positions&rdquo;, not &ldquo;the memo&rdquo;.</p></div></div>';
+  return h;
+}
+
+function sec_audit(){
+  var c=C();
+  var h = head("Section 6","Alignment and quality audit","Align and audit",
+    "An auditor reads the alignment table, then asks to see the marked scripts. This section makes the design traceable before that happens.");
+  h+='<div class="fixedrow" style="grid-template-columns:repeat(5,minmax(0,1fr))">'
+   +'<div style="border-top-color:var(--teal)"><b>SDG</b><span>One primary goal</span></div>'
+   +'<div style="border-top-color:var(--teal)"><b>PLO12</b><span>Programme outcome</span></div>'
+   +'<div style="border-top-color:var(--teal)"><b>CLO</b><span>Given in the syllabus</span></div>'
+   +'<div style="border-top-color:var(--teal)"><b>Criteria 1&ndash;4</b><span>The four criteria</span></div>'
+   +'<div style="border-top-color:var(--teal)"><b>Script</b><span>The marked submission</span></div></div>';
+  h+='<div class="stack"><div class="panel p-note"><p>Only the CLO is directly assessed; every other layer is a claim traceable through it. Criterion numbering is what makes the chain auditable: a reviewer follows a competency to a named criterion on a named rubric, and from there to one student&rsquo;s script.</p></div></div>';
+  h+='<h3>Course outline wording</h3><p class="body">Fill in the four blanks and copy the paragraph into your course outline.</p>'
+   +'<div class="grid g4" style="margin-top:14px">'
+   +'<div class="field" style="margin:0"><label for="f_partner">Partner competency</label><input id="f_partner" placeholder="e.g. Systems Thinking"></div>'
+   +'<div class="field" style="margin:0"><label for="f_sdg">Primary SDG</label><input id="f_sdg" placeholder="e.g. SDG 6"></div>'
+   +'<div class="field" style="margin:0"><label for="f_week">Submission week</label><input id="f_week" placeholder="e.g. 11"></div>'
+   +'<div class="field" style="margin:0"><label for="f_act">Group activity week</label><input id="f_act" placeholder="e.g. 9"></div>'
+   +'</div>'
+   +'<div class="outline" id="outlinebox"></div>'
+   +'<div class="row"><button class="btn primary" id="copyoutline">Copy paragraph</button></div>';
+  h+='<h3>The semester schedule</h3>'
+   +'<div class="tablewrap"><table><thead><tr><th>When</th><th>What you do</th></tr></thead><tbody>'
+   +'<tr><td class="k wrap">Before semester</td><td>Publish the rubric inside the course outline, with descriptors already adapted to your discipline.</td></tr>'
+   +'<tr><td class="k">Week 1</td><td>Tell students the competency in plain language, and that a group event will produce an individual mark.</td></tr>'
+   +'<tr><td class="k">Week 4</td><td>Release the brief with the rubric. Record the date in the course file.</td></tr>'
+   +'<tr><td class="k">Week 5</td><td>Practice activity. Students self-assess; return one sentence naming one criterion. No mark.</td></tr>'
+   +'<tr><td class="k">Week 9</td><td>Assessed activity. Use the same rubric with a different scenario.</td></tr>'
+   +'<tr><td class="k">Week 11</td><td>Individual submission, plus the structured self-assessment.</td></tr>'
+   +'<tr><td class="k">Weeks 12&ndash;13</td><td>Mark, then second-mark a ten per cent sample and every borderline case.</td></tr>'
+   +'<tr><td class="k wrap">After results</td><td>Revise weak evidence indicators &mdash; never the fixed descriptors. Report attainment to the programme.</td></tr>'
+   +'</tbody></table></div>';
+  h+='<h3>Five ways an alignment claim fails</h3>'
+   +'<div class="tablewrap"><table><thead><tr><th>Failure</th><th>What the auditor sees</th><th>Caught by</th></tr></thead><tbody>'
+   +'<tr><td class="k wrap">Competency named, not required</td><td>Collaboration is in the syllabus but no assignment requires it. The commonest failure, invisible until the scripts are read.</td><td>The one rule</td></tr>'
+   +'<tr><td class="k wrap">Assignment misses the competency</td><td>The group report is there; the individual account is not.</td><td>The attribution test</td></tr>'
+   +'<tr><td class="k wrap">Rubric not published</td><td>Criteria written at marking time. Students were never asked for the evidence.</td><td>Fourth rubric fault</td></tr>'
+   +'<tr><td class="k wrap">Levels not defended</td><td>Two markers cannot agree on level 3 versus level 4, and no written clarification exists.</td><td>Moderation</td></tr>'
+   +'<tr><td class="k wrap">No individual attribution</td><td>All group members recorded at the same level, with no document explaining why.</td><td>The individual evidence rule</td></tr>'
+   +'</tbody></table></div>'
+   +'<div class="stack"><div class="panel p-warn"><span class="tag">Two further failures worth naming</span><p><strong>SDG as decoration:</strong> a goal logo on the outline with nothing in the content connecting to it. <strong>One CLO, five SDGs:</strong> broad mapping that dilutes everything and evidences nothing. Claim one primary goal the content genuinely touches.</p></div></div>';
+  h+='<h3>Before you publish the course outline</h3><div class="check" id="auditlist"></div>';
+  h+='<h3>Moderation and second marking</h3><div class="check" id="modlist"></div>';
+  return h;
+}
+
+function sec_checks(){
+  var h = head("Checks 1 to 3","Self-checks","Check what you have understood",
+    "Answer alone, then compare. The comparison between what you thought and what is here is the learning.");
+  h+='<h3>Check 1 &middot; does this assess the Collaboration competency?</h3>';
+  h+='<div class="stack" id="c1a"></div>';
+  h+='<h3>Check 1 &middot; which criterion is this behaviour?</h3>';
+  h+='<div class="stack" id="c1b"></div>';
+  h+='<div class="score"><span class="big" id="c1score">0/10</span><span class="lbl">Six or below means it is worth re-reading <strong>What it means</strong> and <strong>The four criteria</strong> before continuing.</span></div>';
+  h+='<div class="row"><button class="btn" id="c1reset">Start Check 1 again</button></div>';
+  h+='<h3>Check 2 &middot; name the fault in the rubric or brief</h3><p class="body">Tap each item to see the fault and why it matters.</p>';
+  h+='<div class="stack" id="c2"></div>';
+  h+='<h3>Check 3 &middot; diagnose six real assignments</h3><p class="body">Six assignments taken from real course files. Decide for yourself whether each assesses Collaboration and what the smallest fix would be, then reveal the answer.</p>';
+  h+='<div class="stack" id="c3"></div>';
+  h+='<div class="stack"><div class="panel p-def"><span class="tag">The seventh question</span><p>Now apply the same two questions to your own assignment. Does it assess Collaboration? If not, what is the smallest change? It is the only one an examiner will ever see the answer to.</p></div></div>';
+  return h;
+}
+
+function sec_plan(){
+  var c=C();
+  var h = head("Worksheets W1 to W5","Your record","My plan",
+    "The same lines the workshop worksheets ask for. Everything you type is saved in this browser only, and can be copied out at the end.");
+  var fields=[
+   ["course","Course code and title","","input"],
+   ["topic","Topic already taught","Start from: "+c.t,"input"],
+   ["incompat","The incompatibility, in one sentence","X wants ... while Y needs ..., and Z, who is affected, cannot insist because ...","textarea"],
+   ["least","Who has least ability to insist","This group is where criterion 2 enters.","input"],
+   ["m1","Practice activity: method and week","No mark. Feedback is one sentence naming one criterion.","input"],
+   ["m2","Assessed activity: method and week","Same rubric, different scenario.","input"],
+   ["sub","Individual submission and length","Suggested for your cluster: "+c.s,"input"],
+   ["weight","Submission week and weight","15 to 25 per cent, one component only.","input"],
+   ["ca","Clause (a) &rarr; criterion 1, representing other positions","","textarea"],
+   ["cb","Clause (b) &rarr; criterion 3, handling disagreement","","textarea"],
+   ["cc","Clause (c) &rarr; criterion 2, who is absent","","textarea"],
+   ["cd","Clause (d) &rarr; criterion 4, individual contribution","","textarea"],
+   ["marker","Named second marker","A plan with no named second marker is an intention, not a plan.","input"]
+  ];
+  h+='<h3>Your assessment plan</h3>';
+  h+='<div style="max-width:70ch">';
+  fields.forEach(function(f){
+    h+='<div class="field"><label for="p_'+f[0]+'">'+f[1]+'</label>'
+     +(f[3]==="textarea"?'<textarea id="p_'+f[0]+'" class="pf" data-k="'+f[0]+'"></textarea>':'<input id="p_'+f[0]+'" class="pf" data-k="'+f[0]+'">')
+     +(f[2]?'<span class="help">'+esc(f[2])+'</span>':'')+'</div>';
+  });
+  h+='</div>';
+  h+='<div class="stack"><div class="panel p-rule"><span class="tag">Before you file it</span><ul>'
+   +'<li>Could four cooperative students finish the assessed activity by dividing the work? If yes, sharpen the conflict.</li>'
+   +'<li>If the group produced one document, can you still mark one named student? If no, the individual evidence is not doing its work.</li>'
+   +'<li>Could a student score full marks without using the competency? If yes, fix the brief, not the rubric.</li>'
+   +'</ul></div></div>';
+  h+='<div class="row"><button class="btn primary" id="copyplan">Copy my plan</button><button class="btn" id="clearplan">Clear all fields</button></div>';
+  h+='<h3>Sources</h3>'
+   +'<div class="tablewrap"><table><tbody>'
+   +'<tr><td class="k">UNESCO (2017)</td><td>Education for Sustainable Development Goals: Learning Objectives. Source of the competency definition, the three learning domains and the conditions on assessment.</td></tr>'
+   +'<tr><td class="k wrap">MQA (2024)</td><td>Malaysian Qualifications Framework, Second Edition. Source of the national mandate and the Global Sustainability Agenda.</td></tr>'
+   +'<tr><td class="k">PEMACU ESD UPM</td><td><em>Teaching and Assessing the Eight ESD Competencies</em> (UPM ESD Guidebook), and SIM-ESD-CC-01, Module 1: The Collaboration Competency.</td></tr>'
+   +'</tbody></table></div>'
+   +'<div class="stack"><div class="panel p-note"><p>Criteria 1 to 3 operationalise named abilities in the UNESCO definition. Criterion 4, individual contribution, was added by UPM so that a mark inside group work can be attributed to a person. Four criteria, four named levels and the aggregation rule are UPM design decisions &mdash; do not present them as UNESCO requirements.</p></div></div>';
+  return h;
+}
+</script>
+
+<script>
+/* ============ CHECK & TEST DATA ============ */
+var TESTS=[
+ {name:"The competing-interests test",q:"Do two informed parties want incompatible things?",fail:"No",
+  send:"Back to step 1. The topic is technical. Choose another week and start again."},
+ {name:"The division test",q:"Could four cooperative students finish this by dividing the work?",fail:"Yes",
+  send:"Back to step 3. The conflict is not built in. Sharpen it in the roles, the constraint or the data."},
+ {name:"The attribution test",q:"If the group produced one document, can you still mark one named student?",fail:"No",
+  send:"Back to step 4. Attach an individual submission to the group activity."},
+ {name:"The one rule",q:"Could a student score full marks without using the competency?",fail:"Yes",
+  send:"Back to step 4. The assignment is the problem, not the rubric. Fix the brief."},
+ {name:"The moderation test",q:"Do two markers agree within one level on every criterion?",fail:"No",
+  send:"Stay in marking. Record a written clarification of how the descriptor is read; leave the descriptor unchanged."}
+];
+var C1A=[
+ ["A group of five submits one report; one mark is given to the group.","No","One mark to the group cannot be attributed to any student, and four students who already agreed can produce it."],
+ ["Students score each other out of ten for cooperation on an anonymous form.","No","A rating measures perceived effort, has no descriptors to place on four levels, and rewards agreeableness."],
+ ["Each student states the position they argued against, so its holder would accept it.","Yes","Criterion 1 at level 4. Individual, and unwritable without having met the position."],
+ ["A group poster is marked for design, clarity and confidence of delivery.","No","Those qualities are assessed under communication outcomes. No ability in the definition is required."],
+ ["Each student names one affected group not consulted, and what consulting them would require.","Yes","Criterion 2 at level 3. Stating what their absence changed would reach level 4."],
+ ["Students write an essay defining collaborative problem solving and its importance.","No","The student describes the competency instead of using it. The clearest breach of the one rule."]
+];
+var C1B=[
+ ["Writes the opposing party's cost argument in its strongest financial form.",1,"Representing other positions."],
+ ["Stops the discussion to return to a figure tabled by the quietest member.",3,"Handling disagreement: making room for the party least able to insist."],
+ ["Names the tenants who were never asked, and what asking them would have cost.",2,"Who is absent."],
+ ["Records that a colleague's costing changed the recommendation, and what it corrected.",4,"Individual contribution, which also carries the learn-from-others ability."]
+];
+var C2=[
+ ["&ldquo;Level 4: identifies four or more absent stakeholders.&rdquo;","Levels separated by counting","Four groups named is not better reasoning than one named with what its absence changed."],
+ ["&ldquo;Level 3: good handling of team conflict.&rdquo;","An adjective instead of a descriptor","It tells the student nothing about what to do differently, and two markers will read it differently."],
+ ["&ldquo;Report is clearly written and correctly referenced.&rdquo; Should it carry PLO12?","No, it restates the brief","Keep it as a course mark, outside the four criteria and outside the attainment calculation."],
+ ["A single group video is the only submission.","Add an individual written submission","A group product is evidence of a group. Only an individual submission lets the rubric be applied to a person."],
+ ["The brief has three clauses; the rubric has four criteria.","One criterion has no clause","Students were never asked for that evidence, so its absence cannot be marked down. Amend the brief, not the rubric."],
+ ["Journals are marked on how genuinely felt they seem.","Marking sincerity","Mark precision and reasoning: the named input, the named person, the stated change."],
+ ["The levels are renamed Weak, Fair, Good, Excellent.","The four level names may not be renamed","Descriptor wording must be adapted to your discipline, but the four criteria and the four level names are fixed, so attainment means the same thing in every cluster."],
+ ["A year 1 course sets the threshold at Proficient and caps the rubric at level 3.","Capping is the error","All four levels are marked for Collaboration. The only capping rule applies to Integrated Problem-solving assessed mid-programme."]
+];
+var C3=[
+ ["Engineering","In groups of five, design a treatment train and submit a 30-page report. Marks for technical accuracy, feasibility and presentation.","No. Add a two-page individual memo naming the requirement conceded, to whom, and at whose prompting.","A group document marked for technical quality. Nothing attributes a level to a person."],
+ ["Law","Draft a memorandum of advice on the client's prospects, citing relevant authority.","No. Add a clause requiring the opposing claim to be put at its highest, and one naming an interest with no representation.","Advocacy for one side is not representation of the other. As written it evidences no criterion."],
+ ["Education","Reflect on your experience of group work during this course.","No. Replace with four set prompts matching the four criteria.","Unprompted reflection produces sentiment. Prompts are what turn a reflection into evidence."],
+ ["Hospitality, Tourism, Sport, Recreation and Services","Attend the industry placement and submit a logbook of hours completed and tasks observed.","No. Replace the logbook with prompted entries on whose account of the problem was adopted and whose set aside.","Hours and tasks are attendance, not competence. Presence at a site evidences nothing on its own."],
+ ["Computer Science and Information Technology","Individually, state which user group your system disadvantages, and what including them would have cost.","Yes. Criterion 2 at level 3, reaching level 4 if it states what their absence changed in the design.","Individual, specific, and mapped to one criterion."],
+ ["Arts and Humanities","Present your exhibition proposal to the panel. Marks for scholarship, coherence and delivery.","No. Add an interpretive statement giving the source community's reading in their own words, and what was removed from the draft and at whose request.","Scholarship and delivery sit under other outcomes. The community's account is what carries the competency."]
+];
+var AUDIT=[
+ "The topic contains genuinely competing interests, written as one sentence",
+ "A practice activity and a later assessed activity, with feedback between them",
+ "An individual submission attached to every group activity",
+ "Four clauses in the brief, one per criterion",
+ "Four criteria and four levels, published with the brief",
+ "Four levels marked, and the rubric not capped",
+ "A named second marker",
+ "The course file records the guidebook edition used"
+];
+var MOD=[
+ "Rubric published before submission, date recorded",
+ "Two markers scored the same three scripts before marking began",
+ "Discrepancies discussed; criteria clarified in writing, descriptors left unchanged",
+ "Ten per cent sample and all borderline cases second-marked",
+ "One anonymised exemplar retained per level, per criterion where possible",
+ "Any criterion on which two markers disagreed by more than one level flagged to the programme"
+];
+
+/* ============ RENDER ============ */
+var BUILD={start:sec_start,meaning:sec_meaning,criteria:sec_criteria,field:sec_field,methods:sec_methods,
+           design:sec_design,brief:sec_brief,rubric:sec_rubric,audit:sec_audit,checks:sec_checks,plan:sec_plan};
+var $=function(s,r){ return (r||document).querySelector(s); };
+var $$=function(s,r){ return Array.prototype.slice.call((r||document).querySelectorAll(s)); };
+
+function buildPicker(){
+  var sel=$("#cluster");
+  sel.innerHTML=CLUSTERS.map(function(c,i){ return '<option value="'+i+'"'+(i===ci?' selected':'')+'>'+(i+1)+'. '+esc(c.n)+'</option>'; }).join("");
+  sel.addEventListener("change",function(){
+    ci=parseInt(sel.value,10); store.set("cluster",ci);
+    render(current,true);
+    toast("Examples now written for "+CLUSTERS[ci].n);
+  });
+}
+function buildNav(){
+  var nav=$("#nav"), html="";
+  SECTIONS.forEach(function(s){
+    if(s.g){ html+='<div class="navgroup">'+s.g+'</div>'; return; }
+    html+='<button class="navbtn" data-id="'+s.id+'"><span class="ref">'+s.ref+'</span><span>'+s.nav+'</span></button>';
+  });
+  nav.innerHTML=html;
+  $$(".navbtn").forEach(function(b){
+    b.addEventListener("click",function(){ go(b.dataset.id); });
+  });
+}
+function markNav(){
+  $$(".navbtn").forEach(function(b){
+    b.classList.toggle("on", b.dataset.id===current);
+    b.classList.toggle("done", seen.indexOf(b.dataset.id)>-1);
+  });
+  var n=seen.length, t=IDS.length;
+  $("#progtext").textContent=n+" of "+t+" sections opened";
+  $("#progbar").style.width=Math.round(n/t*100)+"%";
+  var s=SECTIONS.filter(function(x){return x.id===current})[0];
+  if(s) $("#mobwhere").textContent=s.nav;
+}
+function go(id){
+  current=id;
+  if(seen.indexOf(id)<0){ seen.push(id); store.set("seen",seen); }
+  render(id);
+  markNav();
+  $("#rail").classList.remove("open");
+  $("#menubtn").setAttribute("aria-expanded","false");
+  window.scrollTo({top:0,behavior:"auto"});
+}
+function nextPrev(){
+  var i=IDS.indexOf(current), out='<div class="jump">';
+  if(i>0) out+='<button class="btn sm" data-goto="'+IDS[i-1]+'">&larr; '+SECTIONS.filter(function(s){return s.id===IDS[i-1]})[0].nav+'</button>';
+  if(i<IDS.length-1) out+='<button class="btn sm primary" data-goto="'+IDS[i+1]+'">'+SECTIONS.filter(function(s){return s.id===IDS[i+1]})[0].nav+' &rarr;</button>';
+  return out+'</div>';
+}
+function render(id){
+  var m=$("#main");
+  m.innerHTML='<section class="view on">'+BUILD[id]()
+    +'<div class="pagefoot"><span>UPM ESD Series &middot; SIM-ESD-CC-01 &middot; '+esc(CLUSTERS[ci].n)+'</span>'+nextPrev()+'</div></section>';
+  var meta=SECTIONS.filter(function(x){return x.id===id})[0];
+  var no=parseInt(meta.ref,10);
+  $$("section.view h3",m).forEach(function(h,i){
+    h.insertAdjacentHTML("afterbegin",'<span class="secnum">'+no+"."+(i+1)+'</span>');
+  });
+  $$("[data-goto]",m).forEach(function(b){ b.addEventListener("click",function(){ go(b.dataset.goto); }); });
+  wire(id);
+}
+
+/* ============ WIRING ============ */
+function toast(msg){
+  var t=$("#toast"); t.textContent=msg; t.classList.add("show");
+  clearTimeout(t._h); t._h=setTimeout(function(){ t.classList.remove("show"); },2200);
+}
+function copyText(s){
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(s).then(function(){ toast("Copied to clipboard"); },function(){ toast("Select the text and copy manually"); });
+  } else { toast("Select the text and copy manually"); }
+}
+
+function wire(id){
+  if(id==="methods"){
+    $$(".method > button").forEach(function(b){
+      b.addEventListener("click",function(){
+        var p=b.parentNode, open=p.classList.toggle("open");
+        b.setAttribute("aria-expanded",open?"true":"false");
+        $(".chev",b).textContent=open?"−":"+";
+      });
+    });
+    $$(".fam-f").forEach(function(f){
+      f.addEventListener("click",function(){
+        $$(".fam-f").forEach(function(x){ x.setAttribute("aria-pressed",String(x===f)); });
+        var fam=f.dataset.fam;
+        $$(".method").forEach(function(m){ m.style.display=(fam==="All"||m.dataset.fam===fam)?"":"none"; });
+      });
+    });
+  }
+
+  if(id==="design"){
+    var ans={};
+    function paint(){
+      $$("#testrunner .q").forEach(function(q){
+        var i=+q.dataset.i, t=TESTS[i], fb=$(".fb",q), v=ans[i];
+        $$(".t-ans",q).forEach(function(b){ b.setAttribute("aria-pressed",String(b.dataset.v===v)); });
+        if(!v){ fb.className="fb"; fb.innerHTML=""; return; }
+        if(v===t.fail){ fb.className="fb show wrong"; fb.innerHTML="<b>Fails.</b> "+t.send; }
+        else { fb.className="fb show right"; fb.innerHTML="<b>Passes.</b> Continue to the next test."; }
+      });
+    }
+    $$(".t-ans").forEach(function(b){
+      b.addEventListener("click",function(){
+        ans[+b.closest(".q").dataset.i]=b.dataset.v; paint();
+      });
+    });
+    $("#testreset").addEventListener("click",function(){ ans={}; paint(); });
+  }
+
+  if(id==="audit"){
+    function outline(){
+      var p=$("#f_partner").value.trim()||"[Competency B]";
+      var s=$("#f_sdg").value.trim()||"[SDG n]";
+      var w=$("#f_week").value.trim()||"[n]";
+      var a=$("#f_act").value.trim()||"[n]";
+      var sub=CLUSTERS[ci].s.toLowerCase();
+      $("#outlinebox").innerHTML=
+       '<p>This course implements Education for Sustainable Development. Two ESD competencies are developed and assessed: <strong>Collaboration</strong> and <mark>'+esc(p)+'</mark>. The primary Sustainable Development Goal is <mark>'+esc(s)+'</mark>.</p>'
+      +'<p>CLOs mapped to PLO12 are assessed as follows. Collaboration is assessed through the '+esc(sub)+', week <mark>'+esc(w)+'</mark>, criteria 1&ndash;4. <mark>'+esc(p)+'</mark> is assessed through its own task, criteria 5&ndash;8. PLO12 attainment is computed from these criteria only.</p>'
+      +'<p>The rubric is published in this outline and released with the brief. All four levels are marked.</p>'
+      +'<p>Group work occurs in the week <mark>'+esc(a)+'</mark> activity. The group event is not marked for PLO12; the individual submission carries the judgement.</p>';
+    }
+    ["f_partner","f_sdg","f_week","f_act"].forEach(function(k){
+      var el=$("#"+k);
+      el.value=store.get(k,"");
+      el.addEventListener("input",function(){ store.set(k,el.value); outline(); });
+    });
+    outline();
+    $("#copyoutline").addEventListener("click",function(){ copyText($("#outlinebox").innerText); });
+
+    function list(host,items,key){
+      var saved=store.get(key,[]);
+      $(host).innerHTML=items.map(function(t,i){
+        return '<label><input type="checkbox" data-i="'+i+'"'+(saved.indexOf(i)>-1?" checked":"")+'><span>'+t+'</span></label>';
+      }).join("");
+      $$(host+" input").forEach(function(cb){
+        cb.addEventListener("change",function(){
+          var on=$$(host+" input").filter(function(x){return x.checked}).map(function(x){return +x.dataset.i});
+          store.set(key,on);
+        });
+      });
+    }
+    list("#auditlist",AUDIT,"audit");
+    list("#modlist",MOD,"mod");
+  }
+
+  if(id==="checks"){
+    var got={};
+    function score(){
+      var n=0; for(var k in got){ if(got[k]) n++; }
+      $("#c1score").textContent=n+"/10";
+    }
+    $("#c1a").innerHTML=C1A.map(function(q,i){
+      return '<div class="q" data-k="a'+i+'"><div class="qhead"><span class="qn">Q'+(i+1)+'</span><span class="qtext">'+q[0]+'</span></div>'
+        +'<div class="opts"><button class="btn sm ans" data-v="Yes">Yes</button><button class="btn sm ans" data-v="No">No</button></div><div class="fb"></div></div>';
+    }).join("");
+    $("#c1b").innerHTML=C1B.map(function(q,i){
+      var o="";
+      for(var j=1;j<=4;j++) o+='<button class="btn sm ans" data-v="'+j+'">'+j+' &middot; '+CRIT[j-1].n+'</button>';
+      return '<div class="q" data-k="b'+i+'"><div class="qhead"><span class="qn">Q'+(i+7)+'</span><span class="qtext">'+q[0]+'</span></div>'
+        +'<div class="opts">'+o+'</div><div class="fb"></div></div>';
+    }).join("");
+    $$("#c1a .ans, #c1b .ans").forEach(function(b){
+      b.addEventListener("click",function(){
+        var q=b.closest(".q"), k=q.dataset.k, isA=k[0]==="a", i=+k.slice(1);
+        var correct = isA ? C1A[i][1] : String(C1B[i][1]);
+        var why = isA ? C1A[i][2] : C1B[i][2];
+        var ok = b.dataset.v===correct;
+        got[k]=ok; score();
+        $$(".ans",q).forEach(function(x){ x.setAttribute("aria-pressed",String(x===b)); });
+        var fb=$(".fb",q);
+        fb.className="fb show "+(ok?"right":"wrong");
+        fb.innerHTML="<b>"+(ok?"Correct.":"Not this one.")+" Answer: "+(isA?correct:"criterion "+correct)+".</b> "+why;
+      });
+    });
+    score();
+    $("#c1reset").addEventListener("click",function(){
+      got={}; score();
+      $$("#c1a .fb, #c1b .fb").forEach(function(f){ f.className="fb"; f.innerHTML=""; });
+      $$("#c1a .ans, #c1b .ans").forEach(function(b){ b.setAttribute("aria-pressed","false"); });
+    });
+    $("#c2").innerHTML=C2.map(function(q,i){
+      return '<div class="reveal"><button type="button"><span class="qn">Q'+(i+1)+'</span><span class="qt">'+q[0]+'</span><span class="chev">+</span></button>'
+       +'<div class="ans"><p class="verdict">'+q[1]+'</p><p class="why">'+q[2]+'</p></div></div>';
+    }).join("");
+    $("#c3").innerHTML=C3.map(function(q,i){
+      return '<div class="reveal"><button type="button"><span class="qn">Q'+(i+1)+'</span><span class="qt"><span class="cluster">'+q[0]+'</span><br>'+q[1]+'</span><span class="chev">+</span></button>'
+       +'<div class="ans"><p class="verdict">'+q[2]+'</p><p class="why">'+q[3]+'</p></div></div>';
+    }).join("");
+    $$(".reveal > button").forEach(function(b){
+      b.addEventListener("click",function(){
+        var open=b.parentNode.classList.toggle("open");
+        $(".chev",b).textContent=open?"−":"+";
+      });
+    });
+  }
+
+  if(id==="plan"){
+    $$(".pf").forEach(function(el){
+      el.value=store.get("plan_"+el.dataset.k,"");
+      el.addEventListener("input",function(){ store.set("plan_"+el.dataset.k,el.value); });
+    });
+    $("#copyplan").addEventListener("click",function(){
+      var out=["COLLABORATION ASSESSMENT PLAN","Cluster: "+CLUSTERS[ci].n,""];
+      $$(".pf").forEach(function(el){
+        var lab=$('label[for="'+el.id+'"]').textContent;
+        out.push(lab+": "+(el.value||"—"));
+      });
+      copyText(out.join("\n"));
+    });
+    $("#clearplan").addEventListener("click",function(){
+      $$(".pf").forEach(function(el){ el.value=""; store.set("plan_"+el.dataset.k,""); });
+      toast("Fields cleared");
+    });
+  }
+}
+
+/* ============ INIT ============ */
+buildPicker();
+buildNav();
+$("#menubtn").addEventListener("click",function(){
+  var r=$("#rail"), open=r.classList.toggle("open");
+  this.setAttribute("aria-expanded",open?"true":"false");
+});
+go(store.get("last","start"));
+window.addEventListener("beforeunload",function(){ store.set("last",current); });
+</script>
+
+</body>
+</html>
