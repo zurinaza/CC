@@ -298,6 +298,33 @@ h3 .chip{
 }
 .btn:hover{background:var(--surface-2);border-color:var(--ink-3)}
 .btn.primary{background:var(--blue);border-color:var(--blue);color:#fff}
+.pf.drafted{border-left:3px solid var(--amber);background:var(--amber-tint)}
+.aibox{margin:10px 0 0}
+.aibox textarea{width:100%;min-height:110px;font-family:inherit}
+#aiprompt{min-height:200px;font-size:.85rem;line-height:1.45}
+.ainote{font-size:.85rem;color:var(--ink-3);margin:8px 0 0}
+.aistep{display:flex;gap:10px;align-items:flex-start;margin:0 0 12px}
+.aistep .num{flex:0 0 22px;height:22px;border-radius:50%;background:var(--teal);color:#fff;
+  font-size:.75rem;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:1px}
+:root[data-theme="dark"] .aistep .num{color:#080E15}
+.aistep .txt{flex:1;min-width:0}
+
+#printview{display:none}
+@media print{
+  @page{margin:18mm 16mm}
+  body>*{display:none !important}
+  #printview{display:block !important;color:#000;background:#fff;font-size:11pt;line-height:1.5}
+  #printview h1{font-size:16pt;margin:0 0 2pt}
+  #printview .pmeta{font-size:9.5pt;color:#444;margin:0 0 14pt;padding-bottom:8pt;border-bottom:1pt solid #000}
+  #printview .pitem{margin:0 0 11pt;page-break-inside:avoid;break-inside:avoid}
+  #printview .plab{font-size:9pt;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#333;margin:0 0 2pt}
+  #printview .pval{margin:0;white-space:pre-wrap}
+  #printview .pempty{color:#777;font-style:italic}
+  #printview .pchecks{margin-top:16pt;padding-top:8pt;border-top:1pt solid #000;page-break-inside:avoid}
+  #printview .pchecks h2{font-size:11pt;margin:0 0 5pt}
+  #printview .pchecks li{margin:0 0 4pt}
+  #printview .pfoot{margin-top:14pt;padding-top:6pt;border-top:.5pt solid #999;font-size:8.5pt;color:#555}
+}
 :root[data-theme="dark"] .btn.primary{color:#080E15}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .btn.primary{color:#080E15}}
 .btn.primary:hover{background:var(--blue-deep);border-color:var(--blue-deep)}
@@ -456,6 +483,7 @@ h3 .chip{
   </main>
 </div>
 <div class="toast" id="toast"></div>
+<div id="printview" aria-hidden="true"></div>
 
 <script>
 /* ============ FIXED CONTENT ============ */
@@ -1255,9 +1283,31 @@ function sec_plan(){
    ["ca","Clause (a) &rarr; criterion 1, representing other positions","","textarea"],
    ["cb","Clause (b) &rarr; criterion 3, handling disagreement","","textarea"],
    ["cc","Clause (c) &rarr; criterion 2, who is absent","","textarea"],
-   ["cd","Clause (d) &rarr; criterion 4, individual contribution","","textarea"],
-   ["marker","Named second marker","A plan with no named second marker is an intention, not a plan.","input"]
+   ["cd","Clause (d) &rarr; criterion 4, individual contribution","","textarea"]
   ];
+  h+='<h3>Get a first draft</h3>';
+  h+='<div class="stack"><div class="panel p-step"><span class="tag">Optional &middot; works with any AI</span>'
+   +'<p class="body">Fill in your course and topic below, then use any AI assistant you already have '
+   +'&mdash; Claude, ChatGPT, Gemini, Copilot, whichever &mdash; to draft the rest. Nothing is sent anywhere by this page.</p>'
+   +'<div class="aistep"><span class="num">1</span><div class="txt">Type your <strong>course code and title</strong> and <strong>topic</strong> in the first two fields below.</div></div>'
+   +'<div class="aistep"><span class="num">2</span><div class="txt">Press <strong>Copy AI prompt</strong>, then paste it into your AI assistant.</div></div>'
+   +'<div class="aistep"><span class="num">3</span><div class="txt">Copy its whole reply, paste it in the box below and press <strong>Fill in my plan</strong>.</div></div>'
+   +'<div class="row"><button class="btn primary" id="copyprompt">Show &amp; copy AI prompt</button>'
+   +'<button class="btn" id="toggleai">Paste the reply</button></div>'
+   +'<p class="ainote" id="aistatus" hidden></p>'
+   +'<div class="aibox" id="promptbox" hidden>'
+   +'<label for="aiprompt">Your prompt</label>'
+   +'<textarea id="aiprompt" readonly></textarea>'
+   +'<div class="row"><button class="btn" id="selectall">Select all</button>'
+   +'<button class="btn" id="copyagain">Copy again</button>'
+   +'<button class="btn" id="hideprompt">Hide</button></div></div>'
+   +'<div class="aibox" id="aibox" hidden>'
+   +'<label for="aireply">Paste the AI reply here</label>'
+   +'<textarea id="aireply" placeholder="Paste the whole reply. Extra text around the JSON is fine."></textarea>'
+   +'<div class="row"><button class="btn primary" id="fillplan">Fill in my plan</button></div></div>'
+   +'<p class="ainote">Drafted fields are marked in amber. They are a starting point, not a finished plan '
+   +'&mdash; read every line and change what does not fit your students. The mark clears once you edit a field.</p>'
+   +'</div></div>';
   h+='<h3>Your assessment plan</h3>';
   h+='<div style="max-width:70ch">';
   fields.forEach(function(f){
@@ -1271,7 +1321,9 @@ function sec_plan(){
    +'<li>If the group produced one document, can you still mark one named student? If no, the individual evidence is not doing its work.</li>'
    +'<li>Could a student score full marks without using the competency? If yes, fix the brief, not the rubric.</li>'
    +'</ul></div></div>';
-  h+='<div class="row"><button class="btn primary" id="copyplan">Copy my plan</button><button class="btn" id="clearplan">Clear all fields</button></div>';
+  h+='<div class="row"><button class="btn primary" id="printplan">Print or save as PDF</button>'
+   +'<button class="btn" id="copyplan">Copy my plan</button>'
+   +'<button class="btn" id="clearplan">Clear all fields</button></div>';
   h+='<h3>Sources</h3>'
    +'<div class="tablewrap"><table><tbody>'
    +'<tr><td class="k">UNESCO (2017)</td><td>Education for Sustainable Development Goals: Learning Objectives. Source of the competency definition, the three learning domains and the conditions on assessment.</td></tr>'
@@ -1554,6 +1606,187 @@ function wire(id){
       el.value=store.get("plan_"+el.dataset.k,"");
       el.addEventListener("input",function(){ store.set("plan_"+el.dataset.k,el.value); });
     });
+    $$(".pf").forEach(function(el){
+      el.addEventListener("input",function(){ el.classList.remove("drafted"); });
+    });
+
+    $("#toggleai").addEventListener("click",function(){
+      var b=$("#aibox"); b.hidden=!b.hidden;
+      this.textContent=b.hidden?"Paste the reply":"Hide the paste box";
+      if(!b.hidden) $("#aireply").focus();
+    });
+
+    function hardCopy(text){
+      // Throwaway element: does not depend on the state of the visible textarea,
+      // so it behaves the same on the first press and every press after.
+      var tmp=document.createElement("textarea");
+      tmp.value=text;
+      tmp.setAttribute("readonly","");
+      tmp.style.cssText="position:fixed;top:0;left:0;width:1px;height:1px;opacity:0;padding:0;border:0";
+      document.body.appendChild(tmp);
+      var ok=false;
+      try{
+        tmp.focus();
+        tmp.select();
+        tmp.setSelectionRange(0,text.length);
+        ok=document.execCommand("copy");
+      }catch(e){ ok=false; }
+      document.body.removeChild(tmp);
+      return ok;
+    }
+
+    function setStatus(msg){
+      var s=$("#aistatus");
+      if(s){ s.textContent=msg; s.hidden=!msg; }
+    }
+
+    function showPrompt(text){
+      var ta=$("#aiprompt");
+      ta.value=text;
+      $("#promptbox").hidden=false;
+
+      var sync=hardCopy(text);
+      if(sync){
+        setStatus("Copied. Paste it into your AI assistant.");
+      } else {
+        setStatus("Could not copy automatically. Press Select all below, then Ctrl+C (Cmd+C on Mac).");
+      }
+      // Async API as a second attempt; never relied on for correctness.
+      if(!sync && navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(text).then(function(){
+          setStatus("Copied. Paste it into your AI assistant.");
+        },function(){});
+      }
+      $("#promptbox").scrollIntoView({behavior:"smooth",block:"nearest"});
+    }
+
+    function buildPrompt(){
+      var c=C();
+      var course=($("#p_course").value||"").trim();
+      var topic=($("#p_topic").value||"").trim();
+      if(!course||!topic){ toast("Fill in course and topic first"); return null; }
+      var crit=CRIT.map(function(x,i){
+        return (i+1)+". "+x.n+" — "+x.q+"\n   Proficient looks like: "+GENERIC[i][2];
+      }).join("\n");
+      return [
+"You are helping a university lecturer design a group assessment that measures the ESD Collaboration Competency.",
+"Draft the missing parts of their assessment plan.",
+"",
+"CONTEXT",
+"Course: "+course,
+"Topic already taught: "+topic,
+"Discipline cluster: "+c.n,
+"Typical incompatibility in this cluster: "+c.i,
+"Suggested teaching methods: "+c.p,
+"Suggested activity shape: "+c.a,
+"Suggested individual submission: "+c.s,
+"The submission must show: "+c.o,
+"",
+"THE FOUR CRITERIA THE PLAN MUST SERVE",
+crit,
+"",
+"RULES",
+"- The task must contain a real incompatibility. If four cooperative students could finish it by dividing the work, it is too weak.",
+"- Someone affected must have least ability to insist. That is where criterion 2 lives.",
+"- There must be a practice activity with feedback and no mark, then a separate assessed activity using the same rubric on a different scenario.",
+"- The individual submission carries the mark, weighted 15 to 25 per cent, as one component only.",
+"- Write about "+topic+" specifically, not about the cluster in general.",
+"- Plain sentences. No jargon the lecturer would have to decode.",
+"",
+"OUTPUT",
+"Reply with ONLY a JSON object, no commentary, using exactly these keys:",
+"{",
+'  "incompat": "the incompatibility in one sentence, in the form: X wants ... while Y needs ..., and Z, who is affected, cannot insist because ...",',
+'  "least": "who has least ability to insist, one short line",',
+'  "m1": "practice activity: method and week, e.g. M9 Mock Hearing, week 6",',
+'  "m2": "assessed activity: method and week, different scenario, same rubric",',
+'  "sub": "individual submission and length, e.g. Concession memo, 800 words",',
+'  "weight": "submission week and weight, e.g. Week 11, 20 per cent",',
+'  "ca": "brief clause (a): what the student must do to evidence criterion 1, representing other positions",',
+'  "cb": "brief clause (b): criterion 3, handling disagreement",',
+'  "cc": "brief clause (c): criterion 2, who is absent",',
+'  "cd": "brief clause (d): criterion 4, individual contribution"',
+"}"
+      ].join("\n");
+    }
+
+    $("#copyprompt").addEventListener("click",function(){
+      var p=buildPrompt();
+      if(p) showPrompt(p);
+    });
+    $("#copyagain").addEventListener("click",function(){
+      var p=buildPrompt();
+      if(p) showPrompt(p);
+    });
+    $("#selectall").addEventListener("click",function(){
+      var ta=$("#aiprompt");
+      ta.focus();
+      ta.select();
+      try{ ta.setSelectionRange(0,ta.value.length); }catch(e){}
+      setStatus("Selected. Now press Ctrl+C, or Cmd+C on a Mac.");
+    });
+    $("#hideprompt").addEventListener("click",function(){
+      $("#promptbox").hidden=true;
+      setStatus("");
+    });
+
+    $("#fillplan").addEventListener("click",function(){
+      var raw=($("#aireply").value||"").trim();
+      if(!raw){ toast("Paste the AI reply first"); return; }
+      var s=raw.replace(/```json/gi,"").replace(/```/g,"");
+      var a=s.indexOf("{"), b=s.lastIndexOf("}");
+      if(a<0||b<a){ toast("No JSON found in that reply"); return; }
+      var obj;
+      try{ obj=JSON.parse(s.slice(a,b+1)); }
+      catch(e){ toast("Could not read that reply. Ask the AI for JSON only."); return; }
+      var keys=["incompat","least","m1","m2","sub","weight","ca","cb","cc","cd"], n=0;
+      keys.forEach(function(k){
+        var el=$("#p_"+k);
+        if(el && typeof obj[k]==="string" && obj[k].trim()){
+          el.value=obj[k].trim();
+          el.classList.add("drafted");
+          store.set("plan_"+k,el.value);
+          n++;
+        }
+      });
+      if(!n){ toast("That reply had none of the expected fields"); return; }
+      $("#aireply").value="";
+      $("#aibox").hidden=true;
+      $("#toggleai").textContent="Paste the reply";
+      toast(n+" field"+(n===1?"":"s")+" drafted — now read and edit them");
+      $("#p_incompat").scrollIntoView({behavior:"smooth",block:"center"});
+    });
+
+    $("#printplan").addEventListener("click",function(){
+      var c=C();
+      var course=($("#p_course").value||"").trim();
+      var d=new Date();
+      var mon=["January","February","March","April","May","June","July",
+               "August","September","October","November","December"][d.getMonth()];
+      var out='<h1>Collaboration assessment plan</h1>'
+        +'<p class="pmeta">'+esc(course||"Course not stated")+' &middot; '+esc(c.n)
+        +'<br>SIM-ESD-CC-01 &middot; Prepared '+d.getDate()+' '+mon+' '+d.getFullYear()+'</p>';
+
+      $$(".pf").forEach(function(el){
+        var lab=$('label[for="'+el.id+'"]');
+        var name=lab?lab.textContent.replace(/\s+/g," ").trim():el.dataset.k;
+        var v=(el.value||"").trim();
+        out+='<div class="pitem"><p class="plab">'+esc(name)+'</p>'
+           +(v?'<p class="pval">'+esc(v)+'</p>'
+              :'<p class="pval pempty">Not completed</p>')+'</div>';
+      });
+
+      out+='<div class="pchecks"><h2>Before you file it</h2><ul>'
+        +'<li>Could four cooperative students finish the assessed activity by dividing the work? If yes, sharpen the conflict.</li>'
+        +'<li>If the group produced one document, can you still mark one named student? If no, the individual evidence is not doing its work.</li>'
+        +'<li>Could a student score full marks without using the competency? If yes, fix the brief, not the rubric.</li>'
+        +'</ul></div>'
+        +'<p class="pfoot">PEMACU ESD, Universiti Putra Malaysia &middot; Collaboration Competency Workbench</p>';
+
+      $("#printview").innerHTML=out;
+      window.print();
+    });
+
     $("#copyplan").addEventListener("click",function(){
       var out=["COLLABORATION ASSESSMENT PLAN","Cluster: "+CLUSTERS[ci].n,""];
       $$(".pf").forEach(function(el){
@@ -1563,7 +1796,7 @@ function wire(id){
       copyText(out.join("\n"));
     });
     $("#clearplan").addEventListener("click",function(){
-      $$(".pf").forEach(function(el){ el.value=""; store.set("plan_"+el.dataset.k,""); });
+      $$(".pf").forEach(function(el){ el.value=""; el.classList.remove("drafted"); store.set("plan_"+el.dataset.k,""); });
       toast("Fields cleared");
     });
   }
